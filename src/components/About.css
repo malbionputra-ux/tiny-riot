@@ -1,0 +1,29 @@
+.about {
+  padding: 10rem 4rem;
+  background-color: var(--color-bg);
+  display: flex;
+  align-items: center;
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-text {
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1.2;
+  font-weight: 500;
+  color: #888;
+}
+
+.text-highlight {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .about {
+    padding: 6rem 2rem;
+  }
+}

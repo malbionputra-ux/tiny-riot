@@ -1,0 +1,78 @@
+.services {
+  position: relative;
+  padding: 8rem 4rem;
+  min-height: 100vh;
+}
+
+.services-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.services-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.services-header h2 {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 4rem;
+  font-weight: 500;
+}
+
+.services-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 3rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  transition: padding-left 0.3s ease;
+}
+
+.service-item:hover {
+  padding-left: 2rem;
+}
+
+.service-title {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 800;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.service-details {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.service-details li {
+  font-size: 1.2rem;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+@media (max-width: 768px) {
+  .services {
+    padding: 6rem 2rem;
+  }
+  .service-item {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
