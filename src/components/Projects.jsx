@@ -87,21 +87,15 @@ const Projects = ({ setCursorVariant }) => {
   // Define transforms unconditionally at the top level of the component
   const projectTransforms = projectsList.map((project, index) => {
     const total = projectsList.length;
-    // Distribute angles evenly around a circle/spiral (radians)
     const baseAngle = (index / total) * Math.PI * 2;
-    // Map scrollYProgress to continuous rotation (e.g. including scroll pitch multiplier)
     const angle = useTransform(scrollYProgress, [0, 1], [baseAngle, baseAngle + Math.PI * 3.5]);
 
-    // X and Z coordinates based on trigonometric circles
     const x = useTransform(angle, (a) => Math.sin(a) * radius);
     const z = useTransform(angle, (a) => Math.cos(a) * radius);
     
-    // Rotate the card around Y-axis to face the viewer (offset based on angle)
     const rotateY = useTransform(angle, (a) => -(a * 180) / Math.PI);
     
-    // Vertical translation along a helix: active card is always at y = 0
     const y = useTransform(angle, (a) => {
-      // Normalize angle to range [-Math.PI, Math.PI]
       let diffAngle = a % (Math.PI * 2);
       if (diffAngle < 0) diffAngle += Math.PI * 2;
       if (diffAngle > Math.PI) {
@@ -113,16 +107,12 @@ const Projects = ({ setCursorVariant }) => {
       return diffAngle * pitchInAngle;
     });
 
-    // Fade/Opacity mapping:
-    // Faint in the background (z is negative), maximum in foreground (z is near 0/positive).
-    // Adjusted so that inactive background cards are more visible (30-35% range overall).
     const opacity = useTransform(
       z,
       [-radius, -radius * 0.5, 0, radius],
       [0, 0.35, 0.7, 1]
     );
 
-    // Scale mapping: larger in front, smaller in back
     const scale = useTransform(z, [-radius, radius], [0.65, 1.25]);
 
     return { x, y, z, rotateY, scale, opacity };
@@ -163,7 +153,7 @@ const Projects = ({ setCursorVariant }) => {
   };
 
   return (
-    <section className="projects-container">
+    <section className="projects-container dark-section">
       {viewMode === 'spiral' ? (
         /* Spiral View: Sticky Container for Scroll Pinning */
         <div className="projects-scroll-track" ref={containerRef}>
@@ -171,8 +161,8 @@ const Projects = ({ setCursorVariant }) => {
             <div className="projects-interface-overlay">
               <div className="projects-section-header">
                 <div className="header-meta">
-                  <div className="header-dot"></div>
-                  <span>Selected Works</span>
+                  <span className="meta-eyebrow">PORTFOLIO</span>
+                  <h2 className="projects-title-main">Karya <em>Terpilih</em></h2>
                 </div>
                 {/* Floating View Toggle */}
                 <div className="view-toggle-container">
@@ -225,8 +215,8 @@ const Projects = ({ setCursorVariant }) => {
         <div className="projects-list-wrapper">
           <div className="projects-section-header no-sticky">
             <div className="header-meta">
-              <div className="header-dot"></div>
-              <span>Selected Works</span>
+              <span className="meta-eyebrow">PORTFOLIO</span>
+              <h2 className="projects-title-main">Karya <em>Terpilih</em></h2>
             </div>
             {/* View Toggle */}
             <div className="view-toggle-container">
@@ -307,3 +297,4 @@ const Projects = ({ setCursorVariant }) => {
 };
 
 export default Projects;
+

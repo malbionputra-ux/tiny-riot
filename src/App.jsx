@@ -7,6 +7,7 @@ import Services from './components/Services'
 import Projects from './components/Projects'
 import Packages from './components/Packages'
 import Footer from './components/Footer'
+import ChatWidget from './components/ChatWidget'
 import './App.css'
 
 function App() {
@@ -52,8 +53,10 @@ function App() {
         </div>
       </main>
       <Footer setCursorVariant={setCursorVariant} />
+      <ChatWidget setCursorVariant={setCursorVariant} />
     </div>
   )
 }
 
 export default App
+

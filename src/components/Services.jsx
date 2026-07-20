@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import './Services.css';
 
@@ -18,45 +18,36 @@ const servicesList = [
 ];
 
 const Services = ({ setCursorVariant }) => {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-
   return (
-    <section className="services" id="services">
-      <div 
-        className="services-bg" 
-        style={{ 
-          backgroundColor: hoveredIndex !== null ? 'var(--color-primary)' : 'var(--color-bg)',
-          transition: 'background-color 0.5s ease'
-        }}
-      ></div>
-      
+    <section className="services light-section" id="services">
       <div className="services-content">
         <div className="services-header">
-          <h2>LAYANAN KAMI</h2>
+          <span className="services-meta">LAYANAN KAMI</span>
+          <h2 className="services-title-main">Solusi Kreatif & <em>Digital</em></h2>
         </div>
         
-        <div className="services-list">
+        <div className="services-grid">
           {servicesList.map((service, index) => (
             <motion.div 
-              className="service-item" 
+              className="service-card" 
               key={index}
-              onMouseEnter={() => {
-                setHoveredIndex(index);
-                setCursorVariant('hover');
-              }}
-              onMouseLeave={() => {
-                setHoveredIndex(null);
-                setCursorVariant('default');
-              }}
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              onMouseEnter={() => setCursorVariant('hover')}
+              onMouseLeave={() => setCursorVariant('default')}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * 0.1, duration: 0.6 }}
             >
-              <h3 className="service-title">{service.title}</h3>
+              <div className="service-header-card">
+                <span className="service-number">0{index + 1}</span>
+                <h3 className="service-title">{service.title}</h3>
+              </div>
               <ul className="service-details">
                 {service.items.map((item, idx) => (
-                  <li key={idx}>{item}</li>
+                  <li key={idx}>
+                    <span className="bullet"></span>
+                    {item}
+                  </li>
                 ))}
               </ul>
             </motion.div>
@@ -68,3 +59,4 @@ const Services = ({ setCursorVariant }) => {
 };
 
 export default Services;
+

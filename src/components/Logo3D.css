@@ -1,0 +1,24 @@
+.logo-3d-container {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 1rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  filter: drop-shadow(0 20px 40px rgba(250, 42, 14, 0.35));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.logo-3d-container:hover {
+  transform: scale(1.08);
+}
+
+@media (max-width: 768px) {
+  .logo-3d-container {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 0.5rem;
+  }
+}

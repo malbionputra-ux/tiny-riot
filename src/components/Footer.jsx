@@ -4,7 +4,7 @@ import './Footer.css';
 
 const Footer = ({ setCursorVariant }) => {
   return (
-    <footer className="footer">
+    <footer className="footer dark-section">
       <div className="footer-content">
         <motion.div 
           className="footer-cta"
@@ -13,8 +13,8 @@ const Footer = ({ setCursorVariant }) => {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <div className="footer-dot"></div>
-          <h2>Mari mulai<br />proyek Anda.</h2>
+          <span className="footer-meta">GET IN TOUCH</span>
+          <h2>Mari kolaborasi<br />bikin <em>loud impact.</em></h2>
           <a 
             href="mailto:hello@tinyriot.com" 
             className="email-link"
@@ -27,7 +27,7 @@ const Footer = ({ setCursorVariant }) => {
         
         <div className="footer-bottom">
           <div className="footer-copy">
-            &copy; {new Date().getFullYear()} Tiny Riot Agency.
+            &copy; {new Date().getFullYear()} TINY RIOT. ALL RIGHTS RESERVED.
           </div>
           <div className="footer-socials">
             <a 
@@ -35,21 +35,21 @@ const Footer = ({ setCursorVariant }) => {
               onMouseEnter={() => setCursorVariant('hover')}
               onMouseLeave={() => setCursorVariant('default')}
             >
-              Instagram
+              INSTAGRAM
             </a>
             <a 
               href="#"
               onMouseEnter={() => setCursorVariant('hover')}
               onMouseLeave={() => setCursorVariant('default')}
             >
-              Behance
+              BEHANCE
             </a>
             <a 
               href="#"
               onMouseEnter={() => setCursorVariant('hover')}
               onMouseLeave={() => setCursorVariant('default')}
             >
-              LinkedIn
+              LINKEDIN
             </a>
           </div>
         </div>
@@ -59,3 +59,4 @@ const Footer = ({ setCursorVariant }) => {
 };
 
 export default Footer;
+

@@ -3,44 +3,36 @@
   top: 0;
   left: 0;
   width: 100%;
-  padding: 1.5rem 4rem;
+  padding: 2rem 4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 100;
-
-  /* Smooth slide animation */
   transform: translateY(0);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              padding 0.3s ease,
               background 0.3s ease,
-              box-shadow 0.3s ease,
-              backdrop-filter 0.3s ease;
+              border 0.3s ease;
 }
 
-/* When scrolled down: glass effect */
+/* Glass effect when scrolled */
 .header--scrolled {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+  padding: 1.2rem 4rem;
+  background: rgba(24, 23, 23, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* At very top: fully transparent */
 .header--top {
   background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border-bottom: none;
-  box-shadow: none;
+  border-bottom: 1px solid transparent;
 }
 
-/* Hide: slide up out of view */
 .header--hidden {
-  transform: translateY(-110%);
+  transform: translateY(-100%);
 }
 
-/* Show: slide back in */
 .header--visible {
   transform: translateY(0);
 }
@@ -48,62 +40,49 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 1.4rem;
+  gap: 8px;
+  text-transform: uppercase;
   font-weight: 900;
-  letter-spacing: -1px;
-  transition: color 0.3s ease;
+  font-size: 1.15rem;
+  letter-spacing: 2px;
+  color: var(--color-text-dark);
 }
 
 .logo-t {
-  color: var(--color-primary);
-  font-size: 1.8rem;
-  line-height: 1;
-}
-
-/* When at top (dark hero), logo text is white */
-.header--top .logo-text {
-  color: #ffffff;
-}
-
-/* When scrolled (light glass), logo text is black */
-.header--scrolled .logo-text {
-  color: #000000;
+  color: var(--color-accent);
+  font-weight: 900;
 }
 
 .nav-menu {
   display: flex;
-  gap: 3rem;
+  gap: 2.5rem;
+  align-items: center;
 }
 
 .nav-menu a {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.7);
   position: relative;
   transition: color 0.3s ease;
+  padding: 0.5rem 0;
 }
 
-/* Nav links white on dark hero */
-.header--top .nav-menu a {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-/* Nav links dark on light glass */
-.header--scrolled .nav-menu a {
-  color: #111111;
+.nav-menu a:hover {
+  color: var(--color-text-dark);
 }
 
 .nav-menu a::after {
   content: '';
   position: absolute;
-  bottom: -4px;
+  bottom: 0;
   left: 0;
   width: 0%;
-  height: 2px;
-  background-color: var(--color-primary);
-  transition: width 0.3s ease;
+  height: 1px;
+  background-color: var(--color-accent);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-menu a:hover::after {
@@ -126,4 +105,8 @@
   .header {
     padding: 1.5rem 2rem;
   }
+  .header--scrolled {
+    padding: 1rem 2rem;
+  }
 }
+

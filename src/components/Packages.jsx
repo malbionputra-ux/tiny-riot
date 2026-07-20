@@ -23,10 +23,11 @@ const packagesList = [
 
 const Packages = ({ setCursorVariant }) => {
   return (
-    <section className="packages" id="packages">
+    <section className="packages light-section" id="packages">
       <div className="packages-container">
         <div className="packages-header">
-          <h2>PAKET LAYANAN</h2>
+          <span className="packages-meta">PRICING PLANS</span>
+          <h2 className="packages-title-main">Paket <em>Investasi</em> Layanan</h2>
         </div>
         
         {packagesList.map((category, idx) => (
@@ -48,7 +49,10 @@ const Packages = ({ setCursorVariant }) => {
                   <div className="plan-price">{plan.price}</div>
                   <ul className="plan-benefits">
                     {plan.benefits.map((benefit, bIdx) => (
-                      <li key={bIdx}>{benefit}</li>
+                      <li key={bIdx}>
+                        <span className="benefit-dot"></span>
+                        {benefit}
+                      </li>
                     ))}
                   </ul>
                 </motion.div>
@@ -62,3 +66,4 @@ const Packages = ({ setCursorVariant }) => {
 };
 
 export default Packages;
+
