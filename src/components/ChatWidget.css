@@ -33,18 +33,17 @@
   box-shadow: 0 10px 30px rgba(250, 42, 14, 0.3);
 }
 
-.toggle-dot {
-  width: 6px;
-  height: 6px;
-  background-color: var(--color-accent);
-  border-radius: 50%;
+.custom-toggle-logo {
+  height: 16px;
+  width: auto;
+  filter: invert(1) hue-rotate(180deg);
+  mix-blend-mode: screen;
   display: inline-block;
-  box-shadow: 0 0 6px var(--color-accent);
 }
 
-.chat-toggle-btn.active .toggle-dot {
-  background-color: #ffffff;
-  box-shadow: 0 0 6px #ffffff;
+.chat-toggle-btn.active .custom-toggle-logo {
+  filter: invert(1) grayscale(1) brightness(200%);
+  mix-blend-mode: screen;
 }
 
 /* Chat Window Panel */

@@ -48,9 +48,11 @@
   color: var(--color-text-dark);
 }
 
-.logo-t {
-  color: var(--color-accent);
-  font-weight: 900;
+.custom-logo {
+  height: 24px;
+  width: auto;
+  filter: invert(1) hue-rotate(180deg);
+  mix-blend-mode: screen;
 }
 
 .nav-menu {
