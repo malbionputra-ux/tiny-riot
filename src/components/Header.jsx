@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import './Header.css';
 
 import Magnetic from './Magnetic';
@@ -8,6 +9,7 @@ const Header = ({ setCursorVariant, isLight }) => {
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [atTop, setAtTop] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,9 +77,27 @@ const Header = ({ setCursorVariant, isLight }) => {
         className="menu-btn"
         onMouseEnter={() => setCursorVariant('hover')}
         onMouseLeave={() => setCursorVariant('default')}
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
       >
-        <Menu size={28} />
+        {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
       </button>
+
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div 
+            className="mobile-menu-overlay"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+          >
+            <nav className="mobile-nav-links">
+              <a href="#about" onClick={() => setMobileMenuOpen(false)}>Tentang</a>
+              <a href="#services" onClick={() => setMobileMenuOpen(false)}>Layanan</a>
+              <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Work</a>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

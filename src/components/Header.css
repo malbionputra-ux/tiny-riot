@@ -115,6 +115,7 @@
   }
   .menu-btn {
     display: block;
+    z-index: 1001; /* Ensure button is above overlay */
   }
   .header {
     padding: 1.5rem 2rem;
@@ -122,5 +123,35 @@
   .header--scrolled {
     padding: 1rem 2rem;
   }
+}
+
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(24, 23, 23, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  text-align: center;
+}
+
+.mobile-nav-links a {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 4px;
 }
 
