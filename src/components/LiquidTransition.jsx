@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import './LiquidTransition.css';
 
-export default function LiquidTransition({ isTransitioning, onCoverComplete, color = '#050505' }) {
+export default function LiquidTransition({ isTransitioning, onCoverComplete, onTransitionEnd, color = '#050505' }) {
   const [phase, setPhase] = useState('idle'); // idle, entering, covering, exiting
 
   useEffect(() => {
@@ -22,6 +22,7 @@ export default function LiquidTransition({ isTransitioning, onCoverComplete, col
       }, 50);
     } else if (phase === 'exiting') {
       setPhase('idle');
+      if (onTransitionEnd) onTransitionEnd();
     }
   };
 

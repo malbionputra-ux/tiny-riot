@@ -146,6 +146,7 @@ function App() {
         <LiquidTransition 
           isTransitioning={isTransitioning} 
           onCoverComplete={onCoverComplete} 
+          onTransitionEnd={onTransitionEnd}
         />
       )}
       
