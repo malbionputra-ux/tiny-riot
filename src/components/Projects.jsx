@@ -1,143 +1,339 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  useMotionValue,
-  useMotionValueEvent,
-  AnimatePresence,
-} from 'framer-motion';
+import { motion, useScroll, AnimatePresence } from 'framer-motion';
+import * as THREE from 'three';
 import './Projects.css';
 
 const projectsList = [
-  { id: 1, title: 'Qiana Mineral Water',  category: 'Social Media Strategy',    year: '2024',
-    img: 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' },
-  { id: 2, title: 'Dunia Games',           category: 'Creative Production',       year: '2024',
-    img: 'https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' },
-  { id: 3, title: 'Nunothemes',            category: 'UI/UX Design & Dev',        year: '2023',
-    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' },
-  { id: 4, title: 'Yellow Truck Coffee',   category: 'Brand Photoshoot',          year: '2023',
-    img: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' },
-  { id: 5, title: 'Aether Studio',         category: 'Immersive Web',             year: '2024',
-    img: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' },
-  { id: 6, title: 'Vortex Dynamics',       category: '3D Art & Motion',           year: '2024',
-    img: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' },
+  {
+    id: 1,
+    title: 'Qiana Mineral Water',
+    category: 'Social Media Strategy',
+    year: '2024',
+    img: 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+  },
+  {
+    id: 2,
+    title: 'Dunia Games',
+    category: 'Creative Production',
+    year: '2024',
+    img: 'https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+  },
+  {
+    id: 3,
+    title: 'Nunothemes',
+    category: 'UI/UX Design & Dev',
+    year: '2023',
+    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+  },
+  {
+    id: 4,
+    title: 'Yellow Truck Coffee',
+    category: 'Brand Photoshoot',
+    year: '2023',
+    img: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+  },
+  {
+    id: 5,
+    title: 'Aether Studio',
+    category: 'Immersive Web',
+    year: '2024',
+    img: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+  },
+  {
+    id: 6,
+    title: 'Vortex Dynamics',
+    category: '3D Art & Motion',
+    year: '2024',
+    img: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+  },
 ];
 
-/* ─────────────────────────────────────────────
-   Circular 3D Carousel — each card on a circle
-   As scroll progresses, the circle rotates so
-   each card comes to the front position.
-────────────────────────────────────────────── */
-const TOTAL   = projectsList.length;
-const ROTATIONS = 1; // how many full rotations over the whole scroll
-
 const Projects = ({ setCursorVariant }) => {
-  const [viewMode,   setViewMode]   = useState('spiral');
-  const [activeIdx,  setActiveIdx]  = useState(0);
-  const [winW,       setWinW]       = useState(
-    typeof window !== 'undefined' ? window.innerWidth : 1200
-  );
+  const [viewMode, setViewMode] = useState('spiral'); // 'spiral' or 'list'
+  const [activeProject, setActiveProject] = useState(projectsList[0]);
+  const [hoveredProject, setHoveredProject] = useState(null);
+
   const containerRef = useRef(null);
+  const mountRef = useRef(null);
+  const targetScrollRef = useRef(0);
 
-  /* ── Window width for responsive radius ── */
-  useEffect(() => {
-    const onResize = () => setWinW(window.innerWidth);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
-
-  const isMobile = winW < 768;
-  const radius   = isMobile ? 200 : winW < 1100 ? 320 : 500;
-
-  /* ── Scroll progress ── */
+  // Scroll tracking
   const { scrollYProgress } = useScroll({
-    target:  containerRef,
+    target: containerRef,
     offset: ['start start', 'end end'],
   });
 
-  /* ── Mouse parallax — tilts the whole scene subtly ── */
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
   useEffect(() => {
-    const onMove = (e) => {
-      mouseX.set((e.clientX / window.innerWidth  - 0.5) * 2);
-      mouseY.set((e.clientY / window.innerHeight - 0.5) * 2);
-    };
-    window.addEventListener('mousemove', onMove);
-    return () => window.removeEventListener('mousemove', onMove);
-  }, [mouseX, mouseY]);
-
-  const sceneRotY = useSpring(
-    useTransform(mouseX, [-1, 1], [-9, 9]),
-    { stiffness: 50, damping: 22 }
-  );
-  const sceneRotX = useSpring(
-    useTransform(mouseY, [-1, 1], [5, -5]),
-    { stiffness: 50, damping: 22 }
-  );
-
-  /* ── Track which card is frontmost ── */
-  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-    let maxZ = -Infinity, frontIdx = 0;
-    projectsList.forEach((_, i) => {
-      const base  = (i / TOTAL) * Math.PI * 2;
-      const angle = base + latest * Math.PI * 2 * ROTATIONS;
-      const z     = Math.cos(angle);
-      if (z > maxZ) { maxZ = z; frontIdx = i; }
+    const unsubscribe = scrollYProgress.on('change', (v) => {
+      targetScrollRef.current = v;
     });
-    setActiveIdx(frontIdx);
-  });
+    return () => unsubscribe();
+  }, [scrollYProgress]);
 
-  /* ────────────────────────────────────────────────────────────
-     Per-card transforms — hooks called unconditionally at top
-     level; projectsList.length is constant (6) so hook order
-     never changes between renders.
-  ──────────────────────────────────────────────────────────── */
-  const cardTransforms = projectsList.map((_, i) => {
-    const base  = (i / TOTAL) * Math.PI * 2;
-    const angle = useTransform(                                    // eslint-disable-line
-      scrollYProgress,
-      [0, 1],
-      [base, base + Math.PI * 2 * ROTATIONS]
-    );
-    const x       = useTransform(angle, (a) => Math.sin(a) * radius);
-    const z       = useTransform(angle, (a) => Math.cos(a) * radius);
-    const rotateY = useTransform(angle, (a) => -(a * 180) / Math.PI);
-    const scale   = useTransform(z, [-radius, radius], [0.68, 1.12]);
-    const opacity = useTransform(
-      z,
-      [-radius, -radius * 0.4, 0, radius * 0.4, radius],
-      [0,       0.22,          0.55, 0.8,         1]
-    );
-    return { x, z, rotateY, scale, opacity };
-  });
-
-  /* ── Classic list mouse-follow preview ── */
-  const listMouseX = useMotionValue(0);
-  const listMouseY = useMotionValue(0);
-  const [listHovered, setListHovered] = useState(null);
-  const previewX = useSpring(listMouseX, { damping: 25, stiffness: 200 });
-  const previewY = useSpring(listMouseY, { damping: 25, stiffness: 200 });
-
+  // THREE.JS 3D SPIRAL SCENE SETUP
   useEffect(() => {
-    const onMove = (e) => { listMouseX.set(e.clientX); listMouseY.set(e.clientY); };
-    window.addEventListener('mousemove', onMove);
-    return () => window.removeEventListener('mousemove', onMove);
-  }, [listMouseX, listMouseY]);
+    if (viewMode !== 'spiral' || !mountRef.current) return;
 
-  /* ──────────────────────────────────────────────────── RENDER ── */
+    const container = mountRef.current;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    // 1. Scene & Camera
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x050505, 0.04);
+
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    camera.position.set(0, 0, 11);
+
+    // 2. Renderer
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+
+    // Clear previous canvas
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+    container.appendChild(renderer.domElement);
+
+    // 3. Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    scene.add(ambientLight);
+
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.0);
+    dirLight1.position.set(5, 10, 7);
+    scene.add(dirLight1);
+
+    const dirLight2 = new THREE.DirectionalLight(0xfa2a0e, 1.5); // Red brand glow light
+    dirLight2.position.set(-5, -5, -5);
+    scene.add(dirLight2);
+
+    // 4. Spiral Group Setup
+    const spiralGroup = new THREE.Group();
+    scene.add(spiralGroup);
+
+    // Create 3D Particle Dust (Active Theory Cyber Particles)
+    const particleCount = 400;
+    const particleGeo = new THREE.BufferGeometry();
+    const particlePos = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      particlePos[i] = (Math.random() - 0.5) * 20;
+      particlePos[i + 1] = (Math.random() - 0.5) * 25;
+      particlePos[i + 2] = (Math.random() - 0.5) * 20;
+    }
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
+    const particleMat = new THREE.PointsMaterial({
+      size: 0.06,
+      color: 0x888888,
+      transparent: true,
+      opacity: 0.4,
+      blending: THREE.AdditiveBlending,
+    });
+    const particleSystem = new THREE.Points(particleGeo, particleMat);
+    scene.add(particleSystem);
+
+    // Create Spiral Backbone Tube Wireframe
+    const curvePoints = [];
+    const radius = 4.2;
+    const heightStep = 1.8;
+    const totalCards = projectsList.length;
+
+    for (let i = 0; i < totalCards; i++) {
+      const theta = (i / totalCards) * Math.PI * 2.8;
+      const x = Math.cos(theta) * radius;
+      const z = Math.sin(theta) * radius;
+      const y = (i - totalCards / 2) * heightStep;
+      curvePoints.push(new THREE.Vector3(x, y, z));
+    }
+    const catmullCurve = new THREE.CatmullRomCurve3(curvePoints);
+    const tubeGeo = new THREE.TubeGeometry(catmullCurve, 100, 0.02, 8, false);
+    const tubeMat = new THREE.MeshBasicMaterial({ color: 0xfa2a0e, transparent: true, opacity: 0.35, wireframe: true });
+    const tubeMesh = new THREE.Mesh(tubeGeo, tubeMat);
+    spiralGroup.add(tubeMesh);
+
+    // 5. Load Project Textures & Create 3D Cards
+    const textureLoader = new THREE.TextureLoader();
+    const cardMeshes = [];
+    const cardGeometry = new THREE.PlaneGeometry(3.4, 2.15, 32, 32);
+
+    projectsList.forEach((project, idx) => {
+      const texture = textureLoader.load(project.img);
+      texture.colorSpace = THREE.SRGBColorSpace;
+
+      // Custom Shader / Standard Material for smooth lighting & metallic feel
+      const material = new THREE.MeshStandardMaterial({
+        map: texture,
+        side: THREE.DoubleSide,
+        roughness: 0.3,
+        metalness: 0.1,
+      });
+
+      const cardMesh = new THREE.Mesh(cardGeometry, material);
+
+      // Spiral Helix Placement
+      const theta = (idx / totalCards) * Math.PI * 2.8;
+      const x = Math.cos(theta) * radius;
+      const z = Math.sin(theta) * radius;
+      const y = (idx - totalCards / 2) * heightStep;
+
+      cardMesh.position.set(x, y, z);
+      // Make card face outward from spiral center with slight slope
+      cardMesh.rotation.y = -theta + Math.PI / 2;
+      cardMesh.rotation.x = 0.05;
+
+      // Store custom data on mesh
+      cardMesh.userData = {
+        project,
+        index: idx,
+        basePos: new THREE.Vector3(x, y, z),
+        baseRotY: -theta + Math.PI / 2,
+        baseScale: 1,
+        theta,
+      };
+
+      spiralGroup.add(cardMesh);
+      cardMeshes.push(cardMesh);
+    });
+
+    // 6. Raycasting for Interaction (Hover / Cursor)
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2(-999, -999);
+    let hoveredMesh = null;
+
+    const onPointerMove = (e) => {
+      const rect = container.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    };
+
+    window.addEventListener('pointermove', onPointerMove);
+
+    // 7. Responsive Resize
+    const onResize = () => {
+      if (!container) return;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
+    window.addEventListener('resize', onResize);
+
+    // 8. Animation Loop
+    let animationFrameId;
+    let currentScroll = 0;
+    let currentMouseX = 0;
+    let currentMouseY = 0;
+
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+      const elapsedTime = clock.getElapsedTime();
+
+      // Smooth scroll lerp
+      currentScroll += (targetScrollRef.current - currentScroll) * 0.08;
+
+      // Rotate and elevate Spiral Group based on scroll
+      // Full scroll rotates spiral and shifts vertical height
+      const totalRotation = currentScroll * Math.PI * 2.8;
+      const totalYShift = -currentScroll * (totalCards - 1) * heightStep;
+
+      spiralGroup.rotation.y = totalRotation;
+      spiralGroup.position.y = totalYShift;
+
+      // Mouse Parallax for Scene
+      currentMouseX += (mouse.x - currentMouseX) * 0.05;
+      currentMouseY += (mouse.y - currentMouseY) * 0.05;
+      camera.position.x = currentMouseX * 0.8;
+      camera.position.y = currentMouseY * 0.5;
+      camera.lookAt(0, 0, 0);
+
+      // Rotate Particle Dust slowly
+      particleSystem.rotation.y = elapsedTime * 0.03;
+
+      // Raycasting check for hovered card
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(cardMeshes);
+
+      if (intersects.length > 0) {
+        const hit = intersects[0].object;
+        if (hoveredMesh !== hit) {
+          hoveredMesh = hit;
+          setHoveredProject(hit.userData.project);
+          if (setCursorVariant) setCursorVariant('hover');
+        }
+      } else {
+        if (hoveredMesh !== null) {
+          hoveredMesh = null;
+          setHoveredProject(null);
+          if (setCursorVariant) setCursorVariant('default');
+        }
+      }
+
+      // Determine Front-most card relative to camera (Z depth)
+      let closestDist = Infinity;
+      let frontProject = projectsList[0];
+
+      cardMeshes.forEach((mesh) => {
+        // Compute world position of mesh
+        const worldPos = new THREE.Vector3();
+        mesh.getWorldPosition(worldPos);
+
+        // Distance to camera
+        const distToCam = worldPos.distanceTo(camera.position);
+
+        // Scale & Opacity dynamics based on hover or front position
+        const isHovered = mesh === hoveredMesh;
+        const targetScale = isHovered ? 1.15 : 1;
+        mesh.scale.setScalar(THREE.MathUtils.lerp(mesh.scale.x, targetScale, 0.1));
+
+        if (distToCam < closestDist) {
+          closestDist = distToCam;
+          frontProject = mesh.userData.project;
+        }
+      });
+
+      if (!hoveredMesh) {
+        setActiveProject(frontProject);
+      } else {
+        setActiveProject(hoveredMesh.userData.project);
+      }
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    // Cleanup
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('resize', onResize);
+      renderer.dispose();
+      cardGeometry.dispose();
+      particleGeo.dispose();
+      particleMat.dispose();
+      tubeGeo.dispose();
+      tubeMat.dispose();
+    };
+  }, [viewMode, setCursorVariant]);
+
+  // Classic List Preview Mouse Motion
+  const listMouseX = useRef(0);
+  const listMouseY = useRef(0);
+  const [listHovered, setListHovered] = useState(null);
+
   return (
     <section className="projects-container dark-section" id="projects">
-
-      {/* ═══════════════ 3D CAROUSEL ═══════════════ */}
       {viewMode === 'spiral' ? (
+        /* ═══ THREE.JS WEBGL 3D SPIRAL HELIX VIEW ═══ */
         <div className="projects-scroll-track" ref={containerRef}>
           <div className="projects-sticky-wrapper">
 
-            {/* UI overlay */}
+            {/* UI Overlay */}
             <div className="projects-interface-overlay">
               <div className="projects-section-header">
                 <div className="header-meta">
@@ -148,95 +344,52 @@ const Projects = ({ setCursorVariant }) => {
                   <button
                     className={`toggle-btn ${viewMode === 'spiral' ? 'active' : ''}`}
                     onClick={() => setViewMode('spiral')}
-                  >3D CAROUSEL</button>
+                  >
+                    3D SPIRAL
+                  </button>
                   <button
                     className={`toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
                     onClick={() => setViewMode('list')}
-                  >LIST</button>
+                  >
+                    CLASSIC LIST
+                  </button>
                   <div className={`toggle-indicator ${viewMode}`} />
                 </div>
               </div>
 
-              {/* Active card title — bottom center */}
+              {/* Active Project Title Overlay at Bottom Center */}
               <div className="spiral-title-overlay">
                 <AnimatePresence mode="wait">
                   <motion.div
-                    key={activeIdx}
+                    key={activeProject ? activeProject.id : 'default'}
                     className="spiral-overlay-content"
-                    initial={{ opacity: 0, y: 22 }}
-                    animate={{ opacity: 1, y: 0  }}
-                    exit={  { opacity: 0, y: -22 }}
-                    transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+                    initial={{ opacity: 0, y: 30, rotateX: 10 }}
+                    animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                    exit={{ opacity: 0, y: -30, rotateX: -10 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <span className="overlay-category">
-                      → {projectsList[activeIdx].category} · {projectsList[activeIdx].year}
+                      → {activeProject ? activeProject.category : ''} · {activeProject ? activeProject.year : ''}
                     </span>
-                    <h2 className="overlay-title">{projectsList[activeIdx].title}</h2>
+                    <h2 className="overlay-title">{activeProject ? activeProject.title : ''}</h2>
                   </motion.div>
                 </AnimatePresence>
               </div>
             </div>
 
-            {/* ── 3D Perspective scene ── */}
-            <div className="spiral-viewport">
-              <motion.div
-                className="spiral-scene"
-                style={{ rotateY: sceneRotY, rotateX: sceneRotX }}
-              >
-                {projectsList.map((project, i) => {
-                  const { x, z, rotateY, scale, opacity } = cardTransforms[i];
-                  const isActive = i === activeIdx;
+            {/* Three.js Canvas Container */}
+            <div className="three-spiral-mount" ref={mountRef} />
 
-                  return (
-                    <motion.div
-                      key={project.id}
-                      className="carousel-card-wrap"
-                      style={{
-                        x,
-                        z,
-                        rotateY,
-                        scale,
-                        opacity,
-                        pointerEvents: isActive ? 'auto' : 'none',
-                      }}
-                      onMouseEnter={() => { if (isActive) setCursorVariant('hover'); }}
-                      onMouseLeave={() => setCursorVariant('default')}
-                    >
-                      <div className={`carousel-card-inner ${isActive ? 'is-active' : ''}`}>
-                        {/* Image */}
-                        <div className="carousel-img-wrap">
-                          <img src={project.img} alt={project.title} />
-                        </div>
-
-                        {/* Overlay text (visible on active) */}
-                        <motion.div
-                          className="carousel-overlay"
-                          animate={{ opacity: isActive ? 1 : 0.4 }}
-                          transition={{ duration: 0.5 }}
-                        >
-                          <span className="carousel-meta">
-                            → {project.category} · {project.year}
-                          </span>
-                          <h3 className="carousel-title">{project.title}</h3>
-                        </motion.div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            </div>
-
-            {/* Scroll hint */}
-            <div className="scroll-hint">
-              <span>SCROLL TO EXPLORE</span>
-              <div className="scroll-hint-line" />
+            {/* Scroll Indicator */}
+            <div className="spiral-scroll-hint">
+              <span>SCROLL TO ROTATE 3D SPIRAL</span>
+              <div className="scroll-line" />
             </div>
 
           </div>
         </div>
-
       ) : (
-        /* ═══════════════ CLASSIC LIST ═══════════════ */
+        /* ═══ CLASSIC LIST VIEW ═══ */
         <div className="projects-list-wrapper">
           <div className="projects-section-header no-sticky">
             <div className="header-meta">
@@ -247,11 +400,15 @@ const Projects = ({ setCursorVariant }) => {
               <button
                 className={`toggle-btn ${viewMode === 'spiral' ? 'active' : ''}`}
                 onClick={() => setViewMode('spiral')}
-              >3D CAROUSEL</button>
+              >
+                3D SPIRAL
+              </button>
               <button
                 className={`toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
                 onClick={() => setViewMode('list')}
-              >LIST</button>
+              >
+                CLASSIC LIST
+              </button>
               <div className={`toggle-indicator ${viewMode}`} />
             </div>
           </div>
@@ -261,8 +418,14 @@ const Projects = ({ setCursorVariant }) => {
               <div
                 key={project.id}
                 className="list-row"
-                onMouseEnter={() => { setListHovered(project); setCursorVariant('project'); }}
-                onMouseLeave={() => { setListHovered(null); setCursorVariant('default'); }}
+                onMouseEnter={() => {
+                  setListHovered(project);
+                  if (setCursorVariant) setCursorVariant('project');
+                }}
+                onMouseLeave={() => {
+                  setListHovered(null);
+                  if (setCursorVariant) setCursorVariant('default');
+                }}
               >
                 <div className="list-row-index">0{index + 1}</div>
                 <div className="list-row-details">
@@ -284,13 +447,13 @@ const Projects = ({ setCursorVariant }) => {
               <motion.div
                 className="list-hover-preview"
                 initial={{ scale: 0.6, opacity: 0, rotate: -4 }}
-                animate={{ scale: 1,   opacity: 1, rotate:  0 }}
-                exit={  { scale: 0.6, opacity: 0, rotate:  4 }}
+                animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                exit={{ scale: 0.6, opacity: 0, rotate: 4 }}
                 transition={{ type: 'spring', damping: 25, stiffness: 220 }}
                 style={{
                   position: 'fixed',
-                  left: previewX,
-                  top:  previewY,
+                  left: listMouseX.current,
+                  top: listMouseY.current,
                   x: '-50%',
                   y: '-50%',
                   pointerEvents: 'none',

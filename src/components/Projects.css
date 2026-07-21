@@ -1,19 +1,19 @@
 /* ═══════════════════════════════════════════════════════
-   Projects — 3D Circular Carousel + Classic List
-   Active Theory-inspired: dark, cinematic, no color glow
+   Projects — Real WebGL Three.js 3D Spiral Helix
+   Active Theory Style
 ═══════════════════════════════════════════════════════ */
 .projects-container {
-  background: #080808;
+  background: #050505;
   position: relative;
   z-index: 2;
   overflow: hidden;
 }
 
-/* ── Sticky scroll track ── */
+/* ── Scroll track: 400vh for smooth 3D scroll rotation ── */
 .projects-scroll-track {
   position: relative;
-  height: 300vh;
-  background: #080808;
+  height: 400vh;
+  background: #050505;
 }
 
 .projects-sticky-wrapper {
@@ -23,18 +23,36 @@
   width: 100%;
   overflow: hidden;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
 }
 
-/* ── UI overlay ── */
+/* ── Three.js Canvas Mount Container ── */
+.three-spiral-mount {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.three-spiral-mount canvas {
+  width: 100% !important;
+  height: 100% !important;
+  outline: none;
+  display: block;
+}
+
+/* ── Interface Overlay (Header + Title) ── */
 .projects-interface-overlay {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 3.5rem 4.5rem 3rem 4.5rem;
+  padding: 3.5rem 4.5rem;
   pointer-events: none;
   z-index: 10;
 }
@@ -50,22 +68,23 @@
 .header-meta {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .meta-eyebrow {
   font-size: 0.6rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 3px;
-  color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.35);
   text-transform: uppercase;
+  font-family: monospace;
 }
 
 .projects-title-main {
-  font-size: clamp(1.8rem, 3vw, 3rem);
+  font-size: clamp(1.8rem, 3vw, 3.2rem);
   font-weight: 900;
   text-transform: uppercase;
-  color: #fff;
+  color: #ffffff;
   line-height: 1.1;
   letter-spacing: -1.5px;
   margin: 0;
@@ -76,17 +95,17 @@
   font-style: italic;
   font-weight: 400;
   text-transform: lowercase;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.55);
 }
 
-/* ── Toggle ── */
+/* ── View Toggle ── */
 .view-toggle-container {
   position: relative;
   display: flex;
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   padding: 4px;
   border-radius: 100px;
   pointer-events: auto;
@@ -96,7 +115,7 @@
   position: relative;
   background: none;
   border: none;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255, 255, 255, 0.35);
   font-size: 0.65rem;
   font-weight: 800;
   letter-spacing: 1.5px;
@@ -107,211 +126,102 @@
   z-index: 2;
 }
 
-.toggle-btn.active { color: #fff; }
+.toggle-btn.active {
+  color: #ffffff;
+}
 
 .toggle-indicator {
   position: absolute;
-  top: 4px; left: 4px;
+  top: 4px;
+  left: 4px;
   height: calc(100% - 8px);
   width: calc(50% - 4px);
   background: var(--color-accent);
   border-radius: 100px;
-  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 1;
-  box-shadow: 0 4px 12px rgba(250,42,14,0.25);
+  box-shadow: 0 4px 12px rgba(250, 42, 14, 0.25);
 }
 
-.toggle-indicator.list { transform: translateX(100%); }
+.toggle-indicator.list {
+  transform: translateX(100%);
+}
 
-/* ── Active card info (bottom center) ── */
+/* ── Title Overlay at Center/Bottom ── */
 .spiral-title-overlay {
   text-align: center;
   pointer-events: none;
-  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .spiral-overlay-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
 .overlay-category {
-  font-size: 0.6rem;
-  font-weight: 700;
+  font-size: 0.65rem;
+  font-weight: 800;
   letter-spacing: 4px;
-  color: rgba(255,255,255,0.38);
+  color: var(--color-accent);
   text-transform: uppercase;
   font-family: monospace;
 }
 
 .overlay-title {
-  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-size: clamp(2.2rem, 5.5vw, 5rem);
   font-weight: 900;
-  color: #fff;
+  color: #ffffff;
   margin: 0;
   letter-spacing: -2px;
   line-height: 0.95;
   text-transform: uppercase;
-  text-shadow: 0 4px 30px rgba(0,0,0,0.55);
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
 }
 
-/* ── Scroll hint ── */
-.scroll-hint {
+/* ── Scroll Hint ── */
+.spiral-scroll-hint {
   position: absolute;
-  bottom: 2.5rem;
+  bottom: 3rem;
   right: 4.5rem;
   display: flex;
   align-items: center;
   gap: 1rem;
-  opacity: 0.3;
+  opacity: 0.4;
+  z-index: 10;
   pointer-events: none;
 }
 
-.scroll-hint span {
+.spiral-scroll-hint span {
   font-size: 0.55rem;
   font-weight: 700;
   letter-spacing: 3px;
-  color: #fff;
+  color: #ffffff;
   font-family: monospace;
 }
 
-.scroll-hint-line {
+.scroll-line {
   width: 40px;
   height: 1px;
-  background: rgba(255,255,255,0.6);
-}
-
-/* ═══════════════════════════════════════════
-   3D Circular Carousel Scene
-═══════════════════════════════════════════ */
-.spiral-viewport {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 1400px;
-  perspective-origin: 50% 50%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.spiral-scene {
-  position: relative;
-  width: 0;
-  height: 0;
-  transform-style: preserve-3d;
-  pointer-events: none;
-}
-
-/* ── Card wrapper (positioned on the circle) ── */
-.carousel-card-wrap {
-  position: absolute;
-  transform-style: preserve-3d;
-  will-change: transform, opacity;
-  pointer-events: auto;
-  /* CRITICAL: offset so the card is centered on the circle position,
-     not top-left anchored. Card is 500px wide, aspect 16:10 = 312.5px tall. */
-  margin-left: -250px;   /* -½ card width */
-  margin-top:  -156px;   /* -½ card height */
-}
-
-/* ── Card shell ── */
-.carousel-card-inner {
-  width: 500px;
-  aspect-ratio: 16 / 10;
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow:
-    0 20px 60px rgba(0,0,0,0.85),
-    0 4px 16px rgba(0,0,0,0.5);
-  transition: border-color 0.5s ease, box-shadow 0.5s ease;
-}
-
-.carousel-card-inner.is-active {
-  border-color: rgba(255,255,255,0.14);
-  box-shadow:
-    0 40px 100px rgba(0,0,0,0.95),
-    0 10px 40px rgba(0,0,0,0.65),
-    inset 0 1px 0 rgba(255,255,255,0.10);
-}
-
-/* ── Image ── */
-.carousel-img-wrap {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.carousel-img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  /* Slight desaturation on all, lifted on active via filter on wrapper */
-  filter: brightness(0.85) saturate(0.85);
-  transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), filter 0.5s ease;
-}
-
-.carousel-card-inner.is-active .carousel-img-wrap img {
-  filter: brightness(0.92) saturate(1);
-}
-
-/* ── Text overlay ── */
-.carousel-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 1.8rem 2rem;
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,0.80) 0%,
-    rgba(0,0,0,0.25) 45%,
-    transparent      70%
-  );
-  pointer-events: none;
-}
-
-.carousel-meta {
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: rgba(255,255,255,0.45);
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-  font-family: monospace;
-}
-
-.carousel-title {
-  font-size: clamp(1.1rem, 1.8vw, 1.6rem);
-  font-weight: 900;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: -0.5px;
-  line-height: 1.1;
-  margin: 0;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+  background: rgba(255, 255, 255, 0.5);
 }
 
 /* ═══════════════════════════════════════
    Classic List View
 ═══════════════════════════════════════ */
 .projects-list-wrapper {
-  background: #080808;
+  background: #050505;
   min-height: 100vh;
   padding: 8rem 5rem 12rem 5rem;
   position: relative;
   z-index: 2;
 }
 
-.projects-section-header.no-sticky { margin-bottom: 5rem; }
+.projects-section-header.no-sticky {
+  margin-bottom: 5rem;
+}
 
 .classic-list-content {
   max-width: 1200px;
@@ -324,26 +234,33 @@
   display: flex;
   align-items: center;
   padding: 2.6rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   cursor: pointer;
   transition: border-color 0.4s ease;
 }
 
-.list-row:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
-.list-row:hover { border-color: rgba(255,255,255,0.18); }
+.list-row:first-child {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.list-row:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
 
 .list-row-index {
   font-size: 1.8rem;
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
-  color: rgba(255,255,255,0.12);
+  color: rgba(255, 255, 255, 0.12);
   width: 70px;
   line-height: 1;
   transition: color 0.4s ease;
 }
 
-.list-row:hover .list-row-index { color: rgba(255,255,255,0.25); }
+.list-row:hover .list-row-index {
+  color: rgba(255, 255, 255, 0.25);
+}
 
 .list-row-details {
   flex: 1;
@@ -360,73 +277,114 @@
   color: #fff;
   text-transform: uppercase;
   letter-spacing: -1px;
-  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), color 0.4s ease;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease;
 }
 
-.list-row:hover .list-row-title { transform: translateX(14px); }
+.list-row:hover .list-row-title {
+  transform: translateX(14px);
+  color: rgba(255, 255, 255, 0.9);
+}
 
 .list-row-category {
   font-size: 0.85rem;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255, 255, 255, 0.3);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: color 0.4s ease;
 }
 
-.list-row:hover .list-row-category { color: rgba(255,255,255,0.6); }
+.list-row:hover .list-row-category {
+  color: rgba(255, 255, 255, 0.6);
+}
 
 .list-row-arrow {
-  width: 42px; height: 42px;
-  display: flex; align-items: center; justify-content: center;
-  color: rgba(255,255,255,0.3);
-  border: 1px solid rgba(255,255,255,0.07);
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 50%;
   transition: background 0.4s, border-color 0.4s, color 0.4s, transform 0.4s;
 }
 
-.list-row-arrow svg { width: 16px; height: 16px; }
+.list-row-arrow svg {
+  width: 16px;
+  height: 16px;
+}
 
 .list-row:hover .list-row-arrow {
   background: var(--color-accent);
   border-color: var(--color-accent);
   color: #fff;
   transform: rotate(-45deg);
-  box-shadow: 0 4px 12px rgba(250,42,14,0.25);
+  box-shadow: 0 4px 12px rgba(250, 42, 14, 0.25);
 }
 
-/* Mouse follow preview */
+/* ── Mouse follow preview ── */
 .list-hover-preview {
   width: 340px;
   aspect-ratio: 16/10;
   border-radius: 10px;
   overflow: hidden;
   pointer-events: none;
-  box-shadow: 0 40px 90px rgba(0,0,0,0.85);
-  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.preview-image-container { width: 100%; height: 100%; }
-.preview-image-container img { width: 100%; height: 100%; object-fit: cover; }
+.preview-image-container {
+  width: 100%;
+  height: 100%;
+}
+
+.preview-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 /* ── Responsive ── */
 @media (max-width: 1024px) {
-  .projects-interface-overlay { padding: 3rem; }
-  .carousel-card-wrap { margin-left: -175px; margin-top: -109px; }
-  .carousel-card-inner { width: 350px; }
+  .projects-interface-overlay {
+    padding: 2.5rem 3rem;
+  }
+  .spiral-scroll-hint {
+    right: 3rem;
+  }
 }
 
 @media (max-width: 768px) {
-  .projects-interface-overlay { padding: 2rem 1.5rem; }
-  .spiral-viewport { perspective: 800px; }
-  .carousel-card-wrap { margin-left: -130px; margin-top: -81px; }
-  .carousel-card-inner { width: 260px; }
-  .overlay-title { font-size: clamp(1.6rem, 7vw, 2.5rem); }
-  .scroll-hint { right: 1.5rem; }
-  .projects-list-wrapper { padding: 5rem 1.5rem 8rem 1.5rem; }
-  .list-row { padding: 1.6rem 0; }
-  .list-row-details { flex-direction: column; align-items: flex-start; gap: 0.4rem; padding-right: 1rem; }
-  .list-row-title { font-size: 1.5rem; }
-  .list-row-index { width: 48px; font-size: 1.4rem; }
-  .list-hover-preview { width: 240px; }
+  .projects-interface-overlay {
+    padding: 2rem 1.5rem;
+  }
+  .overlay-title {
+    font-size: clamp(1.8rem, 7vw, 3rem);
+  }
+  .spiral-scroll-hint {
+    right: 1.5rem;
+  }
+  .projects-list-wrapper {
+    padding: 5rem 1.5rem 8rem 1.5rem;
+  }
+  .list-row {
+    padding: 1.6rem 0;
+  }
+  .list-row-details {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    padding-right: 1rem;
+  }
+  .list-row-title {
+    font-size: 1.5rem;
+  }
+  .list-row-index {
+    width: 48px;
+    font-size: 1.4rem;
+  }
+  .list-hover-preview {
+    width: 240px;
+  }
 }
