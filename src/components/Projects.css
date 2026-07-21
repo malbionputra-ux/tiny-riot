@@ -9,11 +9,11 @@
   overflow: hidden;
 }
 
-/* ── Scroll track: 280vh for smooth 3D scroll rotation ── */
+/* ── Scroll track: 220vh for smooth 3D scroll rotation & seamless section landing ── */
 .projects-scroll-track {
   position: relative;
-  height: 280vh;
-  background: #050505;
+  height: 220vh;
+  background: #181717;
 }
 
 .projects-sticky-wrapper {

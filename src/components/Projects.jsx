@@ -57,7 +57,7 @@ const Projects = ({ setCursorVariant }) => {
   const mountRef = useRef(null);
   const targetScrollRef = useRef(0);
 
-  // Scroll tracking
+  // Scroll tracking across sticky section
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
@@ -80,17 +80,17 @@ const Projects = ({ setCursorVariant }) => {
 
     // 1. Scene & Camera
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x050505, 0.04);
+    scene.fog = new THREE.FogExp2(0x181717, 0.035);
 
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 11);
+    camera.position.set(0, 0, 10.5);
 
     // 2. Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.15;
 
     // Clear previous canvas
     while (container.firstChild) {
@@ -99,66 +99,67 @@ const Projects = ({ setCursorVariant }) => {
     container.appendChild(renderer.domElement);
 
     // 3. Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
     scene.add(ambientLight);
 
-    const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.0);
-    dirLight1.position.set(5, 10, 7);
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.2);
+    dirLight1.position.set(6, 12, 8);
     scene.add(dirLight1);
 
-    const dirLight2 = new THREE.DirectionalLight(0xfa2a0e, 1.5); // Red brand glow light
-    dirLight2.position.set(-5, -5, -5);
+    const dirLight2 = new THREE.DirectionalLight(0xfa2a0e, 1.8); // Red brand glow light
+    dirLight2.position.set(-6, -6, -6);
     scene.add(dirLight2);
 
     // 4. Spiral Group Setup
     const spiralGroup = new THREE.Group();
     scene.add(spiralGroup);
 
-    // Create 3D Particle Dust (Active Theory Cyber Particles)
-    const particleCount = 400;
+    // Create 3D Ambient Dust Particles (Active Theory sci-fi vibe)
+    const particleCount = 500;
     const particleGeo = new THREE.BufferGeometry();
     const particlePos = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
-      particlePos[i] = (Math.random() - 0.5) * 20;
+      particlePos[i] = (Math.random() - 0.5) * 22;
       particlePos[i + 1] = (Math.random() - 0.5) * 25;
-      particlePos[i + 2] = (Math.random() - 0.5) * 20;
+      particlePos[i + 2] = (Math.random() - 0.5) * 22;
     }
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
     const particleMat = new THREE.PointsMaterial({
-      size: 0.06,
-      color: 0x888888,
+      size: 0.055,
+      color: 0xaaaaaa,
       transparent: true,
-      opacity: 0.4,
+      opacity: 0.45,
       blending: THREE.AdditiveBlending,
     });
     const particleSystem = new THREE.Points(particleGeo, particleMat);
     scene.add(particleSystem);
 
-    // Helix Math Constants
-    const radius = 4.2;
-    const heightStep = 1.6;
-    const thetaStep = Math.PI * 0.45; // angle between consecutive cards
+    // HELIX GEOMETRY MATH CONSTANTS
+    const radius = 3.9;
+    const heightStep = 1.35; // Compact spacing so cards always fill the view
+    const thetaStep = Math.PI * 0.42; // Spiral angle per card
     const totalCards = projectsList.length;
+    const centerIndex = (totalCards - 1) / 2; // 2.5 for 6 cards (centered at y=0)
 
-    // Create Spiral Backbone Tube Wireframe
+    // Create Spiral Backbone Wireframe Tube
     const curvePoints = [];
     for (let i = 0; i < totalCards; i++) {
       const theta = i * thetaStep;
       const x = Math.cos(theta) * radius;
       const z = Math.sin(theta) * radius;
-      const y = i * heightStep;
+      const y = (i - centerIndex) * heightStep;
       curvePoints.push(new THREE.Vector3(x, y, z));
     }
     const catmullCurve = new THREE.CatmullRomCurve3(curvePoints);
-    const tubeGeo = new THREE.TubeGeometry(catmullCurve, 100, 0.02, 8, false);
-    const tubeMat = new THREE.MeshBasicMaterial({ color: 0xfa2a0e, transparent: true, opacity: 0.35, wireframe: true });
+    const tubeGeo = new THREE.TubeGeometry(catmullCurve, 120, 0.018, 8, false);
+    const tubeMat = new THREE.MeshBasicMaterial({ color: 0xfa2a0e, transparent: true, opacity: 0.4, wireframe: true });
     const tubeMesh = new THREE.Mesh(tubeGeo, tubeMat);
     spiralGroup.add(tubeMesh);
 
     // 5. Load Project Textures & Create 3D Cards
     const textureLoader = new THREE.TextureLoader();
     const cardMeshes = [];
-    const cardGeometry = new THREE.PlaneGeometry(3.5, 2.2, 32, 32);
+    const cardGeometry = new THREE.PlaneGeometry(3.3, 2.1, 32, 32);
 
     projectsList.forEach((project, idx) => {
       const texture = textureLoader.load(project.img);
@@ -167,17 +168,17 @@ const Projects = ({ setCursorVariant }) => {
       const material = new THREE.MeshStandardMaterial({
         map: texture,
         side: THREE.DoubleSide,
-        roughness: 0.3,
-        metalness: 0.1,
+        roughness: 0.25,
+        metalness: 0.15,
       });
 
       const cardMesh = new THREE.Mesh(cardGeometry, material);
 
-      // Spiral Helix Placement — Card 0 starts at y=0, card N-1 at (N-1)*heightStep
+      // Spiral Helix Position: centered vertically around y=0
       const theta = idx * thetaStep;
       const x = Math.cos(theta) * radius;
       const z = Math.sin(theta) * radius;
-      const y = idx * heightStep;
+      const y = (idx - centerIndex) * heightStep;
 
       cardMesh.position.set(x, y, z);
       // Make card face outward from spiral center
@@ -196,7 +197,7 @@ const Projects = ({ setCursorVariant }) => {
       cardMeshes.push(cardMesh);
     });
 
-    // 6. Raycasting for Interaction (Hover / Cursor)
+    // 6. Raycasting for Mouse Interaction
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2(-999, -999);
     let hoveredMesh = null;
@@ -235,24 +236,26 @@ const Projects = ({ setCursorVariant }) => {
       // Smooth scroll lerp
       currentScroll += (targetScrollRef.current - currentScroll) * 0.08;
 
-      // Perfectly anchor rotation and Y-shift so active card is at eye level (y=0)
-      // At scroll 0 -> Card 0 is at y=0 facing camera
-      // At scroll 1 -> Card N-1 is at y=0 facing camera
+      // Calculate progress index (0 to 5)
       const maxScrollIndex = totalCards - 1;
       const activeProgressIndex = currentScroll * maxScrollIndex;
 
+      // Perfectly offset Y and Rotation so active card is centered at y=0 (eye level)
+      // At scroll 0 -> Card 0 (y = -2.5*heightStep) is brought to y = 0
+      // At scroll 1 -> Card 5 (y = +2.5*heightStep) is brought to y = 0
+      // Cards always fill both top and bottom halves of viewport — NO EMPTY SPACE EVER!
       spiralGroup.rotation.y = -activeProgressIndex * thetaStep;
-      spiralGroup.position.y = -activeProgressIndex * heightStep;
+      spiralGroup.position.y = (activeProgressIndex - centerIndex) * heightStep;
 
       // Mouse Parallax for Scene
       currentMouseX += (mouse.x - currentMouseX) * 0.05;
       currentMouseY += (mouse.y - currentMouseY) * 0.05;
-      camera.position.x = currentMouseX * 0.8;
-      camera.position.y = currentMouseY * 0.5;
+      camera.position.x = currentMouseX * 0.7;
+      camera.position.y = currentMouseY * 0.4;
       camera.lookAt(0, 0, 0);
 
-      // Rotate Particle Dust slowly
-      particleSystem.rotation.y = elapsedTime * 0.03;
+      // Rotate Particles slowly
+      particleSystem.rotation.y = elapsedTime * 0.025;
 
       // Raycasting check for hovered card
       raycaster.setFromCamera(mouse, camera);
@@ -273,19 +276,17 @@ const Projects = ({ setCursorVariant }) => {
         }
       }
 
-      // Determine Front-most card relative to camera (Z depth)
+      // Determine Front-most card relative to camera
       let closestDist = Infinity;
       let frontProject = projectsList[0];
 
       cardMeshes.forEach((mesh) => {
-        // Compute world position of mesh
         const worldPos = new THREE.Vector3();
         mesh.getWorldPosition(worldPos);
 
-        // Distance to camera
         const distToCam = worldPos.distanceTo(camera.position);
 
-        // Scale & Opacity dynamics based on hover or front position
+        // Scale lerp on hover
         const isHovered = mesh === hoveredMesh;
         const targetScale = isHovered ? 1.15 : 1;
         mesh.scale.setScalar(THREE.MathUtils.lerp(mesh.scale.x, targetScale, 0.1));
