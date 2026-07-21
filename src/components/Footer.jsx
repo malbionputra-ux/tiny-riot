@@ -3,26 +3,37 @@ import { motion } from 'framer-motion';
 import './Footer.css';
 
 const Footer = ({ setCursorVariant }) => {
+  const textVariants = {
+    hidden:  { y: '100%', opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+  };
+
   return (
     <footer className="footer dark-section">
       <div className="footer-content">
         <motion.div 
           className="footer-cta"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
         >
-          <span className="footer-meta">GET IN TOUCH</span>
-          <h2>Mari kolaborasi<br />bikin <em>loud impact.</em></h2>
-          <a 
-            href="mailto:hello@tinyriot.com" 
-            className="email-link"
-            onMouseEnter={() => setCursorVariant('hover')}
-            onMouseLeave={() => setCursorVariant('default')}
-          >
-            hello@tinyriot.com
-          </a>
+          <div style={{ overflow: 'hidden', paddingBottom: '5px' }}>
+            <motion.span variants={textVariants} className="footer-meta" style={{ display: 'block' }}>GET IN TOUCH</motion.span>
+          </div>
+          <div style={{ overflow: 'hidden' }}>
+            <motion.h2 variants={textVariants}>Mari kolaborasi<br />bikin <em>loud impact.</em></motion.h2>
+          </div>
+          <motion.div variants={textVariants}>
+            <a 
+              href="mailto:hello@tinyriot.com" 
+              className="email-link"
+              onMouseEnter={() => setCursorVariant('hover')}
+              onMouseLeave={() => setCursorVariant('default')}
+            >
+              hello@tinyriot.com
+            </a>
+          </motion.div>
         </motion.div>
         
         <div className="footer-bottom">

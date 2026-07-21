@@ -6,9 +6,8 @@ import * as THREE from 'three';
 const WavePlane = () => {
   const meshRef = useRef();
 
-  // Create a large plane with many segments for smooth deformation
-  // A 100x100 plane with 128x128 segments gives high quality waves
-  const geometry = useMemo(() => new THREE.PlaneGeometry(25, 25, 128, 128), []);
+  // Reduced segments from 128x128 to 48x48 to prevent CPU lag on scroll
+  const geometry = useMemo(() => new THREE.PlaneGeometry(25, 25, 48, 48), []);
 
   useFrame((state) => {
     if (!meshRef.current) return;
@@ -54,7 +53,7 @@ export default function AbstractWaves() {
     <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none' }}>
       <Canvas 
         camera={{ position: [0, 0, 6], fov: 45 }}
-        dpr={[1, 1.5]} // Limit pixel ratio for performance
+        dpr={[1, 1]} // Hard limit pixel ratio to 1 for maximum performance
         gl={{ antialias: false, powerPreference: 'high-performance' }}
       >
         <Suspense fallback={null}>

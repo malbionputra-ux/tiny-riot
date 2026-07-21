@@ -18,13 +18,28 @@ const servicesList = [
 ];
 
 const Services = ({ setCursorVariant }) => {
+  const textVariants = {
+    hidden:  { y: '100%', opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+  };
+
   return (
     <section className="services light-section" id="services">
       <div className="services-content">
-        <div className="services-header">
-          <span className="services-meta">LAYANAN KAMI</span>
-          <h2 className="services-title-main">Solusi Kreatif & <em>Digital</em></h2>
-        </div>
+        <motion.div 
+          className="services-header"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+        >
+          <div style={{ overflow: 'hidden', paddingBottom: '5px' }}>
+            <motion.span variants={textVariants} className="services-meta" style={{ display: 'block' }}>LAYANAN KAMI</motion.span>
+          </div>
+          <div style={{ overflow: 'hidden' }}>
+            <motion.h2 variants={textVariants} className="services-title-main">Solusi Kreatif & <em>Digital</em></motion.h2>
+          </div>
+        </motion.div>
         
         <div className="services-grid">
           {servicesList.map((service, index) => (

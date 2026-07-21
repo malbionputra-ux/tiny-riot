@@ -25,19 +25,46 @@ const Projects = ({ setCursorVariant }) => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  const textVariants = {
+    hidden:  { y: '100%', opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
+  };
+
   return (
     <section className="projects-container dark-section" id="projects">
       <div className="projects-list-wrapper">
         <div className="projects-section-header no-sticky">
-          <div className="header-meta">
-            <span className="meta-eyebrow">PORTFOLIO</span>
-            <h2 className="projects-title-main">Karya <em>Terpilih</em></h2>
-          </div>
+          <motion.div 
+            className="header-meta"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+          >
+            <div style={{ overflow: 'hidden', paddingBottom: '5px' }}>
+              <motion.span variants={textVariants} className="meta-eyebrow" style={{ display: 'block' }}>PORTFOLIO</motion.span>
+            </div>
+            <div style={{ overflow: 'hidden' }}>
+              <motion.h2 variants={textVariants} className="projects-title-main">Karya <em>Terpilih</em></motion.h2>
+            </div>
+          </motion.div>
         </div>
 
-        <div className="classic-list-content">
+        <motion.div 
+          className="classic-list-content"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+        >
           {projectsList.map((project, index) => (
-            <div
+            <motion.div
+              variants={itemVariants}
               key={project.id}
               className="list-row"
               onMouseEnter={() => {
@@ -60,9 +87,9 @@ const Projects = ({ setCursorVariant }) => {
                   <polyline points="12 5 19 12 12 19" />
                 </svg>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         <AnimatePresence>
           {listHovered && (
