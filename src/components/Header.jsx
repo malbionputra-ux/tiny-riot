@@ -4,7 +4,7 @@ import './Header.css';
 
 import Magnetic from './Magnetic';
 
-const Header = ({ setCursorVariant }) => {
+const Header = ({ setCursorVariant, isLight }) => {
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [atTop, setAtTop] = useState(true);
@@ -29,7 +29,7 @@ const Header = ({ setCursorVariant }) => {
   }, [lastScrollY]);
 
   return (
-    <header className={`header ${visible ? 'header--visible' : 'header--hidden'} ${atTop ? 'header--top' : 'header--scrolled'}`}>
+    <header className={`header ${visible ? 'header--visible' : 'header--hidden'} ${atTop ? 'header--top' : 'header--scrolled'} ${isLight ? 'header--light' : ''}`}>
       <Magnetic>
         <div
           className="logo"
@@ -76,7 +76,7 @@ const Header = ({ setCursorVariant }) => {
         onMouseEnter={() => setCursorVariant('hover')}
         onMouseLeave={() => setCursorVariant('default')}
       >
-        <Menu color="var(--color-text)" size={28} />
+        <Menu size={28} />
       </button>
     </header>
   );

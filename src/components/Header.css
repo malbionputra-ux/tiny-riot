@@ -84,6 +84,29 @@
   background: none;
   border: none;
   display: none;
+  color: var(--color-text-dark);
+}
+
+/* Light mode variations */
+.header--light .logo-text {
+  color: #181717;
+}
+
+.header--light .nav-menu {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.header--light .nav-menu a {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.header--light .nav-menu a:hover {
+  color: #181717;
+}
+
+.header--light .menu-btn {
+  color: #181717;
 }
 
 @media (max-width: 768px) {

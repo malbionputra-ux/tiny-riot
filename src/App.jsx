@@ -151,7 +151,10 @@ function App() {
       )}
       
       {/* We no longer use native page scrolling. The Header stays on top. */}
-      <Header setCursorVariant={setCursorVariant} />
+      <Header 
+        setCursorVariant={setCursorVariant} 
+        isLight={activeSlideIndex === 2 || activeSlideIndex === 3} 
+      />
       
       <main className="slider-main">
         {/* Slide 0: Hero */}
