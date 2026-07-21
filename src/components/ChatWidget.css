@@ -36,14 +36,11 @@
 .custom-toggle-logo {
   height: 16px;
   width: auto;
-  filter: invert(1) hue-rotate(180deg);
-  mix-blend-mode: screen;
   display: inline-block;
 }
 
 .chat-toggle-btn.active .custom-toggle-logo {
-  filter: invert(1) grayscale(1) brightness(200%);
-  mix-blend-mode: screen;
+  filter: brightness(0) invert(1);
 }
 
 /* Chat Window Panel */

@@ -51,8 +51,6 @@
 .custom-logo {
   height: 24px;
   width: auto;
-  filter: invert(1) hue-rotate(180deg);
-  mix-blend-mode: screen;
 }
 
 .nav-menu {

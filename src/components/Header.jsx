@@ -35,7 +35,7 @@ const Header = ({ setCursorVariant }) => {
         onMouseEnter={() => setCursorVariant('hover')}
         onMouseLeave={() => setCursorVariant('default')}
       >
-        <img src="/assets/new-logo.png" alt="Logo" className="custom-logo" />
+        <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-logo" />
         <span className="logo-text">Tiny Riot</span>
       </div>
 
