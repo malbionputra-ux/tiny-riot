@@ -1,42 +1,6 @@
-/* App.css */
+/* This is empty for now as we use global CSS and specific component CSS, but we import it in App.jsx */
 .app-container {
   width: 100%;
+  min-height: 100vh;
   position: relative;
-  /* Do not put overflow: hidden here, it breaks position: sticky */
-}
-
-/* Curtain Reveal Animation / Stacked Cards Effect */
-.app-container > section,
-.app-container > footer {
-  position: sticky;
-  /* Stick to bottom by default so long content can be fully read before next section covers it */
-  bottom: 0; 
-}
-
-/* Specific Section Z-Indexes for Stacking */
-.hero {
-  position: sticky !important;
-  top: 0 !important;
-  bottom: auto !important;
-  z-index: 1;
-}
-
-.projects-container {
-  z-index: 2;
-  box-shadow: 0 -30px 60px rgba(0, 0, 0, 0.4);
-}
-
-.services {
-  z-index: 3;
-  box-shadow: 0 -30px 60px rgba(0, 0, 0, 0.4);
-}
-
-.packages-section {
-  z-index: 4;
-  box-shadow: 0 -30px 60px rgba(0, 0, 0, 0.4);
-}
-
-.footer-section {
-  z-index: 5;
-  box-shadow: 0 -30px 60px rgba(0, 0, 0, 0.4);
 }
