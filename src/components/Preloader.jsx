@@ -36,14 +36,40 @@ const Preloader = ({ onComplete }) => {
       {!isComplete && (
         <motion.div
           className="preloader"
-          initial={{ y: 0 }}
+          initial={{ x: 0 }}
           exit={{ 
-            y: '-100%', 
-            transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 } 
+            x: '100%', 
+            transition: { duration: 1, ease: [0.76, 0, 0.24, 1], delay: 0.5 } 
           }}
         >
-          <div className="preloader-counter">
-            {progress}%
+          <div className="vektora-content">
+             <motion.img 
+                src="/assets/new-logo-transparent.png" 
+                alt="Logo" 
+                className="vektora-logo"
+                initial={{ opacity: 0, rotateZ: -20, y: 50 }}
+                animate={{ opacity: 1, rotateZ: 0, y: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+             />
+             <motion.h1 
+                className="vektora-text"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+             >
+               Almost There
+             </motion.h1>
+             <motion.div 
+                className="vektora-count"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+             >
+               {progress}
+             </motion.div>
           </div>
         </motion.div>
       )}
