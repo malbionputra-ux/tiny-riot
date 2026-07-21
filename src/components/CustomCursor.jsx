@@ -39,6 +39,16 @@ const CustomCursor = ({ variant }) => {
       border: 'none',
       mixBlendMode: 'difference',
     },
+    navbarHover: {
+      x: mousePosition.x - 45,
+      y: mousePosition.y - 18,
+      width: 90,
+      height: 36,
+      backgroundColor: '#ffffff',
+      border: 'none',
+      mixBlendMode: 'difference',
+      borderRadius: '24px',
+    },
     project: {
       x: mousePosition.x - 40,
       y: mousePosition.y - 40,

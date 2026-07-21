@@ -74,22 +74,7 @@
   color: var(--color-text-dark);
 }
 
-.nav-menu a::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 0%;
-  height: 1px;
-  background-color: var(--color-accent);
-  transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
 
-.nav-menu a:hover::after {
-  left: 0;
-  right: auto;
-  width: 100%;
-}
 
 .menu-btn {
   background: none;

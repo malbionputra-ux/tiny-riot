@@ -45,7 +45,7 @@ const Header = ({ setCursorVariant }) => {
         <Magnetic>
           <a
             href="#about"
-            onMouseEnter={() => setCursorVariant('hover')}
+            onMouseEnter={() => setCursorVariant('navbarHover')}
             onMouseLeave={() => setCursorVariant('default')}
           >
             Tentang
@@ -54,7 +54,7 @@ const Header = ({ setCursorVariant }) => {
         <Magnetic>
           <a
             href="#services"
-            onMouseEnter={() => setCursorVariant('hover')}
+            onMouseEnter={() => setCursorVariant('navbarHover')}
             onMouseLeave={() => setCursorVariant('default')}
           >
             Layanan
@@ -63,7 +63,7 @@ const Header = ({ setCursorVariant }) => {
         <Magnetic>
           <a
             href="#projects"
-            onMouseEnter={() => setCursorVariant('hover')}
+            onMouseEnter={() => setCursorVariant('navbarHover')}
             onMouseLeave={() => setCursorVariant('default')}
           >
             Work
