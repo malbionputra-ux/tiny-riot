@@ -80,7 +80,7 @@ function App() {
 
     window.addEventListener('wheel', handleWheel, { passive: true });
     return () => window.removeEventListener('wheel', handleWheel);
-  }, [activeSlideIndex, isTransitioning]);
+  }, [activeSlideIndex, isTransitioning, appLoaded]);
   
   // Basic touch support
   useEffect(() => {
@@ -137,7 +137,7 @@ function App() {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [activeSlideIndex, isTransitioning]);
+  }, [activeSlideIndex, isTransitioning, appLoaded]);
 
   return (
     <div className="app-container">
