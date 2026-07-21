@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Menu } from 'lucide-react';
 import './Header.css';
 
+import Magnetic from './Magnetic';
+
 const Header = ({ setCursorVariant }) => {
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -14,10 +16,8 @@ const Header = ({ setCursorVariant }) => {
       setAtTop(currentY < 10);
 
       if (currentY > lastScrollY && currentY > 80) {
-        // Scrolling DOWN → hide
         setVisible(false);
       } else {
-        // Scrolling UP → show
         setVisible(true);
       }
 
@@ -30,37 +30,45 @@ const Header = ({ setCursorVariant }) => {
 
   return (
     <header className={`header ${visible ? 'header--visible' : 'header--hidden'} ${atTop ? 'header--top' : 'header--scrolled'}`}>
-      <div
-        className="logo"
-        onMouseEnter={() => setCursorVariant('hover')}
-        onMouseLeave={() => setCursorVariant('default')}
-      >
-        <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-logo" />
-        <span className="logo-text">Tiny Riot</span>
-      </div>
+      <Magnetic>
+        <div
+          className="logo"
+          onMouseEnter={() => setCursorVariant('hover')}
+          onMouseLeave={() => setCursorVariant('default')}
+        >
+          <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-logo" />
+          <span className="logo-text">Tiny Riot</span>
+        </div>
+      </Magnetic>
 
       <nav className="nav-menu">
-        <a
-          href="#about"
-          onMouseEnter={() => setCursorVariant('hover')}
-          onMouseLeave={() => setCursorVariant('default')}
-        >
-          Tentang
-        </a>
-        <a
-          href="#services"
-          onMouseEnter={() => setCursorVariant('hover')}
-          onMouseLeave={() => setCursorVariant('default')}
-        >
-          Layanan
-        </a>
-        <a
-          href="#projects"
-          onMouseEnter={() => setCursorVariant('hover')}
-          onMouseLeave={() => setCursorVariant('default')}
-        >
-          Work
-        </a>
+        <Magnetic>
+          <a
+            href="#about"
+            onMouseEnter={() => setCursorVariant('hover')}
+            onMouseLeave={() => setCursorVariant('default')}
+          >
+            Tentang
+          </a>
+        </Magnetic>
+        <Magnetic>
+          <a
+            href="#services"
+            onMouseEnter={() => setCursorVariant('hover')}
+            onMouseLeave={() => setCursorVariant('default')}
+          >
+            Layanan
+          </a>
+        </Magnetic>
+        <Magnetic>
+          <a
+            href="#projects"
+            onMouseEnter={() => setCursorVariant('hover')}
+            onMouseLeave={() => setCursorVariant('default')}
+          >
+            Work
+          </a>
+        </Magnetic>
       </nav>
 
       <button
