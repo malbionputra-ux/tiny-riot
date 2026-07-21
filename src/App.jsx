@@ -8,6 +8,7 @@ import Packages from './components/Packages'
 import Footer from './components/Footer'
 import ChatWidget from './components/ChatWidget'
 import LiquidTransition from './components/LiquidTransition'
+import Preloader from './components/Preloader'
 import './App.css'
 import './slider.css'
 
@@ -18,6 +19,7 @@ function App() {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [targetSlideIndex, setTargetSlideIndex] = useState(0)
+  const [appLoaded, setAppLoaded] = useState(false)
   
   // Refs for tracking scroll bounds
   const slideRefs = useRef({});
@@ -42,7 +44,7 @@ function App() {
     let lastWheelTime = 0;
     
     const handleWheel = (e) => {
-      if (isTransitioning) return;
+      if (isTransitioning || !appLoaded) return;
       
       const now = Date.now();
       // Debounce wheel events slightly to prevent multiple rapid triggers
@@ -90,7 +92,7 @@ function App() {
     };
     
     const handleTouchMove = (e) => {
-      if (isTransitioning) return;
+      if (isTransitioning || !appLoaded) return;
       const touchEndY = e.touches[0].clientY;
       const deltaY = touchStartY - touchEndY;
       
@@ -139,6 +141,7 @@ function App() {
 
   return (
     <div className="app-container">
+      <Preloader onComplete={() => setAppLoaded(true)} />
       <CustomCursor variant={cursorVariant} />
       
       {/* The Liquid Wave Overlay */}
