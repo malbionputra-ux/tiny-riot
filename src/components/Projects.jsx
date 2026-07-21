@@ -62,8 +62,8 @@ const ProjectCard = ({ project, index, setCursorVariant }) => {
     const cy = rect.top + rect.height / 2;
     const dx = (e.clientX - cx) / (rect.width / 2);   // -1 to 1
     const dy = (e.clientY - cy) / (rect.height / 2);  // -1 to 1
-    rotateY.set(dx * 10);
-    rotateX.set(-dy * 8);
+    rotateY.set(dx * 18);   // more dramatic
+    rotateX.set(-dy * 12);
   }, [rotateX, rotateY]);
 
   const handleMouseLeave = useCallback(() => {
@@ -88,12 +88,12 @@ const ProjectCard = ({ project, index, setCursorVariant }) => {
       <motion.div
         ref={cardRef}
         className="at-card"
-        style={{ rotateX, rotateY, transformPerspective: 900 }}
+        style={{ rotateX, rotateY, transformPerspective: 1200 }}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => { setHovered(true); setCursorVariant('hover'); }}
         onMouseLeave={handleMouseLeave}
-        whileHover={{ scale: 1.015 }}
-        transition={{ scale: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }}
+        whileHover={{ scale: 1.02 }}
+        transition={{ scale: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }}
       >
         {/* Image */}
         <div className="at-card-image">

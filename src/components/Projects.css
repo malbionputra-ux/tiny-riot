@@ -127,6 +127,25 @@
   margin-top: 8rem;
 }
 
+/* ── Card Wrap — holds perspective so child 3D tilt is realistic ── */
+.at-card-wrap {
+  perspective: 900px;
+  perspective-origin: 50% 50%;
+}
+
+/* Auto-floating animation — staggered per card */
+.at-card-wrap:nth-child(1) .at-card { animation: cardFloat 6s ease-in-out infinite; }
+.at-card-wrap:nth-child(2) .at-card { animation: cardFloat 7s ease-in-out infinite 1s; }
+.at-card-wrap:nth-child(3) .at-card { animation: cardFloat 5.5s ease-in-out infinite 0.5s; }
+.at-card-wrap:nth-child(4) .at-card { animation: cardFloat 6.5s ease-in-out infinite 1.5s; }
+.at-card-wrap:nth-child(5) .at-card { animation: cardFloat 7s ease-in-out infinite 0.8s; }
+.at-card-wrap:nth-child(6) .at-card { animation: cardFloat 6s ease-in-out infinite 2s; }
+
+@keyframes cardFloat {
+  0%, 100% { translate: 0 0; }
+  50%       { translate: 0 -10px; }
+}
+
 /* ── Card Shell ── */
 .at-card {
   position: relative;
@@ -136,6 +155,7 @@
   overflow: hidden;
   cursor: pointer;
   will-change: transform;
+  transform-style: preserve-3d;
   /* Refined monochromatic shadow — no color glow */
   box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.85),
@@ -144,7 +164,9 @@
   transition: box-shadow 0.6s ease;
 }
 
+/* Pause float on hover + enhanced shadow */
 .at-card:hover {
+  animation-play-state: paused;
   box-shadow:
     0 50px 100px rgba(0, 0, 0, 0.95),
     0 12px 40px rgba(0, 0, 0, 0.6),
