@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import * as THREE from 'three';
@@ -40,7 +40,7 @@ const WavePlane = () => {
   return (
     <mesh ref={meshRef} geometry={geometry} rotation={[-Math.PI / 2.2, 0, 0]} position={[0, -2, -5]}>
       <meshStandardMaterial 
-        color="#080808"
+        color="#1a1a1a"
         roughness={0.15}
         metalness={0.85}
         envMapIntensity={1.5}
@@ -57,20 +57,22 @@ export default function AbstractWaves() {
         dpr={[1, 1.5]} // Limit pixel ratio for performance
         gl={{ antialias: false, powerPreference: 'high-performance' }}
       >
-        {/* Base dark lighting */}
-        <ambientLight intensity={0.2} color="#ffffff" />
-        
-        {/* Main highlight light (white/silver) */}
-        <directionalLight position={[10, 10, 5]} intensity={2.5} color="#ffffff" />
-        
-        {/* Accent light (Tiny Riot red/orange) reflecting off the metallic waves */}
-        <pointLight position={[-5, 5, 2]} intensity={50} color="#fa2a0e" distance={20} />
-        <pointLight position={[5, -5, 2]} intensity={30} color="#ff6b00" distance={20} />
+        <Suspense fallback={null}>
+          {/* Base dark lighting */}
+          <ambientLight intensity={0.2} color="#ffffff" />
+          
+          {/* Main highlight light (white/silver) */}
+          <directionalLight position={[10, 10, 5]} intensity={2.5} color="#ffffff" />
+          
+          {/* Accent light (Tiny Riot red/orange) reflecting off the metallic waves */}
+          <pointLight position={[-5, 5, 2]} intensity={50} color="#fa2a0e" distance={20} />
+          <pointLight position={[5, -5, 2]} intensity={30} color="#ff6b00" distance={20} />
 
-        <WavePlane />
-        
-        {/* Environment map for realistic metallic reflections */}
-        <Environment preset="studio" />
+          <WavePlane />
+          
+          {/* Environment map for realistic metallic reflections */}
+          <Environment preset="studio" />
+        </Suspense>
       </Canvas>
     </div>
   );
