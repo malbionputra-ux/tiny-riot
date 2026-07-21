@@ -1,0 +1,35 @@
+/* slider.css */
+.slider-main {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background-color: #050505;
+}
+
+.slide-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  /* Hide scrollbar for a cleaner look */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.slide-container::-webkit-scrollbar {
+  display: none;
+}
+
+.slide-container.active {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  /* simple fade transition just in case, though the curtain hides it */
+  transition: opacity 0.1s; 
+}

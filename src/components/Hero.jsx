@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import AbstractWaves from './AbstractWaves';
 import './Hero.css';
 
 /* ═══════════════════════════════
@@ -25,6 +26,7 @@ const Hero = ({ setCursorVariant }) => {
 
   return (
     <section className="hero dark-section">
+      <AbstractWaves />
       {/* Vignette overlay */}
       <div className="hero-overlay" />
 

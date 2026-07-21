@@ -1,0 +1,8 @@
+.liquid-curtain {
+  position: fixed;
+  left: 0;
+  width: 100vw;
+  z-index: 9999;
+  pointer-events: none;
+  /* border radius and height are controlled by framer-motion */
+}
