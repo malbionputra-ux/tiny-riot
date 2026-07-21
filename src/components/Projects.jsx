@@ -134,17 +134,19 @@ const Projects = ({ setCursorVariant }) => {
     const particleSystem = new THREE.Points(particleGeo, particleMat);
     scene.add(particleSystem);
 
-    // Create Spiral Backbone Tube Wireframe
-    const curvePoints = [];
+    // Helix Math Constants
     const radius = 4.2;
-    const heightStep = 1.8;
+    const heightStep = 1.6;
+    const thetaStep = Math.PI * 0.45; // angle between consecutive cards
     const totalCards = projectsList.length;
 
+    // Create Spiral Backbone Tube Wireframe
+    const curvePoints = [];
     for (let i = 0; i < totalCards; i++) {
-      const theta = (i / totalCards) * Math.PI * 2.8;
+      const theta = i * thetaStep;
       const x = Math.cos(theta) * radius;
       const z = Math.sin(theta) * radius;
-      const y = (i - totalCards / 2) * heightStep;
+      const y = i * heightStep;
       curvePoints.push(new THREE.Vector3(x, y, z));
     }
     const catmullCurve = new THREE.CatmullRomCurve3(curvePoints);
@@ -156,13 +158,12 @@ const Projects = ({ setCursorVariant }) => {
     // 5. Load Project Textures & Create 3D Cards
     const textureLoader = new THREE.TextureLoader();
     const cardMeshes = [];
-    const cardGeometry = new THREE.PlaneGeometry(3.4, 2.15, 32, 32);
+    const cardGeometry = new THREE.PlaneGeometry(3.5, 2.2, 32, 32);
 
     projectsList.forEach((project, idx) => {
       const texture = textureLoader.load(project.img);
       texture.colorSpace = THREE.SRGBColorSpace;
 
-      // Custom Shader / Standard Material for smooth lighting & metallic feel
       const material = new THREE.MeshStandardMaterial({
         map: texture,
         side: THREE.DoubleSide,
@@ -172,24 +173,22 @@ const Projects = ({ setCursorVariant }) => {
 
       const cardMesh = new THREE.Mesh(cardGeometry, material);
 
-      // Spiral Helix Placement
-      const theta = (idx / totalCards) * Math.PI * 2.8;
+      // Spiral Helix Placement — Card 0 starts at y=0, card N-1 at (N-1)*heightStep
+      const theta = idx * thetaStep;
       const x = Math.cos(theta) * radius;
       const z = Math.sin(theta) * radius;
-      const y = (idx - totalCards / 2) * heightStep;
+      const y = idx * heightStep;
 
       cardMesh.position.set(x, y, z);
-      // Make card face outward from spiral center with slight slope
+      // Make card face outward from spiral center
       cardMesh.rotation.y = -theta + Math.PI / 2;
-      cardMesh.rotation.x = 0.05;
+      cardMesh.rotation.x = 0.04;
 
-      // Store custom data on mesh
       cardMesh.userData = {
         project,
         index: idx,
         basePos: new THREE.Vector3(x, y, z),
         baseRotY: -theta + Math.PI / 2,
-        baseScale: 1,
         theta,
       };
 
@@ -236,13 +235,14 @@ const Projects = ({ setCursorVariant }) => {
       // Smooth scroll lerp
       currentScroll += (targetScrollRef.current - currentScroll) * 0.08;
 
-      // Rotate and elevate Spiral Group based on scroll
-      // Full scroll rotates spiral and shifts vertical height
-      const totalRotation = currentScroll * Math.PI * 2.8;
-      const totalYShift = -currentScroll * (totalCards - 1) * heightStep;
+      // Perfectly anchor rotation and Y-shift so active card is at eye level (y=0)
+      // At scroll 0 -> Card 0 is at y=0 facing camera
+      // At scroll 1 -> Card N-1 is at y=0 facing camera
+      const maxScrollIndex = totalCards - 1;
+      const activeProgressIndex = currentScroll * maxScrollIndex;
 
-      spiralGroup.rotation.y = totalRotation;
-      spiralGroup.position.y = totalYShift;
+      spiralGroup.rotation.y = -activeProgressIndex * thetaStep;
+      spiralGroup.position.y = -activeProgressIndex * heightStep;
 
       // Mouse Parallax for Scene
       currentMouseX += (mouse.x - currentMouseX) * 0.05;
