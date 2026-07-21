@@ -139,21 +139,23 @@ const Projects = ({ setCursorVariant }) => {
     const heightStep = 1.35; // Compact spacing so cards always fill the view
     const thetaStep = Math.PI * 0.42; // Spiral angle per card
     const totalCards = projectsList.length;
-    const centerIndex = (totalCards - 1) / 2; // 2.5 for 6 cards (centered at y=0)
-
-    // Create Spiral Backbone Wireframe Tube (Extended so it reaches top and bottom infinitely)
+    // Create an extended list (3x) so the spiral fills the top and bottom halves of the screen infinitely
+    const extendedList = [...projectsList, ...projectsList, ...projectsList];
+    const totalRenderedCards = extendedList.length; // 18 cards
+    const extendedCenterIndex = (totalRenderedCards - 1) / 2; // 8.5
+    // Create Spiral Backbone Wireframe Tube
     const curvePoints = [];
-    const extraNodes = 12; // Extend 12 items above and below
+    const extraNodes = 8; // Extend items above and below
     
-    for (let i = -extraNodes; i <= totalCards + extraNodes; i++) {
+    for (let i = -extraNodes; i <= totalRenderedCards + extraNodes; i++) {
       const theta = i * thetaStep;
       const x = Math.cos(theta) * radius;
       const z = Math.sin(theta) * radius;
-      const y = (i - centerIndex) * heightStep;
+      const y = (i - extendedCenterIndex) * heightStep;
       curvePoints.push(new THREE.Vector3(x, y, z));
 
       // Draw glowing nodes for positions outside the active cards to fill empty space
-      if (i < 0 || i >= totalCards) {
+      if (i < 0 || i >= totalRenderedCards) {
         const nodeGeo = new THREE.SphereGeometry(0.12, 16, 16);
         const nodeMat = new THREE.MeshBasicMaterial({ color: 0xfa2a0e, transparent: true, opacity: 0.5 });
         const node = new THREE.Mesh(nodeGeo, nodeMat);
@@ -162,7 +164,7 @@ const Projects = ({ setCursorVariant }) => {
       }
     }
     const catmullCurve = new THREE.CatmullRomCurve3(curvePoints);
-    const tubeGeo = new THREE.TubeGeometry(catmullCurve, 600, 0.018, 8, false);
+    const tubeGeo = new THREE.TubeGeometry(catmullCurve, 800, 0.018, 8, false);
     const tubeMat = new THREE.MeshBasicMaterial({ color: 0xfa2a0e, transparent: true, opacity: 0.4, wireframe: true });
     const tubeMesh = new THREE.Mesh(tubeGeo, tubeMat);
     spiralGroup.add(tubeMesh);
@@ -172,40 +174,45 @@ const Projects = ({ setCursorVariant }) => {
     const cardMeshes = [];
     const cardGeometry = new THREE.PlaneGeometry(3.3, 2.1, 32, 32);
 
-    projectsList.forEach((project, idx) => {
+    extendedList.forEach((project, idx) => {
       const texture = textureLoader.load(project.img);
       texture.colorSpace = THREE.SRGBColorSpace;
-
+      texture.generateMipmaps = true;
+      texture.minFilter = THREE.LinearMipmapLinearFilter;
+      
       const material = new THREE.MeshStandardMaterial({
         map: texture,
         side: THREE.DoubleSide,
-        roughness: 0.25,
-        metalness: 0.15,
+        roughness: 0.15,
+        metalness: 0.1,
+        transparent: true,
+        opacity: 1,
       });
 
-      const cardMesh = new THREE.Mesh(cardGeometry, material);
-
-      // Spiral Helix Position: centered vertically around y=0
+      const mesh = new THREE.Mesh(cardGeometry, material);
+      
+      // Calculate position along the extended spiral
       const theta = idx * thetaStep;
-      const x = Math.cos(theta) * radius;
-      const z = Math.sin(theta) * radius;
-      const y = (idx - centerIndex) * heightStep;
+      mesh.position.x = Math.cos(theta) * radius;
+      mesh.position.z = Math.sin(theta) * radius;
+      mesh.position.y = (idx - extendedCenterIndex) * heightStep;
+      
+      // Face outward
+      mesh.rotation.y = -theta + Math.PI / 2;
+      mesh.rotation.x = 0.04;
 
-      cardMesh.position.set(x, y, z);
-      // Make card face outward from spiral center
-      cardMesh.rotation.y = -theta + Math.PI / 2;
-      cardMesh.rotation.x = 0.04;
-
-      cardMesh.userData = {
-        project,
+      // Store original project data
+      mesh.userData = { 
+        project, 
         index: idx,
-        basePos: new THREE.Vector3(x, y, z),
+        originalIndex: idx % totalCards,
+        basePos: new THREE.Vector3(mesh.position.x, mesh.position.y, mesh.position.z),
         baseRotY: -theta + Math.PI / 2,
         theta,
       };
-
-      spiralGroup.add(cardMesh);
-      cardMeshes.push(cardMesh);
+      
+      spiralGroup.add(mesh);
+      cardMeshes.push(mesh);
     });
 
     // 6. Raycasting for Mouse Interaction
@@ -247,16 +254,16 @@ const Projects = ({ setCursorVariant }) => {
       // Smooth scroll lerp
       currentScroll += (targetScrollRef.current - currentScroll) * 0.08;
 
-      // Calculate progress index (0 to 5)
-      const maxScrollIndex = totalCards - 1;
-      const activeProgressIndex = currentScroll * maxScrollIndex;
+      // We only scroll through the middle 6 cards (indices 6 to 11)
+      const scrollStartIndex = totalCards; // 6
+      const scrollEndIndex = totalCards * 2 - 1; // 11
+      const maxScrollDistance = scrollEndIndex - scrollStartIndex; // 5
+      
+      const activeProgressIndex = scrollStartIndex + (currentScroll * maxScrollDistance);
 
-      // Perfectly offset Y and Rotation so active card is centered at y=0 (eye level)
-      // At scroll 0 -> Card 0 (y = -2.5*heightStep) is brought to y = 0
-      // At scroll 1 -> Card 5 (y = +2.5*heightStep) is brought to y = 0
-      // Cards always fill both top and bottom halves of viewport — NO EMPTY SPACE EVER!
+      // Offset Y and Rotation so active card is centered at y=0 (eye level)
       spiralGroup.rotation.y = -activeProgressIndex * thetaStep;
-      spiralGroup.position.y = -(activeProgressIndex - centerIndex) * heightStep;
+      spiralGroup.position.y = -(activeProgressIndex - extendedCenterIndex) * heightStep;
 
       // Mouse Parallax for Scene
       currentMouseX += (mouse.x - currentMouseX) * 0.05;
