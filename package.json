@@ -11,8 +11,8 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.1",
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
     "@studio-freight/lenis": "^1.0.42",
     "framer-motion": "^11.2.10",
     "lucide-react": "^0.395.0",
