@@ -63,6 +63,16 @@ const Hero = ({ setCursorVariant }) => {
         >
           Kami membantu brand membangun reputasi digital yang berani dan lantang melalui kreativitas tanpa batas, teknologi mutakhir, serta strategi yang tajam.
         </motion.p>
+        
+        <motion.div 
+          className="hero-scroll-indicator"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+        >
+          <span className="scroll-text">SCROLL</span>
+          <div className="scroll-line"></div>
+        </motion.div>
       </motion.div>
 
       {/* Meta bar */}
