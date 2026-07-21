@@ -141,17 +141,28 @@ const Projects = ({ setCursorVariant }) => {
     const totalCards = projectsList.length;
     const centerIndex = (totalCards - 1) / 2; // 2.5 for 6 cards (centered at y=0)
 
-    // Create Spiral Backbone Wireframe Tube
+    // Create Spiral Backbone Wireframe Tube (Extended so it reaches top and bottom infinitely)
     const curvePoints = [];
-    for (let i = 0; i < totalCards; i++) {
+    const extraNodes = 12; // Extend 12 items above and below
+    
+    for (let i = -extraNodes; i <= totalCards + extraNodes; i++) {
       const theta = i * thetaStep;
       const x = Math.cos(theta) * radius;
       const z = Math.sin(theta) * radius;
       const y = (i - centerIndex) * heightStep;
       curvePoints.push(new THREE.Vector3(x, y, z));
+
+      // Draw glowing nodes for positions outside the active cards to fill empty space
+      if (i < 0 || i >= totalCards) {
+        const nodeGeo = new THREE.SphereGeometry(0.12, 16, 16);
+        const nodeMat = new THREE.MeshBasicMaterial({ color: 0xfa2a0e, transparent: true, opacity: 0.5 });
+        const node = new THREE.Mesh(nodeGeo, nodeMat);
+        node.position.set(x, y, z);
+        spiralGroup.add(node);
+      }
     }
     const catmullCurve = new THREE.CatmullRomCurve3(curvePoints);
-    const tubeGeo = new THREE.TubeGeometry(catmullCurve, 120, 0.018, 8, false);
+    const tubeGeo = new THREE.TubeGeometry(catmullCurve, 600, 0.018, 8, false);
     const tubeMat = new THREE.MeshBasicMaterial({ color: 0xfa2a0e, transparent: true, opacity: 0.4, wireframe: true });
     const tubeMesh = new THREE.Mesh(tubeGeo, tubeMat);
     spiralGroup.add(tubeMesh);
@@ -245,7 +256,7 @@ const Projects = ({ setCursorVariant }) => {
       // At scroll 1 -> Card 5 (y = +2.5*heightStep) is brought to y = 0
       // Cards always fill both top and bottom halves of viewport — NO EMPTY SPACE EVER!
       spiralGroup.rotation.y = -activeProgressIndex * thetaStep;
-      spiralGroup.position.y = (activeProgressIndex - centerIndex) * heightStep;
+      spiralGroup.position.y = -(activeProgressIndex - centerIndex) * heightStep;
 
       // Mouse Parallax for Scene
       currentMouseX += (mouse.x - currentMouseX) * 0.05;
