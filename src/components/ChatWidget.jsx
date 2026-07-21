@@ -56,7 +56,7 @@ const ChatWidget = ({ setCursorVariant }) => {
         onMouseLeave={() => setCursorVariant('default')}
         layout
       >
-        <img src="/assets/Tiny_Riot_Logo.png" alt="Logo" className="custom-toggle-logo" />
+        <img src="/assets/new-logo.png" alt="Logo" className="custom-toggle-logo" />
         <span className="toggle-text">{isOpen ? 'CLOSE' : "LET'S TALK"}</span>
       </motion.button>
 
