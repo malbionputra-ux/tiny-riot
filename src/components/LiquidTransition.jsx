@@ -11,7 +11,7 @@ export default function LiquidTransition({ isTransitioning, onCoverComplete, onT
     }
   }, [isTransitioning]);
 
-  const handleAnimationComplete = () => {
+  const handleAnimationComplete = (definition) => {
     if (phase === 'entering') {
       setPhase('covering');
       if (onCoverComplete) onCoverComplete();
@@ -30,12 +30,21 @@ export default function LiquidTransition({ isTransitioning, onCoverComplete, onT
 
   // We use two variants: one for entering from bottom, one for exiting to top
   const variants = {
+    initial: {
+      top: 'auto',
+      bottom: 0,
+      height: '0vh',
+      borderTopLeftRadius: '50% 10vw',
+      borderTopRightRadius: '50% 10vw',
+      borderBottomLeftRadius: '0% 0px',
+      borderBottomRightRadius: '0% 0px',
+    },
     entering: {
       top: 'auto',
       bottom: 0,
-      height: ['0vh', '120vh'],
-      borderTopLeftRadius: ['50% 10vw', '0% 0px'],
-      borderTopRightRadius: ['50% 10vw', '0% 0px'],
+      height: '120vh',
+      borderTopLeftRadius: '0% 0px',
+      borderTopRightRadius: '0% 0px',
       borderBottomLeftRadius: '0% 0px',
       borderBottomRightRadius: '0% 0px',
       transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
@@ -49,9 +58,9 @@ export default function LiquidTransition({ isTransitioning, onCoverComplete, onT
     exiting: {
       top: 0,
       bottom: 'auto',
-      height: ['120vh', '0vh'],
-      borderBottomLeftRadius: ['0% 0px', '50% 10vw'],
-      borderBottomRightRadius: ['0% 0px', '50% 10vw'],
+      height: '0vh',
+      borderBottomLeftRadius: '50% 10vw',
+      borderBottomRightRadius: '50% 10vw',
       borderTopLeftRadius: '0% 0px',
       borderTopRightRadius: '0% 0px',
       transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
@@ -63,7 +72,7 @@ export default function LiquidTransition({ isTransitioning, onCoverComplete, onT
       className="liquid-curtain"
       style={{ backgroundColor: color }}
       variants={variants}
-      initial="entering"
+      initial="initial"
       animate={phase}
       onAnimationComplete={handleAnimationComplete}
     />
