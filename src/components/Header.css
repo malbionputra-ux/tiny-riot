@@ -18,10 +18,7 @@
 /* Glass effect when scrolled */
 .header--scrolled {
   padding: 1.2rem 4rem;
-  background: rgba(24, 23, 23, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: transparent;
 }
 
 .header--top {
@@ -57,6 +54,13 @@
   display: flex;
   gap: 2.5rem;
   align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.8rem 2.5rem;
+  border-radius: 100px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .nav-menu a {
