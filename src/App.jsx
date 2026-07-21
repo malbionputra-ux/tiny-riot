@@ -159,7 +159,7 @@ function App() {
           className={`slide-container ${activeSlideIndex === 0 ? 'active' : ''}`}
           ref={el => slideRefs.current['hero'] = el}
         >
-          <Hero setCursorVariant={setCursorVariant} />
+          {activeSlideIndex === 0 && <Hero setCursorVariant={setCursorVariant} />}
         </div>
         
         {/* Slide 1: Projects */}
@@ -167,7 +167,7 @@ function App() {
           className={`slide-container ${activeSlideIndex === 1 ? 'active' : ''}`}
           ref={el => slideRefs.current['projects'] = el}
         >
-          <Projects setCursorVariant={setCursorVariant} />
+          {activeSlideIndex === 1 && <Projects setCursorVariant={setCursorVariant} />}
         </div>
         
         {/* Slide 2: Services */}
@@ -175,7 +175,7 @@ function App() {
           className={`slide-container ${activeSlideIndex === 2 ? 'active' : ''}`}
           ref={el => slideRefs.current['services'] = el}
         >
-          <Services setCursorVariant={setCursorVariant} />
+          {activeSlideIndex === 2 && <Services setCursorVariant={setCursorVariant} />}
         </div>
         
         {/* Slide 3: Packages */}
@@ -183,7 +183,7 @@ function App() {
           className={`slide-container ${activeSlideIndex === 3 ? 'active' : ''}`}
           ref={el => slideRefs.current['packages'] = el}
         >
-          <Packages setCursorVariant={setCursorVariant} />
+          {activeSlideIndex === 3 && <Packages setCursorVariant={setCursorVariant} />}
         </div>
         
         {/* Slide 4: Footer */}
@@ -191,7 +191,7 @@ function App() {
           className={`slide-container ${activeSlideIndex === 4 ? 'active' : ''}`}
           ref={el => slideRefs.current['footer'] = el}
         >
-          <Footer setCursorVariant={setCursorVariant} />
+          {activeSlideIndex === 4 && <Footer setCursorVariant={setCursorVariant} />}
         </div>
       </main>
       
