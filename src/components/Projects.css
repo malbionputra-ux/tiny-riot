@@ -54,11 +54,11 @@
 }
 
 .see-more-vertical-btn {
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.72rem;
+  font-family: var(--font-main);
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 2.5px;
-  color: #181717;
+  color: var(--color-text-light);
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   white-space: nowrap;
@@ -106,14 +106,16 @@
 }
 
 .case-caption-text {
+  font-family: var(--font-main);
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: #ffffff;
   line-height: 1.4;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .case-title {
+  font-family: var(--font-main);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -126,6 +128,7 @@
 }
 
 .case-desc {
+  font-family: var(--font-main);
   font-weight: 400;
   color: rgba(255, 255, 255, 0.9);
 }
