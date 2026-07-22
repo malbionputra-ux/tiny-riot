@@ -79,10 +79,10 @@ const Hero = ({ setCursorVariant, onOpenChat, chatOpen, hasInteractedChat }) => 
             <motion.button 
               className="hero-center-talk-btn"
               onClick={handleButtonClick}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
+              initial={{ opacity: 0, y: 12, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.96 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               onMouseEnter={() => setCursorVariant('hover')}
               onMouseLeave={() => setCursorVariant('default')}
             >

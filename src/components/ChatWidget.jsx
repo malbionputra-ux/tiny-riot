@@ -12,18 +12,18 @@ const RedParticleTrail = ({ isAnimating }) => {
       const endX = window.innerWidth - 60;
       const endY = window.innerHeight - 60;
 
-      const items = Array.from({ length: 12 }).map((_, i) => {
-        const progress = (i + 1) / 12;
+      const items = Array.from({ length: 14 }).map((_, i) => {
+        const progress = (i + 1) / 14;
         return {
           id: i,
           x: startX + (endX - startX) * progress,
           y: startY + (endY - startY) * progress,
-          delay: i * 0.035,
+          delay: i * 0.045,
         };
       });
 
       setParticles(items);
-      const timer = setTimeout(() => setParticles([]), 1200);
+      const timer = setTimeout(() => setParticles([]), 1500);
       return () => clearTimeout(timer);
     }
   }, [isAnimating]);
@@ -36,15 +36,15 @@ const RedParticleTrail = ({ isAnimating }) => {
         {particles.map((p) => (
           <motion.div
             key={p.id}
-            initial={{ opacity: 0, scale: 1, x: p.x, y: p.y }}
+            initial={{ opacity: 0, scale: 0.6, x: p.x, y: p.y }}
             animate={{ 
-              opacity: [0, 1, 1, 0], 
-              scale: [1, 1, 1, 0], 
+              opacity: [0, 0.95, 0.8, 0], 
+              scale: [0.6, 1, 0.8, 0], 
               x: p.x, 
               y: p.y 
             }}
             exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.6, delay: p.delay, ease: 'easeOut' }}
+            transition={{ duration: 0.95, delay: p.delay, ease: [0.16, 1, 0.3, 1] }}
             style={{
               position: 'absolute',
               width: '6px',
@@ -174,10 +174,10 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
             onClick={handleToggle}
             onMouseEnter={() => setCursorVariant('hover')}
             onMouseLeave={() => setCursorVariant('default')}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0, y: 15, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 15, scale: 0.92 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           >
             <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
             <span className="toggle-text">{chatOpen ? 'CLOSE' : "LET'S TALK"}</span>
@@ -189,10 +189,10 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
           {chatOpen && (
             <motion.div 
               className="chat-window"
-              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              initial={{ opacity: 0, y: 35, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 30, scale: 0.95 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+              exit={{ opacity: 0, y: 25, scale: 0.97 }}
+              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="chat-window-header">
                 <div className="header-branding">
