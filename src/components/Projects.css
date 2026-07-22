@@ -28,11 +28,11 @@
   gap: 1.2rem;
 }
 
-/* Vertical "FILTER WORK" standing text fixed at bottom center right above menu circle */
+/* Vertical "FILTER WORK" standing text fixed higher up, aligned left with menu circle */
 .bia-filter-work-divider {
   position: fixed;
-  bottom: 6.8rem;
-  left: 50%;
+  bottom: 9.5rem;
+  left: 49.2%;
   transform: translateX(-50%);
   z-index: 10001;
   pointer-events: auto;
