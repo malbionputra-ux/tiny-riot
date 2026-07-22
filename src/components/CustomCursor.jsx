@@ -28,40 +28,49 @@ const CustomCursor = ({ variant = 'default' }) => {
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
-    // Dynamic Physics & Deformation Animation Loop (Odama.io Velocity Stretch & Rotate)
     let currentAngle = 0;
     let currentScaleX = 1;
     let currentScaleY = 1;
 
+    // High performance 60FPS animation loop (Odama.io exact physics)
     const animate = () => {
       const dx = targetPos.current.x - currentPos.current.x;
       const dy = targetPos.current.y - currentPos.current.y;
 
-      // Smooth Lerp Position
-      currentPos.current.x += dx * 0.15;
-      currentPos.current.y += dy * 0.15;
+      // Organic Lerp factor (0.12 gives that classic fluid Odama feel)
+      currentPos.current.x += dx * 0.12;
+      currentPos.current.y += dy * 0.12;
 
-      // Velocity & Motion Vector
+      // Speed & Angle calculation
       const speed = Math.sqrt(dx * dx + dy * dy);
-      
-      // Calculate target angle & stretch based on cursor velocity
-      if (speed > 0.5) {
+
+      if (speed > 0.1) {
         const targetAngle = Math.atan2(dy, dx) * (180 / Math.PI);
-        // Smooth rotation interpolation
-        currentAngle += (targetAngle - currentAngle) * 0.2;
+        
+        // Handle angle wrap-around for smooth 360 rotation
+        let angleDiff = targetAngle - currentAngle;
+        while (angleDiff < -180) angleDiff += 360;
+        while (angleDiff > 180) angleDiff -= 360;
+        currentAngle += angleDiff * 0.15;
       }
 
-      // Dynamic Stretch along motion axis (max 45% stretch)
-      const targetStretch = Math.min(speed * 0.018, 0.45);
+      // Dynamic stretch calculation based on speed
+      const targetStretch = Math.min(speed * 0.02, 0.5);
       const targetScaleX = 1 + targetStretch;
-      const targetScaleY = 1 - targetStretch * 0.45;
+      const targetScaleY = 1 - targetStretch * 0.4;
 
-      currentScaleX += (targetScaleX - currentScaleX) * 0.18;
-      currentScaleY += (targetScaleY - currentScaleY) * 0.18;
+      currentScaleX += (targetScaleX - currentScaleX) * 0.15;
+      currentScaleY += (targetScaleY - currentScaleY) * 0.15;
 
       if (outerCircleRef.current) {
         const pressScale = isPressed ? 0.8 : 1;
-        outerCircleRef.current.style.transform = `translate3d(${currentPos.current.x}px, ${currentPos.current.y}px, 0) rotate(${currentAngle}deg) scale(${currentScaleX * pressScale}, ${currentScaleY * pressScale})`;
+        const finalScaleX = currentScaleX * pressScale;
+        const finalScaleY = currentScaleY * pressScale;
+
+        outerCircleRef.current.style.transform = 
+          `translate3d(${currentPos.current.x}px, ${currentPos.current.y}px, 0) ` +
+          `rotate(${currentAngle}deg) ` +
+          `scale(${finalScaleX}, ${finalScaleY})`;
       }
 
       requestRef.current = requestAnimationFrame(animate);
@@ -83,12 +92,12 @@ const CustomCursor = ({ variant = 'default' }) => {
 
   const isHovered = variant === 'hover' || variant === 'project' || variant === 'navbarHover';
   const isProject = variant === 'project';
-  const size = isHovered ? (isProject ? 90 : 68) : 36;
+  const size = isHovered ? (isProject ? 88 : 66) : 36;
   const halfSize = size / 2;
 
   return (
     <>
-      {/* 1. Outer Dynamic Trailing Circle (Odama.io Velocity Stretch & Rotate) */}
+      {/* Outer Fluid Ring (Odama.io style) */}
       <div
         ref={outerCircleRef}
         style={{
@@ -98,9 +107,9 @@ const CustomCursor = ({ variant = 'default' }) => {
           width: size,
           height: size,
           borderRadius: '50%',
-          border: isHovered ? '1.5px solid #fa2a0e' : '1.5px solid rgba(250, 42, 14, 0.65)',
-          backgroundColor: isHovered ? 'rgba(250, 42, 14, 0.12)' : 'transparent',
-          transition: 'width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), top 0.3s cubic-bezier(0.16, 1, 0.3, 1), left 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease',
+          border: isHovered ? '1.5px solid #fa2a0e' : '1.5px solid rgba(250, 42, 14, 0.7)',
+          backgroundColor: isHovered ? 'rgba(250, 42, 14, 0.1)' : 'transparent',
+          transition: 'width 0.35s cubic-bezier(0.16, 1, 0.3, 1), height 0.35s cubic-bezier(0.16, 1, 0.3, 1), top 0.35s cubic-bezier(0.16, 1, 0.3, 1), left 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease',
           pointerEvents: 'none',
           zIndex: 999998,
           boxSizing: 'border-box',
@@ -108,7 +117,6 @@ const CustomCursor = ({ variant = 'default' }) => {
           alignItems: 'center',
           justifyContent: 'center',
           willChange: 'transform',
-          backdropFilter: isHovered ? 'blur(2px)' : 'none',
         }}
       >
         {isProject && (
@@ -118,6 +126,7 @@ const CustomCursor = ({ variant = 'default' }) => {
               fontSize: '10px',
               fontWeight: 900,
               letterSpacing: '1.5px',
+              pointerEvents: 'none',
             }}
           >
             VIEW
@@ -125,7 +134,7 @@ const CustomCursor = ({ variant = 'default' }) => {
         )}
       </div>
 
-      {/* 2. Inner Precise Solid Red Center Dot */}
+      {/* Inner Red Dot */}
       <div
         style={{
           position: 'fixed',
@@ -136,7 +145,7 @@ const CustomCursor = ({ variant = 'default' }) => {
           borderRadius: '50%',
           backgroundColor: '#fa2a0e',
           transform: `translate3d(${mousePosition.x - (isHovered ? 4 : 3)}px, ${mousePosition.y - (isHovered ? 4 : 3)}px, 0) scale(${isPressed ? 0.6 : 1})`,
-          transition: 'width 0.2s ease, height 0.2s ease, transform 0.05s ease-out',
+          transition: 'width 0.25s ease, height 0.25s ease, transform 0.05s ease-out',
           pointerEvents: 'none',
           zIndex: 999999,
           willChange: 'transform',
