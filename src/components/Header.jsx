@@ -64,7 +64,7 @@ const Header = ({ setCursorVariant, isLight }) => {
                 fill="none"
               />
               <text className="side-curved-text">
-                <textPath href="#rightArcPath" startOffset="25%">
+                <textPath href="#rightArcPath" startOffset="38%">
                   {menuOpen ? 'Close' : 'Menu'}
                 </textPath>
               </text>
