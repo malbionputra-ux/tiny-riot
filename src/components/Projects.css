@@ -2,7 +2,7 @@
    Build in Amsterdam Style Portfolio Grid Showcase
 ═══════════════════════════════════════════════════════ */
 .projects-container {
-  background: #050505;
+  background: #ffffff;
   position: relative;
   z-index: 2;
   overflow-y: auto;
@@ -10,7 +10,7 @@
 }
 
 .projects-grid-wrapper {
-  background: #050505;
+  background: #ffffff;
   padding: 7rem 4rem 10rem 4rem;
   max-width: 1400px;
   margin: 0 auto;
@@ -39,7 +39,7 @@
   font-weight: 900;
   line-height: 1.05;
   text-transform: uppercase;
-  color: #fff;
+  color: #181717;
   letter-spacing: -2px;
 }
 
@@ -47,7 +47,7 @@
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(24, 23, 23, 0.6);
   text-transform: lowercase;
 }
 
@@ -67,6 +67,18 @@
   background: #0d0d0d;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   transition: box-shadow 0.4s ease;
+}
+
+.bia-card-item.stagger-1 {
+  margin-top: 0;
+}
+
+.bia-card-item.stagger-2 {
+  margin-top: 5rem;
+}
+
+.bia-card-item.stagger-3 {
+  margin-top: 2rem;
 }
 
 .bia-card-item.aspect-tall {

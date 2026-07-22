@@ -156,7 +156,7 @@ function App() {
       {/* We no longer use native page scrolling. The Header stays on top. */}
       <Header 
         setCursorVariant={setCursorVariant} 
-        isLight={activeSlideIndex === 2 || activeSlideIndex === 3} 
+        isLight={activeSlideIndex === 1 || activeSlideIndex === 2 || activeSlideIndex === 3} 
         activeSlideIndex={activeSlideIndex}
         isTransitioning={isTransitioning}
       />

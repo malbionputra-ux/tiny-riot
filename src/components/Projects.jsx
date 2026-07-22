@@ -71,7 +71,7 @@ const Projects = ({ setCursorVariant }) => {
   };
 
   return (
-    <section className="projects-container dark-section" id="projects">
+    <section className="projects-container light-section" id="projects">
       <div className="projects-grid-wrapper">
         <div className="projects-section-header no-sticky">
           <motion.div 
@@ -90,7 +90,7 @@ const Projects = ({ setCursorVariant }) => {
           </motion.div>
         </div>
 
-        {/* Build in Amsterdam Exact 3-Column Portfolio Grid */}
+        {/* Build in Amsterdam Exact 3-Column Staggered Portfolio Grid */}
         <motion.div 
           className="bia-portfolio-grid-exact"
           initial="hidden"
@@ -98,34 +98,37 @@ const Projects = ({ setCursorVariant }) => {
           viewport={{ once: true, amount: 0.1 }}
           variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
         >
-          {projectsList.map((project) => (
-            <motion.div
-              variants={cardVariants}
-              key={project.id}
-              className={`bia-card-item ${project.aspect}`}
-              onMouseEnter={() => setCursorVariant && setCursorVariant('project')}
-              onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
-            >
-              <div className="bia-card-img-box">
-                <img src={project.img} alt={project.title} loading="lazy" />
-                <div className="bia-card-shadow-overlay" />
-              </div>
-
-              {project.tag && (
-                <div className="bia-card-pill-tag">
-                  {project.tag}
+          {projectsList.map((project, index) => {
+            const staggerClass = `stagger-${(index % 3) + 1}`;
+            return (
+              <motion.div
+                variants={cardVariants}
+                key={project.id}
+                className={`bia-card-item ${project.aspect} ${staggerClass}`}
+                onMouseEnter={() => setCursorVariant && setCursorVariant('project')}
+                onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
+              >
+                <div className="bia-card-img-box">
+                  <img src={project.img} alt={project.title} loading="lazy" />
+                  <div className="bia-card-shadow-overlay" />
                 </div>
-              )}
 
-              <div className="bia-card-text-overlay">
-                <p className="bia-card-caption">
-                  <strong className="caption-title">{project.title}</strong>
-                  <span className="caption-dot"> • </span>
-                  <span className="caption-desc">{project.desc}</span>
-                </p>
-              </div>
-            </motion.div>
-          ))}
+                {project.tag && (
+                  <div className="bia-card-pill-tag">
+                    {project.tag}
+                  </div>
+                )}
+
+                <div className="bia-card-text-overlay">
+                  <p className="bia-card-caption">
+                    <strong className="caption-title">{project.title}</strong>
+                    <span className="caption-dot"> • </span>
+                    <span className="caption-desc">{project.desc}</span>
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>
