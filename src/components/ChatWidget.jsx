@@ -36,21 +36,23 @@ const RedParticleTrail = ({ isAnimating }) => {
         {particles.map((p) => (
           <motion.div
             key={p.id}
-            initial={{ opacity: 0, scale: 0.2, x: p.x, y: p.y }}
+            initial={{ opacity: 0, scale: 1, x: p.x, y: p.y }}
             animate={{ 
-              opacity: [0, 1, 0.8, 0], 
-              scale: [0.2, 1.4, 0.9, 0], 
+              opacity: [0, 1, 1, 0], 
+              scale: [1, 1, 1, 0], 
               x: p.x, 
               y: p.y 
             }}
             exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.75, delay: p.delay, ease: 'easeOut' }}
+            transition={{ duration: 0.6, delay: p.delay, ease: 'easeOut' }}
             style={{
               position: 'absolute',
-              width: '8px',
-              height: '8px',
+              width: '6px',
+              height: '6px',
               borderRadius: '50%',
               backgroundColor: '#fa2a0e',
+              boxShadow: 'none',
+              filter: 'none',
               left: 0,
               top: 0
             }}
