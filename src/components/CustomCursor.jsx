@@ -9,6 +9,7 @@ const CustomCursor = ({ variant = 'default' }) => {
   const targetPos = useRef({ x: -100, y: -100 });
   const currentPos = useRef({ x: -100, y: -100 });
   const outerCircleRef = useRef(null);
+  const viewTextRef = useRef(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -73,6 +74,11 @@ const CustomCursor = ({ variant = 'default' }) => {
           `scale(${finalScaleX}, ${finalScaleY})`;
       }
 
+      // Counter-rotate text so VIEW text always stays perfectly horizontal and upright!
+      if (viewTextRef.current) {
+        viewTextRef.current.style.transform = `rotate(${-currentAngle}deg)`;
+      }
+
       requestRef.current = requestAnimationFrame(animate);
     };
 
@@ -123,12 +129,15 @@ const CustomCursor = ({ variant = 'default' }) => {
       >
         {isProject && (
           <span
+            ref={viewTextRef}
             style={{
               color: '#fa2a0e',
               fontSize: '10px',
               fontWeight: 900,
               letterSpacing: '1.5px',
               pointerEvents: 'none',
+              display: 'inline-block',
+              willChange: 'transform',
             }}
           >
             VIEW
