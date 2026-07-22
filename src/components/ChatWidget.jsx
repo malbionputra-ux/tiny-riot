@@ -35,6 +35,12 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
   ];
 
   useEffect(() => {
+    if (activeSlideIndex === 0 && !chatOpen && setHasInteractedChat) {
+      setHasInteractedChat(false);
+    }
+  }, [activeSlideIndex, chatOpen, setHasInteractedChat]);
+
+  useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
