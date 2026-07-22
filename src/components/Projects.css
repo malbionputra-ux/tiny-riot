@@ -152,15 +152,36 @@
   color: var(--color-accent);
 }
 
-/* Mobile responsive layout */
+/* Mobile & Tablet responsive layout */
 @media (max-width: 900px) {
   .bia-cases-wrapper {
     flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
   }
   .bia-cases-half {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
     width: 100%;
+  }
+  .bia-grid-column {
+    gap: 1rem;
+  }
+  .bia-case-card {
+    height: 260px !important;
   }
   .bia-center-seam {
     display: none;
+  }
+}
+
+@media (max-width: 550px) {
+  .bia-cases-half {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .bia-case-card {
+    height: 320px !important;
   }
 }
