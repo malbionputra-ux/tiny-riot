@@ -76,11 +76,6 @@ const columnsData = [
 const Projects = ({ setCursorVariant }) => {
   return (
     <section className="projects-container light-section full-bleed-cases" id="projects">
-      {/* Vertically standing FILTER WORK label fixed at bottom center right above the menu circle button */}
-      <div className="bia-filter-work-divider">
-        <button type="button">FILTER WORK</button>
-      </div>
-
       <div className="bia-cases-4col-grid">
         {columnsData.map((col, colIndex) => (
           <div key={colIndex} className="bia-grid-column">
