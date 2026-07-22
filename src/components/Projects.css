@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   Build in Amsterdam Exact Cases Page 4-Column Layout
+   Build in Amsterdam Exact Cases Page Cloned Layout
 ═══════════════════════════════════════════════════════ */
 .projects-container.full-bleed-cases {
   background: #ffffff;
@@ -12,7 +12,7 @@
   margin: 0;
 }
 
-.bia-cases-4col-grid {
+.bia-cases-wrapper {
   display: flex;
   width: 100%;
   padding: 1.2rem;
@@ -21,21 +21,43 @@
   position: relative;
 }
 
-/* Vertical "SEE MORE" standing text fixed at bottom center right above red menu circle */
-.bia-see-more-divider {
-  position: fixed;
-  bottom: 6.8rem;
-  left: 48.3%;
-  transform: translateX(-50%);
-  z-index: 10001;
-  pointer-events: auto;
+.bia-cases-half {
+  flex: 1;
+  display: flex;
+  gap: 1.2rem;
 }
 
-.bia-see-more-divider button {
+.bia-grid-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Center Seam: Sticky SEE MORE vertical text */
+.bia-center-seam {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  z-index: 10;
+}
+
+.bia-see-more-sticky {
+  position: sticky;
+  top: 50vh;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.see-more-vertical-btn {
   font-family: 'Outfit', sans-serif;
   font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   color: #181717;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
@@ -43,44 +65,12 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 0;
-  margin: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.bia-see-more-divider button:hover {
-  opacity: 0.7;
-}
-
-/* Vertical "FILTER WORK" standing text fixed higher up, aligned left with menu circle */
-.bia-filter-work-divider {
-  position: fixed;
-  bottom: 9.5rem;
-  left: 49.2%;
-  transform: translateX(-50%);
-  z-index: 10001;
-  pointer-events: auto;
-}
-
-.bia-filter-work-divider button {
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: #181717;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  white-space: nowrap;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
+  padding: 1rem 0;
   transition: opacity 0.3s ease;
 }
 
-.bia-filter-work-divider button:hover {
-  opacity: 0.7;
+.see-more-vertical-btn:hover {
+  opacity: 0.6;
 }
 
 .bia-case-card {
@@ -150,19 +140,13 @@
 
 /* Mobile responsive layout */
 @media (max-width: 900px) {
-  .bia-cases-4col-grid {
-    flex-wrap: wrap;
+  .bia-cases-wrapper {
+    flex-direction: column;
   }
-  .bia-grid-column {
-    min-width: 45%;
+  .bia-cases-half {
+    width: 100%;
   }
-  .bia-filter-work-divider {
+  .bia-center-seam {
     display: none;
-  }
-}
-
-@media (max-width: 600px) {
-  .bia-grid-column {
-    min-width: 100%;
   }
 }
