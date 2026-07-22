@@ -76,41 +76,39 @@ const columnsData = [
 const Projects = ({ setCursorVariant }) => {
   return (
     <section className="projects-container light-section full-bleed-cases" id="projects">
+      {/* Vertically standing FILTER WORK label aligned with bottom center circle at 50% */}
+      <div className="bia-filter-work-divider">
+        <span>FILTER WORK</span>
+      </div>
+
       <div className="bia-cases-4col-grid">
         {columnsData.map((col, colIndex) => (
-          <React.Fragment key={colIndex}>
-            {colIndex === 2 && (
-              <div className="bia-filter-work-divider">
-                <span>FILTER WORK</span>
-              </div>
-            )}
-            <div className="bia-grid-column">
-              {col.map((item) => (
-                <motion.div
-                  key={item.id}
-                  className="bia-case-card"
-                  style={{ height: item.height }}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  onMouseEnter={() => setCursorVariant && setCursorVariant('project')}
-                  onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
-                >
-                  <img src={item.img} alt={item.title} className="case-img" />
-                  <div className="case-shadow-gradient" />
-                  
-                  <div className="case-info-tag">
-                    <p className="case-caption-text">
-                      <span className="case-title">{item.title}</span>
-                      <span className="case-dot"> · </span>
-                      <span className="case-desc">{item.desc}</span>
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </React.Fragment>
+          <div key={colIndex} className="bia-grid-column">
+            {col.map((item) => (
+              <motion.div
+                key={item.id}
+                className="bia-case-card"
+                style={{ height: item.height }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                onMouseEnter={() => setCursorVariant && setCursorVariant('project')}
+                onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
+              >
+                <img src={item.img} alt={item.title} className="case-img" />
+                <div className="case-shadow-gradient" />
+                
+                <div className="case-info-tag">
+                  <p className="case-caption-text">
+                    <span className="case-title">{item.title}</span>
+                    <span className="case-dot"> · </span>
+                    <span className="case-desc">{item.desc}</span>
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         ))}
       </div>
     </section>

@@ -28,24 +28,31 @@
   gap: 1.2rem;
 }
 
-/* Vertical "FILTER WORK" standing text between col 2 and col 3 */
+/* Vertical "FILTER WORK" standing text aligned with bottom center circle at 50% */
 .bia-filter-work-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 0.4rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   pointer-events: none;
+  z-index: 10;
 }
 
 .bia-filter-work-divider span {
   font-family: 'Outfit', sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  letter-spacing: 2px;
-  color: rgba(24, 23, 23, 0.4);
+  letter-spacing: 2.5px;
+  color: rgba(24, 23, 23, 0.6);
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   white-space: nowrap;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 1.2rem 0.45rem;
+  border-radius: 100px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .bia-case-card {
