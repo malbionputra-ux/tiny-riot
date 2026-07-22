@@ -16,8 +16,15 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
   const showCornerBtn = chatOpen || hasInteractedChat || !isHero;
 
   const handleToggle = () => {
-    if (!hasInteractedChat && setHasInteractedChat) setHasInteractedChat(true);
-    if (setChatOpen) setChatOpen(!chatOpen);
+    if (chatOpen) {
+      setChatOpen(false);
+      if (isHero && setHasInteractedChat) {
+        setHasInteractedChat(false);
+      }
+    } else {
+      if (!hasInteractedChat && setHasInteractedChat) setHasInteractedChat(true);
+      if (setChatOpen) setChatOpen(true);
+    }
   };
 
   const services = [
