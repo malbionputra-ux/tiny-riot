@@ -51,7 +51,6 @@ const RedParticleTrail = ({ isAnimating }) => {
               height: '8px',
               borderRadius: '50%',
               backgroundColor: '#fa2a0e',
-              boxShadow: '0 0 14px #fa2a0e, 0 0 6px #ffffff',
               left: 0,
               top: 0
             }}
