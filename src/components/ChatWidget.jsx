@@ -12,18 +12,18 @@ const RedParticleTrail = ({ isAnimating }) => {
       const endX = window.innerWidth - 60;
       const endY = window.innerHeight - 60;
 
-      const items = Array.from({ length: 14 }).map((_, i) => {
-        const progress = (i + 1) / 14;
+      const items = Array.from({ length: 16 }).map((_, i) => {
+        const progress = (i + 1) / 16;
         return {
           id: i,
           x: startX + (endX - startX) * progress,
           y: startY + (endY - startY) * progress,
-          delay: i * 0.045,
+          delay: i * 0.065,
         };
       });
 
       setParticles(items);
-      const timer = setTimeout(() => setParticles([]), 1500);
+      const timer = setTimeout(() => setParticles([]), 2200);
       return () => clearTimeout(timer);
     }
   }, [isAnimating]);
@@ -44,7 +44,7 @@ const RedParticleTrail = ({ isAnimating }) => {
               y: p.y 
             }}
             exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.95, delay: p.delay, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1.25, delay: p.delay, ease: [0.16, 1, 0.3, 1] }}
             style={{
               position: 'absolute',
               width: '6px',

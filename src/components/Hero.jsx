@@ -15,7 +15,7 @@ const Hero = ({ setCursorVariant, onOpenChat, chatOpen, hasInteractedChat }) => 
     onOpenChat();
     setTimeout(() => {
       setIsGliding(false);
-    }, 600);
+    }, 1200);
   };
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const Hero = ({ setCursorVariant, onOpenChat, chatOpen, hasInteractedChat }) => 
               }}
               exit={{ opacity: 0, y: 25, scale: 0.9 }}
               transition={isGliding ? {
-                duration: 0.55,
+                duration: 1.1,
                 ease: [0.16, 1, 0.3, 1]
               } : {
                 duration: 0.6,

@@ -148,10 +148,10 @@ function App() {
     setTimeout(() => {
       setHasInteractedChat(true);
       setChatOpen(true);
-    }, 480);
+    }, 950);
     setTimeout(() => {
       setIsSpawningTrail(false);
-    }, 1300);
+    }, 2000);
   };
 
   return (
