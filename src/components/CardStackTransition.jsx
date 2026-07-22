@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Packages from './Packages';
 import Services from './Services';
@@ -11,17 +11,28 @@ export default function CardStackTransition({
   onTransitionEnd, 
   setCursorVariant 
 }) {
-  const isGoingToPackages = activeSlideIndex === 2 && targetSlideIndex === 3;
-  const isGoingToServices = activeSlideIndex === 3 && targetSlideIndex === 2;
+  const directionRef = useRef(null);
+
+  if (!directionRef.current && isTransitioning) {
+    if ((activeSlideIndex === 2 && targetSlideIndex === 3) || targetSlideIndex === 3) {
+      directionRef.current = 'goingToPackages';
+    } else if ((activeSlideIndex === 3 && targetSlideIndex === 2) || targetSlideIndex === 2) {
+      directionRef.current = 'goingToServices';
+    }
+  }
+
+  const mode = directionRef.current || (targetSlideIndex === 3 ? 'goingToPackages' : 'goingToServices');
+  const isGoingToPackages = mode === 'goingToPackages';
 
   useEffect(() => {
-    if (isTransitioning && (isGoingToPackages || isGoingToServices)) {
+    if (isTransitioning) {
       const timer = setTimeout(() => {
         if (onCoverComplete) onCoverComplete();
       }, 450);
 
       const endTimer = setTimeout(() => {
         if (onTransitionEnd) onTransitionEnd();
+        directionRef.current = null;
       }, 920);
 
       return () => {
@@ -29,9 +40,9 @@ export default function CardStackTransition({
         clearTimeout(endTimer);
       };
     }
-  }, [isTransitioning, isGoingToPackages, isGoingToServices]);
+  }, [isTransitioning]);
 
-  if (!isTransitioning || (!isGoingToPackages && !isGoingToServices)) return null;
+  if (!isTransitioning) return null;
 
   return (
     <div
