@@ -55,7 +55,20 @@ export default function CardStackTransition({
         overflow: 'hidden'
       }}
     >
-      {/* 3D Card Stack Sheet (Plainthing Studio Style) */}
+      {/* 1. Underneath Background Card: Always Services (Page 3) */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundColor: 'var(--color-bg-gray)',
+          overflowY: 'auto',
+          pointerEvents: 'auto'
+        }}
+      >
+        <Services setCursorVariant={setCursorVariant} />
+      </div>
+
+      {/* 2. Top 3D Fold Card: Always Packages (Page 4) sliding UP (2->3) or DOWN (3->2) */}
       <motion.div
         initial={
           isGoingToPackages
@@ -81,11 +94,7 @@ export default function CardStackTransition({
           pointerEvents: 'auto'
         }}
       >
-        {isGoingToPackages ? (
-          <Packages setCursorVariant={setCursorVariant} />
-        ) : (
-          <Services setCursorVariant={setCursorVariant} />
-        )}
+        <Packages setCursorVariant={setCursorVariant} />
       </motion.div>
     </div>
   );

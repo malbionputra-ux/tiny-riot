@@ -1,5 +1,7 @@
 .services {
   position: relative;
+  min-height: 100vh;
+  box-sizing: border-box;
   padding: 10rem 4rem;
   background-color: var(--color-bg-gray);
   color: var(--color-text-light);
