@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import AbstractWaves from './AbstractWaves';
 import './Hero.css';
 
@@ -64,29 +64,9 @@ const Hero = ({ setCursorVariant, onOpenChat, chatOpen, hasInteractedChat }) => 
           Kami membantu brand membangun reputasi digital yang berani dan lantang melalui kreativitas tanpa batas, teknologi mutakhir, serta strategi yang tajam.
         </motion.p>
         
-        {/* Action group: LET'S TALK slot directly above SCROLL indicator with guaranteed zero overlap */}
+        {/* Action group: fixed height slot + SCROLL — ChatWidget owns the single floating button */}
         <div className="hero-action-group">
-          <div className="hero-talk-btn-slot">
-            <AnimatePresence>
-              {!chatOpen && !hasInteractedChat && (
-                <motion.button 
-                  layoutId="talk-pill-btn"
-                  key="hero-talk-btn"
-                  className="hero-center-talk-btn"
-                  onClick={onOpenChat}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.85 }}
-                  transition={{ type: 'spring', stiffness: 180, damping: 22 }}
-                  onMouseEnter={() => setCursorVariant('hover')}
-                  onMouseLeave={() => setCursorVariant('default')}
-                >
-                  <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
-                  <span className="toggle-text">LET'S TALK</span>
-                </motion.button>
-              )}
-            </AnimatePresence>
-          </div>
+          <div className="hero-talk-btn-slot" />
           
           <div className="hero-scroll-indicator">
             <span className="scroll-text">SCROLL</span>

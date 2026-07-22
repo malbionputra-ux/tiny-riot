@@ -73,7 +73,7 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
   const chatEndRef = useRef(null);
 
   const isHero = activeSlideIndex === 0;
-  const showCornerBtn = chatOpen || hasInteractedChat || !isHero;
+  const isCentered = isHero && !chatOpen && !hasInteractedChat;
 
   const handleToggle = () => {
     if (chatOpen) {
@@ -163,21 +163,17 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
     <>
       <RedParticleTrail isAnimating={isSpawningTrail} />
 
-      <div className="chat-widget-wrapper bottom-right-mode">
-        {/* Floating Pill Button - Morphing between Hero Center and Bottom Right */}
-        {showCornerBtn && (
-          <motion.button 
-            layoutId="talk-pill-btn"
-            className={`chat-toggle-btn ${chatOpen ? 'active' : ''}`}
-            onClick={handleToggle}
-            onMouseEnter={() => setCursorVariant('hover')}
-            onMouseLeave={() => setCursorVariant('default')}
-            transition={{ type: 'spring', stiffness: 180, damping: 24 }}
-          >
-            <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
-            <span className="toggle-text">{chatOpen ? 'CLOSE' : "LET'S TALK"}</span>
-          </motion.button>
-        )}
+      <div className={`chat-widget-wrapper ${isCentered ? 'hero-centered-mode' : 'bottom-right-mode'}`}>
+        {/* Single always-mounted button — moves via CSS transition, zero unmount bug */}
+        <button
+          className={`chat-toggle-btn ${chatOpen ? 'active' : ''}`}
+          onClick={handleToggle}
+          onMouseEnter={() => setCursorVariant('hover')}
+          onMouseLeave={() => setCursorVariant('default')}
+        >
+          <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
+          <span className="toggle-text">{chatOpen ? 'CLOSE' : "LET'S TALK"}</span>
+        </button>
 
         {/* Chat Window Popup */}
         <AnimatePresence>
