@@ -100,8 +100,18 @@
   text-shadow: 0 1px 12px rgba(0,0,0,0.7);
 }
 
+.hero-talk-btn-slot {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 1.2rem;
+  width: 100%;
+}
+
 .hero-center-talk-btn {
-  margin: 2.2rem 0 1.5rem 0;
+  margin: 0;
   background: #181717;
   border: 1px solid rgba(250, 42, 14, 0.6);
   padding: 0.85rem 2.2rem;
@@ -116,7 +126,17 @@
   letter-spacing: 2px;
   cursor: pointer;
   z-index: 10;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: width 0.18s cubic-bezier(0.16, 1, 0.3, 1), height 0.18s cubic-bezier(0.16, 1, 0.3, 1), padding 0.18s ease, border-radius 0.18s ease;
+}
+
+.hero-center-talk-btn.is-circle-morph {
+  width: 48px !important;
+  height: 48px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  box-shadow: 0 0 30px rgba(250, 42, 14, 0.8) !important;
 }
 
 .hero-center-talk-btn:hover {
@@ -130,7 +150,7 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  margin-top: 1.5rem;
+  margin-top: 0;
   opacity: 0.7;
 }
 
