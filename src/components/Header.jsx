@@ -47,30 +47,28 @@ const Header = ({ setCursorVariant, isLight }) => {
       <div className="bottom-menu-wrapper">
         <Magnetic>
           <button
-            className={`circular-menu-btn ${menuOpen ? 'open' : ''} ${isLight && !menuOpen ? 'light' : ''}`}
+            className={`curved-menu-btn ${menuOpen ? 'open' : ''} ${isLight && !menuOpen ? 'light' : ''}`}
             onClick={() => setMenuOpen(!menuOpen)}
             onMouseEnter={() => setCursorVariant && setCursorVariant('hover')}
             onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
             aria-label="Toggle Menu"
           >
-            {/* Curved SVG Text around the circle */}
-            <svg className="curved-text-svg" viewBox="0 0 140 140">
+            {/* Empty Center Circle */}
+            <div className="empty-center-circle" />
+
+            {/* Curved SVG Text on the Right Arc */}
+            <svg className="side-curved-svg" viewBox="0 0 130 130">
               <path
-                id="circlePath"
-                d="M 70,70 m -50,0 a 50,50 0 1,1 100,0 a 50,50 0 1,1 -100,0"
+                id="rightArcPath"
+                d="M 65,14 A 51,51 0 0,1 65,116"
                 fill="none"
               />
-              <text className="curved-text-content">
-                <textPath href="#circlePath" startOffset="0%">
-                  {menuOpen ? 'CLOSE • CLOSE • CLOSE • CLOSE • ' : 'MENU • TINY RIOT • MENU • TINY RIOT • '}
+              <text className="side-curved-text">
+                <textPath href="#rightArcPath" startOffset="25%">
+                  {menuOpen ? 'Close' : 'Menu'}
                 </textPath>
               </text>
             </svg>
-
-            {/* Inner Icon Button */}
-            <div className="inner-icon-circle">
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
-            </div>
           </button>
         </Magnetic>
       </div>
