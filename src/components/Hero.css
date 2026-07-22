@@ -56,7 +56,7 @@
   max-width: 1200px;
   width: 100%;
   margin: auto 0;
-  padding: 4rem 3rem 2rem 3rem;
+  padding: 5rem 3rem;
 }
 
 .line-wrapper {
@@ -93,16 +93,15 @@
   max-width: 600px;
   color: rgba(255, 255, 255, 0.55);
   font-size: clamp(0.9rem, 1.25vw, 1.1rem);
-  line-height: 1.6;
-  margin-top: 1.8rem;
-  margin-bottom: 1.8rem;
+  line-height: 1.7;
+  margin-top: 2.5rem;
   font-weight: 400;
   text-align: center;
   text-shadow: 0 1px 12px rgba(0,0,0,0.7);
 }
 
 .hero-center-talk-btn {
-  margin: 0 0 2rem 0;
+  margin: 2.2rem 0 1.5rem 0;
   background: #181717;
   border: 1px solid rgba(250, 42, 14, 0.6);
   padding: 0.85rem 2.2rem;
@@ -130,8 +129,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  opacity: 0.75;
+  gap: 12px;
+  margin-top: 1.5rem;
+  opacity: 0.7;
 }
 
 .scroll-text {
@@ -174,7 +174,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   border-top: 1px solid rgba(255, 255, 255, 0.09);
-  padding-top: 1.8rem;
+  padding-top: 2.5rem;
   gap: 2rem;
   text-align: left;
 }
@@ -243,17 +243,10 @@
     font-size: 0.92rem;
     margin-top: 1.5rem;
   }
-  .hero-scroll-indicator {
-    bottom: 9.5rem;
-  }
   .hero-metadata {
-    left: 1.5rem;
-    right: 1.5rem;
-    width: calc(100% - 3rem);
-    bottom: 1.5rem;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    padding-top: 1.2rem;
+    gap: 1.2rem;
+    padding-top: 1.8rem;
   }
 }
 

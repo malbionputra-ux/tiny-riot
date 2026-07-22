@@ -64,15 +64,16 @@ const Hero = ({ setCursorVariant, onOpenChat, chatOpen, hasInteractedChat }) => 
           Kami membantu brand membangun reputasi digital yang berani dan lantang melalui kreativitas tanpa batas, teknologi mutakhir, serta strategi yang tajam.
         </motion.p>
         
-        {/* LET'S TALK Button directly above scroll indicator */}
+        {/* LET'S TALK Button directly between subtitle and scroll indicator */}
         {!chatOpen && !hasInteractedChat && (
           <motion.button 
+            layoutId="talk-pill-btn"
             className="hero-center-talk-btn"
             onClick={onOpenChat}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 15 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, scale: 0.9, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 180, damping: 22 }}
             onMouseEnter={() => setCursorVariant('hover')}
             onMouseLeave={() => setCursorVariant('default')}
           >
@@ -81,10 +82,15 @@ const Hero = ({ setCursorVariant, onOpenChat, chatOpen, hasInteractedChat }) => 
           </motion.button>
         )}
         
-        <div className="hero-scroll-indicator">
+        <motion.div 
+          className="hero-scroll-indicator"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+        >
           <span className="scroll-text">SCROLL</span>
           <div className="scroll-line"></div>
-        </div>
+        </motion.div>
       </motion.div>
 
       {/* Meta bar */}

@@ -73,12 +73,14 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
   const chatEndRef = useRef(null);
 
   const isHero = activeSlideIndex === 0;
-  const showCornerBtn = chatOpen || (!isHero && hasInteractedChat) || !isHero;
+  const showCornerBtn = chatOpen || hasInteractedChat || !isHero;
 
   const handleToggle = () => {
     if (chatOpen) {
-      if (setChatOpen) setChatOpen(false);
-      if (isHero && setHasInteractedChat) setHasInteractedChat(false);
+      setChatOpen(false);
+      if (isHero && setHasInteractedChat) {
+        setHasInteractedChat(false);
+      }
     } else {
       if (!hasInteractedChat && setHasInteractedChat) setHasInteractedChat(true);
       if (setChatOpen) setChatOpen(true);
@@ -163,18 +165,16 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
     <>
       <RedParticleTrail isAnimating={isSpawningTrail} />
 
-      <div className="chat-widget-wrapper">
-        {/* Floating Pill Button in Corner when Chat is Open or on other slides */}
+      <div className="chat-widget-wrapper bottom-right-mode">
+        {/* Floating Pill Button - Morphing between Hero Center and Bottom Right */}
         {showCornerBtn && (
           <motion.button 
+            layoutId="talk-pill-btn"
             className={`chat-toggle-btn ${chatOpen ? 'active' : ''}`}
             onClick={handleToggle}
             onMouseEnter={() => setCursorVariant('hover')}
             onMouseLeave={() => setCursorVariant('default')}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.2 }}
+            transition={{ type: 'spring', stiffness: 180, damping: 24 }}
           >
             <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
             <span className="toggle-text">{chatOpen ? 'CLOSE' : "LET'S TALK"}</span>
