@@ -91,7 +91,7 @@
 .bottom-menu-wrapper {
   position: fixed;
   bottom: 2rem;
-  left: 47%;
+  left: 48.6%;
   transform: translateX(-50%);
   z-index: 10002;
 }
