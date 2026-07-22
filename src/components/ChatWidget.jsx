@@ -77,9 +77,14 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
 
   const handleToggle = () => {
     if (chatOpen) {
-      setChatOpen(false);
+      // 1. Close chat window popup first
+      if (setChatOpen) setChatOpen(false);
+
+      // 2. Wait for chat window exit animation (280ms), THEN glide button back to Hero center!
       if (isHero && setHasInteractedChat) {
-        setHasInteractedChat(false);
+        setTimeout(() => {
+          setHasInteractedChat(false);
+        }, 280);
       }
     } else {
       if (!hasInteractedChat && setHasInteractedChat) setHasInteractedChat(true);
@@ -94,10 +99,14 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
     'Custom Web Dev'
   ];
 
+  const prevSlideRef = useRef(activeSlideIndex);
+
   useEffect(() => {
-    if (activeSlideIndex === 0 && !chatOpen && setHasInteractedChat) {
+    // Only reset when user navigates/slides BACK to Hero from another page
+    if (activeSlideIndex === 0 && prevSlideRef.current !== 0 && !chatOpen && setHasInteractedChat) {
       setHasInteractedChat(false);
     }
+    prevSlideRef.current = activeSlideIndex;
   }, [activeSlideIndex, chatOpen, setHasInteractedChat]);
 
   useEffect(() => {
