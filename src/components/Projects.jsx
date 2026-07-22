@@ -93,26 +93,33 @@ const Projects = ({ setCursorVariant }) => {
 
         <AnimatePresence>
           {listHovered && (
-            <motion.div
-              className="list-hover-preview"
-              initial={{ scale: 0.6, opacity: 0, rotate: -4 }}
-              animate={{ scale: 1, opacity: 1, rotate: 0 }}
-              exit={{ scale: 0.6, opacity: 0, rotate: 4 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              style={{
-                position: 'fixed',
-                left: listMouseX.current,
-                top: listMouseY.current,
-                x: '-50%',
-                y: '-50%',
-                pointerEvents: 'none',
-                zIndex: 999,
-              }}
-            >
-              <div className="preview-image-container">
-                <img src={listHovered.img} alt={listHovered.title} />
-              </div>
-            </motion.div>
+            <>
+              {/* Left Floating Image */}
+              <motion.div
+                className="list-side-preview left"
+                initial={{ scale: 0.8, opacity: 0, rotate: -15, x: -80, y: '-50%' }}
+                animate={{ scale: 1, opacity: 1, rotate: -6, x: 0, y: '-50%' }}
+                exit={{ scale: 0.8, opacity: 0, rotate: -15, x: -80, y: '-50%' }}
+                transition={{ type: 'spring', damping: 22, stiffness: 120 }}
+              >
+                <div className="preview-image-container">
+                  <img src={listHovered.img} alt={listHovered.title} />
+                </div>
+              </motion.div>
+
+              {/* Right Floating Image */}
+              <motion.div
+                className="list-side-preview right"
+                initial={{ scale: 0.8, opacity: 0, rotate: 15, x: 80, y: '-50%' }}
+                animate={{ scale: 1, opacity: 1, rotate: 8, x: 0, y: '-50%' }}
+                exit={{ scale: 0.8, opacity: 0, rotate: 15, x: 80, y: '-50%' }}
+                transition={{ type: 'spring', damping: 22, stiffness: 120, delay: 0.05 }}
+              >
+                <div className="preview-image-container">
+                  <img src={listHovered.img} alt={listHovered.title} />
+                </div>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </div>
