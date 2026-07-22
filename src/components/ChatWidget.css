@@ -47,15 +47,15 @@
 }
 
 .chat-widget-wrapper.hero-centered-mode .chat-toggle-btn {
-  box-shadow: 0 0 35px rgba(250, 42, 14, 0.4), 0 15px 40px rgba(0, 0, 0, 0.7);
-  border-color: rgba(250, 42, 14, 0.6);
-  background: #181717;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  border-color: var(--color-accent);
+  background: var(--color-accent);
 }
 
 .chat-toggle-btn.active {
   background: var(--color-accent);
   border-color: var(--color-accent);
-  box-shadow: 0 10px 30px rgba(250, 42, 14, 0.3);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
 .custom-toggle-logo {
