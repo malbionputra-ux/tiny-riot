@@ -8,6 +8,7 @@ import Packages from './components/Packages'
 import Footer from './components/Footer'
 import ChatWidget from './components/ChatWidget'
 import LiquidTransition from './components/LiquidTransition'
+import CardStackTransition from './components/CardStackTransition'
 import Preloader from './components/Preloader'
 import './App.css'
 import './slider.css'
@@ -20,7 +21,11 @@ function App() {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [targetSlideIndex, setTargetSlideIndex] = useState(0)
   const [appLoaded, setAppLoaded] = useState(false)
-  
+
+  const isCardStackTransition = 
+    (activeSlideIndex === 2 && targetSlideIndex === 3) || 
+    (activeSlideIndex === 3 && targetSlideIndex === 2);
+
   // Refs for tracking scroll bounds
   const slideRefs = useRef({});
 
@@ -159,13 +164,24 @@ function App() {
       <Preloader onComplete={() => setAppLoaded(true)} />
       <CustomCursor variant={cursorVariant} />
       
-      {/* The Liquid Wave Overlay */}
-      {isTransitioning && (
-        <LiquidTransition 
-          isTransitioning={isTransitioning} 
-          onCoverComplete={onCoverComplete} 
+      {/* Page 3 to Page 4 Plainthing Studio style 3D Card Stack Transition */}
+      {isTransitioning && isCardStackTransition ? (
+        <CardStackTransition
+          isTransitioning={isTransitioning}
+          activeSlideIndex={activeSlideIndex}
+          targetSlideIndex={targetSlideIndex}
+          onCoverComplete={onCoverComplete}
           onTransitionEnd={onTransitionEnd}
+          setCursorVariant={setCursorVariant}
         />
+      ) : (
+        isTransitioning && (
+          <LiquidTransition 
+            isTransitioning={isTransitioning} 
+            onCoverComplete={onCoverComplete} 
+            onTransitionEnd={onTransitionEnd}
+          />
+        )
       )}
       
       {/* We no longer use native page scrolling. The Header stays on top. */}
