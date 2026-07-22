@@ -20,17 +20,22 @@ function App() {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [targetSlideIndex, setTargetSlideIndex] = useState(0)
+  const [isCardStackActive, setIsCardStackActive] = useState(false);
   const [appLoaded, setAppLoaded] = useState(false)
-
-  const isCardStackTransition = 
-    (activeSlideIndex === 2 && targetSlideIndex === 3) || 
-    (activeSlideIndex === 3 && targetSlideIndex === 2);
 
   // Refs for tracking scroll bounds
   const slideRefs = useRef({});
 
   const triggerTransition = (newIndex) => {
     if (isTransitioning || newIndex === activeSlideIndex) return;
+
+    const isCardStack = (activeSlideIndex === 2 && newIndex === 3) || (activeSlideIndex === 3 && newIndex === 2);
+    if (isCardStack) {
+      setIsCardStackActive(true);
+    } else {
+      setIsCardStackActive(false);
+    }
+
     setTargetSlideIndex(newIndex);
     setIsTransitioning(true);
   };
@@ -43,6 +48,7 @@ function App() {
   // Called when the Liquid curtain has fully exited
   const onTransitionEnd = () => {
     setIsTransitioning(false);
+    setIsCardStackActive(false);
   };
 
   useEffect(() => {
@@ -164,8 +170,8 @@ function App() {
       <Preloader onComplete={() => setAppLoaded(true)} />
       <CustomCursor variant={cursorVariant} />
       
-      {/* Page 3 to Page 4 Plainthing Studio style 3D Card Stack Transition */}
-      {isTransitioning && isCardStackTransition ? (
+      {/* Page 3 to Page 4 Plainthing Studio style 3D Card Stack Transition (NO BLACK SLIDE CURTAIN) */}
+      {isTransitioning && isCardStackActive ? (
         <CardStackTransition
           isTransitioning={isTransitioning}
           activeSlideIndex={activeSlideIndex}
