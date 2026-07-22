@@ -91,7 +91,7 @@
 .bottom-menu-wrapper {
   position: fixed;
   bottom: 2rem;
-  left: 48.0%;
+  left: 48.3%;
   transform: translateX(-50%);
   z-index: 10002;
 }
@@ -169,11 +169,11 @@
   box-shadow: 0 0 25px rgba(250, 42, 14, 0.4);
 }
 
-/* Light Mode Variation - Terracotta Gold Circle matching Build in Amsterdam */
+/* Light Mode Variation - Vibrant Red Circle */
 .curved-menu-btn.light:not(.open) .empty-center-circle {
-  background: #c38133;
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 10px 30px rgba(195, 129, 51, 0.4);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  box-shadow: 0 10px 30px rgba(250, 42, 14, 0.45);
 }
 
 .curved-menu-btn.light:not(.open) .side-curved-text {
