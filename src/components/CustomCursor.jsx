@@ -92,12 +92,12 @@ const CustomCursor = ({ variant = 'default' }) => {
 
   const isHovered = variant === 'hover' || variant === 'project' || variant === 'navbarHover';
   const isProject = variant === 'project';
-  const size = isHovered ? (isProject ? 88 : 66) : 36;
+  const size = isHovered ? (isProject ? 88 : 66) : 24;
   const halfSize = size / 2;
 
   return (
     <>
-      {/* Outer Fluid Ring (Odama.io style) */}
+      {/* 1. Dynamic Trailing Circle: Solid Red default, Glass Translucent Red on Hover */}
       <div
         ref={outerCircleRef}
         style={{
@@ -107,8 +107,9 @@ const CustomCursor = ({ variant = 'default' }) => {
           width: size,
           height: size,
           borderRadius: '50%',
-          border: isHovered ? '1.5px solid #fa2a0e' : '1.5px solid rgba(250, 42, 14, 0.7)',
-          backgroundColor: isHovered ? 'rgba(250, 42, 14, 0.1)' : 'transparent',
+          border: isHovered ? '1.5px solid #fa2a0e' : 'none',
+          backgroundColor: isHovered ? 'rgba(250, 42, 14, 0.15)' : '#fa2a0e',
+          opacity: 0.92,
           transition: 'width 0.35s cubic-bezier(0.16, 1, 0.3, 1), height 0.35s cubic-bezier(0.16, 1, 0.3, 1), top 0.35s cubic-bezier(0.16, 1, 0.3, 1), left 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease',
           pointerEvents: 'none',
           zIndex: 999998,
@@ -117,6 +118,7 @@ const CustomCursor = ({ variant = 'default' }) => {
           alignItems: 'center',
           justifyContent: 'center',
           willChange: 'transform',
+          backdropFilter: isHovered ? 'blur(2px)' : 'none',
         }}
       >
         {isProject && (
@@ -134,23 +136,25 @@ const CustomCursor = ({ variant = 'default' }) => {
         )}
       </div>
 
-      {/* Inner Red Dot */}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: isHovered ? 8 : 6,
-          height: isHovered ? 8 : 6,
-          borderRadius: '50%',
-          backgroundColor: '#fa2a0e',
-          transform: `translate3d(${mousePosition.x - (isHovered ? 4 : 3)}px, ${mousePosition.y - (isHovered ? 4 : 3)}px, 0) scale(${isPressed ? 0.6 : 1})`,
-          transition: 'width 0.25s ease, height 0.25s ease, transform 0.05s ease-out',
-          pointerEvents: 'none',
-          zIndex: 999999,
-          willChange: 'transform',
-        }}
-      />
+      {/* 2. Inner Precise Center Dot (visible during hover for precise targeting) */}
+      {isHovered && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: 8,
+            height: 8,
+            borderRadius: '50%',
+            backgroundColor: '#fa2a0e',
+            transform: `translate3d(${mousePosition.x - 4}px, ${mousePosition.y - 4}px, 0) scale(${isPressed ? 0.6 : 1})`,
+            transition: 'width 0.25s ease, height 0.25s ease, transform 0.05s ease-out',
+            pointerEvents: 'none',
+            zIndex: 999999,
+            willChange: 'transform',
+          }}
+        />
+      )}
     </>
   );
 };
