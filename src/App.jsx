@@ -246,12 +246,11 @@ function App() {
         isTransitioning={isTransitioning}
       />
       
-      <main className="slider-main" style={{ perspective: '1200px' }}>
+      <main className="slider-main">
         {/* Slide 0: Hero */}
         <div 
           className={`slide-container ${activeSlideIndex === 0 ? 'active' : ''}`}
           ref={el => slideRefs.current['hero'] = el}
-          style={{ zIndex: activeSlideIndex === 0 ? 10 : 1 }}
         >
           {activeSlideIndex === 0 && (
             <Hero 
@@ -267,68 +266,67 @@ function App() {
         <div 
           className={`slide-container ${activeSlideIndex === 1 ? 'active' : ''}`}
           ref={el => slideRefs.current['projects'] = el}
-          style={{ zIndex: activeSlideIndex === 1 ? 10 : 1 }}
         >
           {activeSlideIndex === 1 && <Projects setCursorVariant={setCursorVariant} />}
         </div>
         
-        {/* Slide 2: Services (Background under Packages card) */}
+        {/* Slide 2: Services */}
         <div 
-          className={`slide-container ${activeSlideIndex === 2 || (cardProgress > 0 && cardProgress < 1) ? 'active' : ''}`}
+          className={`slide-container ${activeSlideIndex === 2 ? 'active' : ''}`}
           ref={el => slideRefs.current['services'] = el}
-          style={{
-            zIndex: activeSlideIndex === 2 ? 10 : 1,
-            backgroundColor: 'var(--color-bg-gray)'
-          }}
         >
-          {(activeSlideIndex === 2 || activeSlideIndex === 3 || cardProgress > 0) && (
+          {(activeSlideIndex === 2 || (cardProgress > 0 && cardProgress < 1)) && (
             <Services setCursorVariant={setCursorVariant} />
           )}
         </div>
         
-        {/* Slide 3: Packages (Plainthing Studio Progressive 3D Card Stack) */}
-        {activeSlideIndex === 2 || activeSlideIndex === 3 ? (
-          <motion.div 
-            className={`slide-container ${activeSlideIndex === 3 || (activeSlideIndex === 2 && cardProgress > 0) ? 'active' : ''}`}
-            ref={el => slideRefs.current['packages'] = el}
-            initial={false}
-            animate={{
-              y: `${(1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 100}%`,
-              rotateX: (1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 22,
-              scale: 0.93 + (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress))) * 0.07,
-              borderTopLeftRadius: `${(1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 32}px`,
-              borderTopRightRadius: `${(1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 32}px`
-            }}
-            transition={{
-              type: 'spring',
-              stiffness: 220,
-              damping: 28,
-              mass: 0.5
-            }}
-            style={{
-              zIndex: activeSlideIndex === 3 ? 10 : (activeSlideIndex === 2 && cardProgress > 0 ? 12 : 1),
-              transformOrigin: 'top center',
-              boxShadow: cardProgress > 0 && cardProgress < 1 ? '0 -25px 60px rgba(0, 0, 0, 0.35)' : 'none',
-              overflow: activeSlideIndex === 3 && cardProgress >= 0.95 ? 'auto' : 'hidden'
-            }}
-          >
-            <Packages setCursorVariant={setCursorVariant} />
-          </motion.div>
-        ) : (
-          <div 
-            className={`slide-container ${activeSlideIndex === 3 ? 'active' : ''}`}
-            ref={el => slideRefs.current['packages'] = el}
-            style={{ zIndex: activeSlideIndex === 3 ? 10 : 1 }}
-          >
-            {activeSlideIndex === 3 && <Packages setCursorVariant={setCursorVariant} />}
+        {/* Progressive 3D Card Stack Sheet (Appears ONLY while folding between Page 3 & 4) */}
+        {cardProgress > 0 && cardProgress < 1 && (
+          <div style={{ perspective: '1200px', position: 'fixed', inset: 0, zIndex: 30, pointerEvents: 'none' }}>
+            <motion.div
+              initial={false}
+              animate={{
+                y: `${(1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 100}%`,
+                rotateX: (1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 22,
+                scale: 0.93 + (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress))) * 0.07,
+                borderTopLeftRadius: `${(1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 32}px`,
+                borderTopRightRadius: `${(1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 32}px`
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 220,
+                damping: 28,
+                mass: 0.5
+              }}
+              style={{
+                width: '100%',
+                height: '100vh',
+                backgroundColor: 'var(--color-bg-gray)',
+                transformOrigin: 'top center',
+                boxShadow: '0 -25px 60px rgba(0, 0, 0, 0.35)',
+                overflowY: 'auto',
+                pointerEvents: 'auto'
+              }}
+            >
+              <Packages setCursorVariant={setCursorVariant} />
+            </motion.div>
           </div>
         )}
+
+        {/* Slide 3: Packages */}
+        <div 
+          className={`slide-container ${activeSlideIndex === 3 && cardProgress >= 0.95 ? 'active' : ''}`}
+          ref={el => slideRefs.current['packages'] = el}
+        >
+          {(activeSlideIndex === 3 || cardProgress >= 0.95) && (
+            <Packages setCursorVariant={setCursorVariant} />
+          )}
+        </div>
         
         {/* Slide 4: Footer */}
         <div 
           className={`slide-container ${activeSlideIndex === 4 ? 'active' : ''}`}
           ref={el => slideRefs.current['footer'] = el}
-          style={{ zIndex: activeSlideIndex === 4 ? 10 : 1 }}
         >
           {activeSlideIndex === 4 && <Footer setCursorVariant={setCursorVariant} />}
         </div>
