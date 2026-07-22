@@ -77,18 +77,17 @@ const Hero = ({ setCursorVariant, onOpenChat, chatOpen, hasInteractedChat }) => 
         <div className="hero-talk-btn-slot">
           {!chatOpen && !hasInteractedChat && (
             <motion.button 
-              layoutId="talk-pill-btn"
-              className={`hero-center-talk-btn ${isMorphingToCircle ? 'is-circle-morph' : ''}`}
+              className="hero-center-talk-btn"
               onClick={handleButtonClick}
-              initial={{ opacity: 0, scale: 0.9, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ type: 'spring', stiffness: 180, damping: 22 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
               onMouseEnter={() => setCursorVariant('hover')}
               onMouseLeave={() => setCursorVariant('default')}
             >
               <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
-              {!isMorphingToCircle && <span className="toggle-text">LET'S TALK</span>}
+              <span className="toggle-text">LET'S TALK</span>
             </motion.button>
           )}
         </div>

@@ -166,15 +166,17 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
       <RedParticleTrail isAnimating={isSpawningTrail} />
 
       <div className="chat-widget-wrapper bottom-right-mode">
-        {/* Floating Pill Button - Morphing between Hero Center and Bottom Right */}
+        {/* Floating Pill Button - Corner */}
         {showCornerBtn && (
           <motion.button 
-            layoutId="talk-pill-btn"
             className={`chat-toggle-btn ${chatOpen ? 'active' : ''}`}
             onClick={handleToggle}
             onMouseEnter={() => setCursorVariant('hover')}
             onMouseLeave={() => setCursorVariant('default')}
-            transition={{ type: 'spring', stiffness: 180, damping: 24 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.2 }}
           >
             <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
             <span className="toggle-text">{chatOpen ? 'CLOSE' : "LET'S TALK"}</span>
