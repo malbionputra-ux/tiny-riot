@@ -64,14 +64,26 @@ const Hero = ({ setCursorVariant, onOpenChat, chatOpen, hasInteractedChat }) => 
           Kami membantu brand membangun reputasi digital yang berani dan lantang melalui kreativitas tanpa batas, teknologi mutakhir, serta strategi yang tajam.
         </motion.p>
         
-        {/* Action group: fixed height slot + SCROLL — ChatWidget owns the single floating button */}
-        <div className="hero-action-group">
-          <div className="hero-talk-btn-slot" />
-          
-          <div className="hero-scroll-indicator">
-            <span className="scroll-text">SCROLL</span>
-            <div className="scroll-line"></div>
-          </div>
+        {/* LET'S TALK Button directly above scroll indicator */}
+        {!chatOpen && !hasInteractedChat && (
+          <motion.button 
+            className="hero-center-talk-btn"
+            onClick={onOpenChat}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 15 }}
+            transition={{ duration: 0.3 }}
+            onMouseEnter={() => setCursorVariant('hover')}
+            onMouseLeave={() => setCursorVariant('default')}
+          >
+            <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
+            <span className="toggle-text">LET'S TALK</span>
+          </motion.button>
+        )}
+        
+        <div className="hero-scroll-indicator">
+          <span className="scroll-text">SCROLL</span>
+          <div className="scroll-line"></div>
         </div>
       </motion.div>
 

@@ -1,29 +1,13 @@
 .chat-widget-wrapper {
   position: fixed;
+  bottom: 2rem;
+  right: 2rem;
   z-index: 9999;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 1rem;
   pointer-events: none;
-  transition: bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1), left 0.6s cubic-bezier(0.16, 1, 0.3, 1), right 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.chat-widget-wrapper.hero-centered-mode {
-  position: fixed !important;
-  bottom: 10rem !important;
-  left: 50% !important;
-  right: auto !important;
-  transform: translateX(-50%) !important;
-  align-items: center !important;
-}
-
-.chat-widget-wrapper.bottom-right-mode {
-  position: fixed !important;
-  bottom: 2rem !important;
-  right: 2rem !important;
-  left: auto !important;
-  transform: none !important;
 }
 
 /* Floating Pill Button */
