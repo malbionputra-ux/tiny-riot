@@ -2,7 +2,67 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './ChatWidget.css';
 
-const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen, hasInteractedChat, setHasInteractedChat }) => {
+const RedParticleTrail = ({ isAnimating }) => {
+  const [particles, setParticles] = useState([]);
+
+  useEffect(() => {
+    if (isAnimating) {
+      const startX = window.innerWidth / 2;
+      const startY = window.innerHeight - 150;
+      const endX = window.innerWidth - 60;
+      const endY = window.innerHeight - 60;
+
+      const items = Array.from({ length: 12 }).map((_, i) => {
+        const progress = (i + 1) / 12;
+        return {
+          id: i,
+          x: startX + (endX - startX) * progress,
+          y: startY + (endY - startY) * progress,
+          delay: i * 0.035,
+        };
+      });
+
+      setParticles(items);
+      const timer = setTimeout(() => setParticles([]), 1200);
+      return () => clearTimeout(timer);
+    }
+  }, [isAnimating]);
+
+  if (!isAnimating && particles.length === 0) return null;
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 99999 }}>
+      <AnimatePresence>
+        {particles.map((p) => (
+          <motion.div
+            key={p.id}
+            initial={{ opacity: 0, scale: 0.2, x: p.x, y: p.y }}
+            animate={{ 
+              opacity: [0, 1, 0.8, 0], 
+              scale: [0.2, 1.4, 0.9, 0], 
+              x: p.x, 
+              y: p.y 
+            }}
+            exit={{ opacity: 0, scale: 0 }}
+            transition={{ duration: 0.75, delay: p.delay, ease: 'easeOut' }}
+            style={{
+              position: 'absolute',
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              backgroundColor: '#fa2a0e',
+              boxShadow: '0 0 14px #fa2a0e, 0 0 6px #ffffff',
+              left: 0,
+              top: 0
+            }}
+          />
+        ))}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen, hasInteractedChat, setHasInteractedChat, isSpawningTrail }) => {
   const [messages, setMessages] = useState([
     { id: 1, sender: 'bot', text: 'Halo! Kami Tiny Riot. Projek apa yang sedang ingin lo garap?' }
   ]);
@@ -102,104 +162,110 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
   };
 
   return (
-    <div className="chat-widget-wrapper bottom-right-mode">
-      {/* Floating Pill Button - Morphing between Hero Center and Bottom Right */}
-      {showCornerBtn && (
-        <motion.button 
-          layoutId="talk-pill-btn"
-          className={`chat-toggle-btn ${chatOpen ? 'active' : ''}`}
-          onClick={handleToggle}
-          onMouseEnter={() => setCursorVariant('hover')}
-          onMouseLeave={() => setCursorVariant('default')}
-          transition={{ type: 'spring', stiffness: 180, damping: 24 }}
-        >
-          <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
-          <span className="toggle-text">{chatOpen ? 'CLOSE' : "LET'S TALK"}</span>
-        </motion.button>
-      )}
+    <>
+      <RedParticleTrail isAnimating={isSpawningTrail} />
 
-      {/* Chat Window Popup */}
-      <AnimatePresence>
-        {chatOpen && (
-          <motion.div 
-            className="chat-window"
-            initial={{ opacity: 0, y: 50, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 30, scale: 0.95 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+      <div className="chat-widget-wrapper bottom-right-mode">
+        {/* Floating Pill Button - Morphing between Hero Center and Bottom Right */}
+        {showCornerBtn && (
+          <motion.button 
+            layoutId="talk-pill-btn"
+            className={`chat-toggle-btn ${chatOpen ? 'active' : ''}`}
+            onClick={handleToggle}
+            onMouseEnter={() => setCursorVariant('hover')}
+            onMouseLeave={() => setCursorVariant('default')}
+            transition={{ type: 'spring', stiffness: 180, damping: 24 }}
           >
-            <div className="chat-window-header">
-              <div className="header-branding">
-                <span className="brand-dot"></span>
-                <span className="brand-title">TINY TALK</span>
-              </div>
-              <span className="chat-status">ONLINE</span>
-            </div>
+            <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
+            <span className="toggle-text">{chatOpen ? 'CLOSE' : "LET'S TALK"}</span>
+          </motion.button>
+        )}
 
-            <div className="chat-messages-container">
-              {messages.map((msg) => (
-                <div key={msg.id} className={`chat-bubble-wrapper ${msg.sender}`}>
-                  {msg.sender === 'bot' && <div className="bot-avatar">T</div>}
-                  <div className={`chat-bubble ${msg.sender}`}>
-                    <p>{msg.text}</p>
-                  </div>
+        {/* Chat Window Popup */}
+        <AnimatePresence>
+          {chatOpen && (
+            <motion.div 
+              className="chat-window"
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 30, scale: 0.95 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+            >
+              <div className="chat-window-header">
+                <div className="header-branding">
+                  <span className="brand-dot"></span>
+                  <span className="brand-title">TINY TALK</span>
                 </div>
-              ))}
-              <div ref={chatEndRef} />
-            </div>
+                <span className="chat-status">ONLINE</span>
+              </div>
 
-            <div className="chat-window-footer">
-              {step === 'select_service' && (
-                <div className="services-options">
-                  {services.map((service, idx) => (
+              <div className="chat-messages-container">
+                {messages.map((msg) => (
+                  <div key={msg.id} className={`chat-bubble-wrapper ${msg.sender}`}>
+                    {msg.sender === 'bot' && <div className="bot-avatar">T</div>}
+                    <div className={`chat-bubble ${msg.sender}`}>
+                      <p>{msg.text}</p>
+                    </div>
+                  </div>
+                ))}
+                <div ref={chatEndRef} />
+              </div>
+
+              <div className="chat-window-footer">
+                {step === 'select_service' && (
+                  <div className="services-options">
+                    {services.map((service, idx) => (
+                      <button 
+                        key={idx} 
+                        className="service-option-pill"
+                        onClick={() => handleSelectService(service)}
+                        onMouseEnter={() => setCursorVariant('hover')}
+                        onMouseLeave={() => setCursorVariant('default')}
+                      >
+                        {service}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {step === 'ask_email' && (
+                  <form onSubmit={handleSendEmail} className="chat-input-form">
+                    <input 
+                      type="email" 
+                      placeholder="Masukkan email lo di sini..." 
+                      value={emailInput}
+                      onChange={(e) => setEmailInput(e.target.value)}
+                      required
+                      className="chat-input"
+                    />
                     <button 
-                      key={idx} 
-                      className="service-option-pill"
-                      onClick={() => handleSelectService(service)}
+                      type="submit" 
+                      className="chat-send-btn"
                       onMouseEnter={() => setCursorVariant('hover')}
                       onMouseLeave={() => setCursorVariant('default')}
                     >
-                      {service}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                      </svg>
                     </button>
-                  ))}
-                </div>
-              )}
+                  </form>
+                )}
 
-              {step === 'ask_email' && (
-                <form onSubmit={handleSendEmail} className="chat-input-form">
-                  <input 
-                    type="email" 
-                    placeholder="Masukkan email lo di sini..." 
-                    value={emailInput}
-                    onChange={(e) => setEmailInput(e.target.value)}
-                    required
-                    className="chat-input"
-                  />
-                  <button 
-                    type="submit" 
-                    className="chat-send-btn"
-                    onMouseEnter={() => setCursorVariant('hover')}
-                    onMouseLeave={() => setCursorVariant('default')}
-                  >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <line x1="22" y1="2" x2="11" y2="13"></line>
-                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                  </button>
-                </form>
-              )}
-
-              {step === 'finished' && (
-                <div className="chat-finished-state">
-                  <span>👋 Obrolan selesai</span>
-                </div>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+                {step === 'finished' && (
+                  <div className="chat-finished-state">
+                    <span>👋 Obrolan selesai</span>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </>
   );
 };
+
+export default ChatWidget;
 
 export default ChatWidget;

@@ -141,10 +141,17 @@ function App() {
 
   const [chatOpen, setChatOpen] = useState(false);
   const [hasInteractedChat, setHasInteractedChat] = useState(false);
+  const [isSpawningTrail, setIsSpawningTrail] = useState(false);
 
   const handleOpenChat = () => {
+    setIsSpawningTrail(true);
     setHasInteractedChat(true);
-    setChatOpen(true);
+    setTimeout(() => {
+      setChatOpen(true);
+    }, 400);
+    setTimeout(() => {
+      setIsSpawningTrail(false);
+    }, 1200);
   };
 
   return (
@@ -225,6 +232,7 @@ function App() {
         setChatOpen={setChatOpen}
         hasInteractedChat={hasInteractedChat}
         setHasInteractedChat={setHasInteractedChat}
+        isSpawningTrail={isSpawningTrail}
       />
     </div>
   )
