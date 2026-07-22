@@ -28,31 +28,35 @@
   gap: 1.2rem;
 }
 
-/* Vertical "FILTER WORK" standing text aligned with bottom center circle at 50% */
+/* Vertical "FILTER WORK" standing text fixed at bottom center right above menu circle */
 .bia-filter-work-divider {
-  position: absolute;
+  position: fixed;
+  bottom: 6.8rem;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 10;
+  transform: translateX(-50%);
+  z-index: 10001;
+  pointer-events: auto;
 }
 
-.bia-filter-work-divider span {
+.bia-filter-work-divider button {
   font-family: 'Outfit', sans-serif;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 2.5px;
-  color: rgba(24, 23, 23, 0.6);
+  letter-spacing: 2px;
+  color: #181717;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   white-space: nowrap;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 1.2rem 0.45rem;
-  border-radius: 100px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  transition: opacity 0.3s ease;
+}
+
+.bia-filter-work-divider button:hover {
+  opacity: 0.7;
 }
 
 .bia-case-card {

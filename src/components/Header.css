@@ -169,11 +169,11 @@
   box-shadow: 0 0 25px rgba(250, 42, 14, 0.4);
 }
 
-/* Light Mode Variation */
+/* Light Mode Variation - Terracotta Gold Circle matching Build in Amsterdam */
 .curved-menu-btn.light:not(.open) .empty-center-circle {
-  background: rgba(255, 255, 255, 0.88);
-  border-color: rgba(0, 0, 0, 0.15);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background: #c38133;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(195, 129, 51, 0.4);
 }
 
 .curved-menu-btn.light:not(.open) .side-curved-text {
