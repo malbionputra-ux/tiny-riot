@@ -77,8 +77,10 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
 
   const handleToggle = () => {
     if (chatOpen) {
-      if (setChatOpen) setChatOpen(false);
-      if (isHero && setHasInteractedChat) setHasInteractedChat(false);
+      setChatOpen(false);
+      if (isHero && setHasInteractedChat) {
+        setHasInteractedChat(false);
+      }
     } else {
       if (!hasInteractedChat && setHasInteractedChat) setHasInteractedChat(true);
       if (setChatOpen) setChatOpen(true);
@@ -92,14 +94,10 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
     'Custom Web Dev'
   ];
 
-  const prevSlideRef = useRef(activeSlideIndex);
-
   useEffect(() => {
-    // Only reset when user navigates/slides BACK to Hero from another page
-    if (activeSlideIndex === 0 && prevSlideRef.current !== 0 && !chatOpen && setHasInteractedChat) {
+    if (activeSlideIndex === 0 && !chatOpen && setHasInteractedChat) {
       setHasInteractedChat(false);
     }
-    prevSlideRef.current = activeSlideIndex;
   }, [activeSlideIndex, chatOpen, setHasInteractedChat]);
 
   useEffect(() => {
@@ -167,8 +165,8 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
     <>
       <RedParticleTrail isAnimating={isSpawningTrail} />
 
-      <div className="chat-widget-wrapper">
-        {/* Floating Pill Button in Corner - Connected via layoutId */}
+      <div className="chat-widget-wrapper bottom-right-mode">
+        {/* Floating Pill Button - Morphing between Hero Center and Bottom Right */}
         {showCornerBtn && (
           <motion.button 
             layoutId="talk-pill-btn"
@@ -176,7 +174,7 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
             onClick={handleToggle}
             onMouseEnter={() => setCursorVariant('hover')}
             onMouseLeave={() => setCursorVariant('default')}
-            transition={{ type: 'spring', stiffness: 180, damping: 22 }}
+            transition={{ type: 'spring', stiffness: 180, damping: 24 }}
           >
             <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
             <span className="toggle-text">{chatOpen ? 'CLOSE' : "LET'S TALK"}</span>
@@ -188,10 +186,10 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
           {chatOpen && (
             <motion.div 
               className="chat-window"
-              initial={{ opacity: 0, y: 60, scale: 0.95 }}
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 100, scale: 0.9 }}
-              transition={{ duration: 0.32, ease: [0.76, 0, 0.24, 1] }}
+              exit={{ opacity: 0, y: 30, scale: 0.95 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
             >
               <div className="chat-window-header">
                 <div className="header-branding">
