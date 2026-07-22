@@ -78,9 +78,11 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
 
   const handleToggle = () => {
     if (chatOpen) {
-      setChatOpen(false);
+      if (setChatOpen) setChatOpen(false);
       if (isHero && setHasInteractedChat) {
-        setHasInteractedChat(false);
+        setTimeout(() => {
+          setHasInteractedChat(false);
+        }, 300);
       }
     } else {
       if (!hasInteractedChat && setHasInteractedChat) setHasInteractedChat(true);
@@ -174,10 +176,10 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
             onClick={handleToggle}
             onMouseEnter={() => setCursorVariant('hover')}
             onMouseLeave={() => setCursorVariant('default')}
-            initial={{ opacity: 0, y: 15, scale: 0.92 }}
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 15, scale: 0.92 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           >
             <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
             <span className="toggle-text">{chatOpen ? 'CLOSE' : "LET'S TALK"}</span>
@@ -189,9 +191,9 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
           {chatOpen && (
             <motion.div 
               className="chat-window"
-              initial={{ opacity: 0, y: 35, scale: 0.96 }}
+              initial={{ opacity: 0, y: 60, scale: 0.92 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 25, scale: 0.97 }}
+              exit={{ opacity: 0, y: 80, scale: 0.9 }}
               transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="chat-window-header">
