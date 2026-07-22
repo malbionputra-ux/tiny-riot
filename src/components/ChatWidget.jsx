@@ -73,7 +73,7 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
   const chatEndRef = useRef(null);
 
   const isHero = activeSlideIndex === 0;
-  const isCentered = isHero && !chatOpen && !hasInteractedChat;
+  const showCornerBtn = chatOpen || hasInteractedChat || !isHero;
 
   const handleToggle = () => {
     if (chatOpen) {
@@ -167,19 +167,21 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
     <>
       <RedParticleTrail isAnimating={isSpawningTrail} />
 
-      <div className={`chat-widget-wrapper ${isCentered ? 'hero-centered-mode' : 'bottom-right-mode'}`}>
-        {/* Single Floating Pill Button - Always Mounted, Glides across the screen via Framer Motion layout */}
-        <motion.button 
-          layout
-          className={`chat-toggle-btn ${chatOpen ? 'active' : ''}`}
-          onClick={handleToggle}
-          onMouseEnter={() => setCursorVariant('hover')}
-          onMouseLeave={() => setCursorVariant('default')}
-          transition={{ type: 'spring', stiffness: 190, damping: 23 }}
-        >
-          <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
-          <span className="toggle-text">{chatOpen ? 'CLOSE' : "LET'S TALK"}</span>
-        </motion.button>
+      <div className="chat-widget-wrapper">
+        {/* Floating Pill Button in Corner - Connected via layoutId */}
+        {showCornerBtn && (
+          <motion.button 
+            layoutId="talk-pill-btn"
+            className={`chat-toggle-btn ${chatOpen ? 'active' : ''}`}
+            onClick={handleToggle}
+            onMouseEnter={() => setCursorVariant('hover')}
+            onMouseLeave={() => setCursorVariant('default')}
+            transition={{ type: 'spring', stiffness: 180, damping: 22 }}
+          >
+            <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
+            <span className="toggle-text">{chatOpen ? 'CLOSE' : "LET'S TALK"}</span>
+          </motion.button>
+        )}
 
         {/* Chat Window Popup */}
         <AnimatePresence>

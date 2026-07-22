@@ -74,7 +74,24 @@ const Hero = ({ setCursorVariant, onOpenChat, chatOpen, hasInteractedChat }) => 
         </motion.p>
         
         {/* Fixed slot for LET'S TALK button so SCROLL indicator below NEVER shifts/jumps */}
-        <div className="hero-talk-btn-slot" />
+        <div className="hero-talk-btn-slot">
+          {!chatOpen && !hasInteractedChat && (
+            <motion.button 
+              layoutId="talk-pill-btn"
+              className="hero-center-talk-btn"
+              onClick={onOpenChat}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ type: 'spring', stiffness: 180, damping: 22 }}
+              onMouseEnter={() => setCursorVariant('hover')}
+              onMouseLeave={() => setCursorVariant('default')}
+            >
+              <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
+              <span className="toggle-text">LET'S TALK</span>
+            </motion.button>
+          )}
+        </div>
         
         <motion.div 
           className="hero-scroll-indicator"
