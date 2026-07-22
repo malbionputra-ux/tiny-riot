@@ -43,17 +43,22 @@ const Header = ({ setCursorVariant, isLight }) => {
         </Magnetic>
       </header>
 
-      {/* Bottom Center Floating Round Menu Button */}
+      {/* Bottom Center Floating Menu Trigger */}
       <div className="bottom-menu-wrapper">
         <Magnetic>
           <button
-            className={`bottom-menu-btn ${menuOpen ? 'open' : ''} ${isLight && !menuOpen ? 'light' : ''}`}
+            className={`bottom-menu-trigger ${menuOpen ? 'open' : ''} ${isLight && !menuOpen ? 'light' : ''}`}
             onClick={() => setMenuOpen(!menuOpen)}
             onMouseEnter={() => setCursorVariant && setCursorVariant('hover')}
             onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
             aria-label="Toggle Menu"
           >
-            {menuOpen ? <X size={26} /> : <span className="btn-text">MENU</span>}
+            <div className="trigger-icon-circle">
+              {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            </div>
+            <span className="trigger-text">
+              {menuOpen ? 'CLOSE' : 'MENU'}
+            </span>
           </button>
         </Magnetic>
       </div>

@@ -57,57 +57,109 @@
 }
 
 /* ═══════════════════════════════════════════════════════
-   Bottom Center Floating Menu Button (Build in Amsterdam style)
+   Bottom Center Floating Menu Trigger (Build in Amsterdam style)
 ═══════════════════════════════════════════════════════ */
 .bottom-menu-wrapper {
   position: fixed;
-  bottom: 2rem;
+  bottom: 2.2rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10002;
 }
 
-.bottom-menu-btn {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: rgba(24, 23, 23, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #ffffff;
+.bottom-menu-trigger {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 12px;
+  padding: 6px 22px 6px 6px;
+  border-radius: 100px;
+  background: rgba(18, 18, 18, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
   cursor: pointer;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-.bottom-menu-btn:hover {
-  transform: scale(1.1);
+.trigger-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.trigger-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hover Animations */
+.bottom-menu-trigger:hover {
+  transform: scale(1.05);
   border-color: var(--color-accent);
-  box-shadow: 0 20px 40px rgba(250, 42, 14, 0.3);
+  box-shadow: 0 0 30px rgba(250, 42, 14, 0.35), 0 15px 35px rgba(0, 0, 0, 0.5);
 }
 
-.bottom-menu-btn.open {
+.bottom-menu-trigger:hover .trigger-icon-circle {
   background: var(--color-accent);
+  color: #ffffff;
+  transform: rotate(180deg) scale(1.05);
+}
+
+.bottom-menu-trigger:hover .trigger-text {
+  color: #ffffff;
+  letter-spacing: 4px;
+  transform: translateX(2px);
+}
+
+/* Open State */
+.bottom-menu-trigger.open {
   border-color: var(--color-accent);
+  box-shadow: 0 0 25px rgba(250, 42, 14, 0.3);
+}
+
+.bottom-menu-trigger.open .trigger-icon-circle {
+  background: var(--color-accent);
   color: #ffffff;
 }
 
-.bottom-menu-btn.light:not(.open) {
-  background: rgba(255, 255, 255, 0.85);
-  color: #181717;
-  border-color: rgba(0, 0, 0, 0.15);
+/* Light Mode Variation */
+.bottom-menu-trigger.light:not(.open) {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(0, 0, 0, 0.12);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
-.btn-text {
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 2px;
+.bottom-menu-trigger.light:not(.open) .trigger-icon-circle {
+  background: rgba(0, 0, 0, 0.08);
+  color: #181717;
+}
+
+.bottom-menu-trigger.light:not(.open) .trigger-text {
+  color: #181717;
+}
+
+.bottom-menu-trigger.light:not(.open):hover .trigger-icon-circle {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+.bottom-menu-trigger.light:not(.open):hover .trigger-text {
+  color: #181717;
 }
 
 /* ═══════════════════════════════════════════════════════
