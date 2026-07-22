@@ -34,6 +34,7 @@
   transform: translateY(0);
 }
 
+/* Top Header Logo Only */
 .logo {
   display: flex;
   align-items: center;
@@ -50,108 +51,180 @@
   width: auto;
 }
 
-.nav-menu {
-  display: flex;
-  gap: 2.5rem;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 0.8rem 2.5rem;
-  border-radius: 100px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.nav-menu a {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: rgba(255, 255, 255, 0.7);
-  position: relative;
-  transition: color 0.3s ease;
-  padding: 0.5rem 0;
-}
-
-.nav-menu a:hover {
-  color: var(--color-text-dark);
-}
-
-
-
-.menu-btn {
-  background: none;
-  border: none;
-  display: none;
-  color: var(--color-text-dark);
-}
-
-/* Light mode variations */
+/* Light mode logo text */
 .header--light .logo-text {
   color: #181717;
 }
 
-.header--light .nav-menu {
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.header--light .nav-menu a {
-  color: rgba(0, 0, 0, 0.7);
-}
-
-.header--light .nav-menu a:hover {
-  color: #181717;
-}
-
-.header--light .menu-btn {
-  color: #181717;
-}
-
-@media (max-width: 768px) {
-  .nav-menu {
-    display: none;
-  }
-  .menu-btn {
-    display: block;
-    z-index: 1001; /* Ensure button is above overlay */
-  }
-  .header {
-    padding: 1.5rem 2rem;
-  }
-  .header--scrolled {
-    padding: 1rem 2rem;
-  }
-}
-
-.mobile-menu-overlay {
+/* ═══════════════════════════════════════════════════════
+   Bottom Center Floating Menu Button (Build in Amsterdam style)
+═══════════════════════════════════════════════════════ */
+.bottom-menu-wrapper {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(24, 23, 23, 0.95);
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10002;
+}
+
+.bottom-menu-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(24, 23, 23, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  z-index: 1000;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.mobile-nav-links {
+.bottom-menu-btn:hover {
+  transform: scale(1.1);
+  border-color: var(--color-accent);
+  box-shadow: 0 20px 40px rgba(250, 42, 14, 0.3);
+}
+
+.bottom-menu-btn.open {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #ffffff;
+}
+
+.bottom-menu-btn.light:not(.open) {
+  background: rgba(255, 255, 255, 0.85);
+  color: #181717;
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.btn-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   Slide Up Menu Drawer Overlay
+═══════════════════════════════════════════════════════ */
+.menu-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #090909;
+  z-index: 10001;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  text-align: center;
+  justify-content: space-between;
+  padding: 6rem 5rem 6rem 5rem;
 }
 
-.mobile-nav-links a {
-  font-size: 2rem;
-  font-weight: 800;
+.menu-drawer-container {
+  height: 100%;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.drawer-meta-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 1.5rem;
+}
+
+.drawer-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: auto 0;
+}
+
+.drawer-nav-list a {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.4s ease, transform 0.4s ease;
+}
+
+.drawer-nav-list a:hover {
   color: #ffffff;
+  transform: translateX(15px);
+}
+
+.nav-num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--color-accent);
+}
+
+.nav-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 4px;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.drawer-footer-bottom {
+  display: flex;
+  gap: 4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 2rem;
+}
+
+.footer-col h4 {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 0.4rem;
+}
+
+.footer-col p {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+/* Mobile responsive drawer adjustments */
+@media (max-width: 768px) {
+  .menu-drawer-overlay {
+    padding: 5rem 2rem 5rem 2rem;
+  }
+  .drawer-nav-list a {
+    gap: 1rem;
+  }
+  .drawer-nav-list a:hover {
+    transform: translateX(5px);
+  }
+  .drawer-footer-bottom {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .bottom-menu-btn {
+    width: 56px;
+    height: 56px;
+  }
 }
 
