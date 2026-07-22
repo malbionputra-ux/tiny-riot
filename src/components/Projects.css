@@ -1,208 +1,133 @@
 /* ═══════════════════════════════════════════════════════
-   Build in Amsterdam Style Portfolio Grid Showcase
+   Build in Amsterdam Exact Cases Page 4-Column Layout
 ═══════════════════════════════════════════════════════ */
-.projects-container {
+.projects-container.full-bleed-cases {
   background: #ffffff;
-  position: relative;
-  z-index: 2;
-  overflow-y: auto;
   min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0;
+  margin: 0;
 }
 
-.projects-grid-wrapper {
-  background: #ffffff;
-  padding: 7rem 4rem 10rem 4rem;
-  max-width: 1400px;
-  margin: 0 auto;
+.bia-cases-4col-grid {
+  display: flex;
+  width: 100%;
+  padding: 1.2rem;
+  gap: 1.2rem;
+  box-sizing: border-box;
+  position: relative;
 }
 
-.projects-section-header.no-sticky {
-  margin-bottom: 4rem;
-}
-
-.header-meta {
+.bia-grid-column {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 1.2rem;
 }
 
-.meta-eyebrow {
-  font-size: 0.75rem;
+/* Vertical "FILTER WORK" standing text between col 2 and col 3 */
+.bia-filter-work-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.4rem;
+  pointer-events: none;
+}
+
+.bia-filter-work-divider span {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.65rem;
   font-weight: 800;
-  letter-spacing: 3px;
-  color: var(--color-accent);
-  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(24, 23, 23, 0.4);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
 }
 
-.projects-title-main {
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  font-weight: 900;
-  line-height: 1.05;
-  text-transform: uppercase;
-  color: #181717;
-  letter-spacing: -2px;
-}
-
-.projects-title-main em {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  color: rgba(24, 23, 23, 0.6);
-  text-transform: lowercase;
-}
-
-/* Build in Amsterdam Exact 3-Column Grid Layout */
-.bia-portfolio-grid-exact {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  align-items: start;
-}
-
-.bia-card-item {
+.bia-case-card {
   position: relative;
-  border-radius: 8px;
-  overflow: hidden;
-  cursor: pointer;
-  background: #0d0d0d;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-  transition: box-shadow 0.4s ease;
-}
-
-.bia-card-item.stagger-1 {
-  margin-top: 0;
-}
-
-.bia-card-item.stagger-2 {
-  margin-top: 5rem;
-}
-
-.bia-card-item.stagger-3 {
-  margin-top: 2rem;
-}
-
-.bia-card-item.aspect-tall {
-  height: 480px;
-}
-
-.bia-card-item.aspect-medium {
-  height: 380px;
-}
-
-/* Card Image Box */
-.bia-card-img-box {
   width: 100%;
-  height: 100%;
-  position: relative;
   overflow: hidden;
+  background: #111111;
+  cursor: pointer;
+  border-radius: 2px;
 }
 
-.bia-card-img-box img {
+.case-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.bia-card-shadow-overlay {
+.case-shadow-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.2) 55%, rgba(0, 0, 0, 0.88) 100%);
+  background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.8) 100%);
   transition: opacity 0.4s ease;
 }
 
-/* Floating Pill Tag (Newly Added, Headless, etc.) */
-.bia-card-pill-tag {
+.case-info-tag {
   position: absolute;
-  top: 1.2rem;
-  right: 1.2rem;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  padding: 0.35rem 0.9rem;
-  border-radius: 100px;
-  font-size: 0.68rem;
-  font-weight: 800;
-  color: #ffffff;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  z-index: 3;
-  transition: all 0.35s ease;
-}
-
-/* Text Caption on Image Bottom Left */
-.bia-card-text-overlay {
-  position: absolute;
-  bottom: 1.4rem;
-  left: 1.4rem;
-  right: 1.4rem;
-  z-index: 3;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  z-index: 2;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.bia-card-caption {
-  font-size: 0.88rem;
-  line-height: 1.45;
-  color: #ffffff;
+.case-caption-text {
   margin: 0;
-  display: block;
+  font-size: 0.82rem;
+  color: #ffffff;
+  line-height: 1.4;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
-.caption-title {
-  font-weight: 900;
-  font-size: 0.98rem;
+.case-title {
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   color: #ffffff;
 }
 
-.caption-dot {
-  color: rgba(255, 255, 255, 0.5);
+.case-dot {
+  color: rgba(255, 255, 255, 0.6);
   font-weight: 700;
 }
 
-.caption-desc {
+.case-desc {
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.9);
 }
 
-/* Hover Interactions */
-.bia-card-item:hover .bia-card-img-box img {
-  transform: scale(1.06);
+.bia-case-card:hover .case-img {
+  transform: scale(1.05);
 }
 
-.bia-card-item:hover .bia-card-text-overlay {
+.bia-case-card:hover .case-info-tag {
   transform: translateY(-3px);
 }
 
-.bia-card-item:hover .bia-card-pill-tag {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  box-shadow: 0 4px 15px rgba(250, 42, 14, 0.4);
-}
-
-.bia-card-item:hover {
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.75);
-}
-
-/* Responsive Grid */
-@media (max-width: 1100px) {
-  .bia-portfolio-grid-exact {
-    grid-template-columns: repeat(2, 1fr);
+/* Mobile responsive layout */
+@media (max-width: 900px) {
+  .bia-cases-4col-grid {
+    flex-wrap: wrap;
+  }
+  .bia-grid-column {
+    min-width: 45%;
+  }
+  .bia-filter-work-divider {
+    display: none;
   }
 }
 
-@media (max-width: 700px) {
-  .bia-portfolio-grid-exact {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  .bia-card-item.aspect-tall,
-  .bia-card-item.aspect-medium {
-    height: 380px;
-  }
-  .projects-grid-wrapper {
-    padding: 5rem 1.5rem 8rem 1.5rem;
+@media (max-width: 600px) {
+  .bia-grid-column {
+    min-width: 100%;
   }
 }

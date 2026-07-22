@@ -2,134 +2,116 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import './Projects.css';
 
-const projectsList = [
-  { 
-    id: 1, 
-    title: 'DUNIA GAMES', 
-    category: 'E-Sports Portal', 
-    tag: 'Newly Added', 
-    desc: 'Indonesia’s premier gaming platform & e-sports hub', 
-    img: '/assets/dunia-games.jpg',
-    aspect: 'aspect-tall'
-  },
-  { 
-    id: 2, 
-    title: 'BINAR ACADEMY', 
-    category: 'EdTech Platform', 
-    tag: 'Headless Web', 
-    desc: 'Rebranding & digital learning flagship platform', 
-    img: '/assets/binar.jpg',
-    aspect: 'aspect-medium'
-  },
-  { 
-    id: 3, 
-    title: 'GOJEK DRIVER', 
-    category: 'App Interface', 
-    tag: 'UI/UX Case', 
-    desc: 'Streamlining operations for millions of drivers', 
-    img: '/assets/gojek.jpg',
-    aspect: 'aspect-tall'
-  },
-  { 
-    id: 4, 
-    title: 'NEO BANKING', 
-    category: 'Fintech Dashboard', 
-    tag: 'Fintech', 
-    desc: 'Next-gen wealth management & digital banking', 
-    img: '/assets/neo.jpg',
-    aspect: 'aspect-medium'
-  },
-  { 
-    id: 5, 
-    title: 'VORTEX DYNAMICS', 
-    category: 'Web3 Platform', 
-    tag: 'Web3 Ecosystem', 
-    desc: 'Decentralized trading platform with real-time analytics', 
-    img: '/assets/vortex.jpg',
-    aspect: 'aspect-tall'
-  },
-  { 
-    id: 6, 
-    title: 'YELLOW TRUCK', 
-    category: 'F&B E-Commerce', 
-    tag: 'Branding & Store', 
-    desc: 'Artisanal coffee experience brought to life online', 
-    img: '/assets/yellow-truck.jpg',
-    aspect: 'aspect-medium'
-  },
+const columnsData = [
+  // Column 1
+  [
+    { 
+      id: 1, 
+      title: 'FOAM TALENT 2021', 
+      desc: 'A digital exhibition celebrating emotional browsing', 
+      img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80',
+      height: '320px'
+    },
+    { 
+      id: 5, 
+      title: 'MOOOI', 
+      desc: 'Multi-sensory flagship store', 
+      img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1000&q=80',
+      height: '560px'
+    }
+  ],
+  // Column 2
+  [
+    { 
+      id: 2, 
+      title: 'POWERHOUSE COMPANY', 
+      desc: 'Giving meaning to space', 
+      img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80',
+      height: '240px'
+    },
+    { 
+      id: 6, 
+      title: 'MOLLIE', 
+      desc: 'Grow your way', 
+      img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80',
+      height: '640px'
+    }
+  ],
+  // Column 3
+  [
+    { 
+      id: 3, 
+      title: 'FOAM TALENT 2020', 
+      desc: 'An exhibition without walls', 
+      img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1000&q=80',
+      height: '320px'
+    },
+    { 
+      id: 7, 
+      title: 'ABEL VITA ODOR', 
+      desc: 'Sparking all senses but smell', 
+      img: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1000&q=80',
+      height: '560px'
+    }
+  ],
+  // Column 4
+  [
+    { 
+      id: 4, 
+      title: 'STELLAR DEVELOPMENT', 
+      desc: 'Developing destinations', 
+      img: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1000&q=80',
+      height: '240px'
+    },
+    { 
+      id: 8, 
+      title: 'VITRA', 
+      desc: 'Office chair finder', 
+      img: 'https://images.unsplash.com/photo-1580481072645-022f9a6d8310?auto=format&fit=crop&w=1000&q=80',
+      height: '640px'
+    }
+  ]
 ];
 
 const Projects = ({ setCursorVariant }) => {
-  const textVariants = {
-    hidden:  { y: '100%', opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
-  };
-
   return (
-    <section className="projects-container light-section" id="projects">
-      <div className="projects-grid-wrapper">
-        <div className="projects-section-header no-sticky">
-          <motion.div 
-            className="header-meta"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-          >
-            <div style={{ overflow: 'hidden', paddingBottom: '5px' }}>
-              <motion.span variants={textVariants} className="meta-eyebrow" style={{ display: 'block' }}>CASES & WORK</motion.span>
-            </div>
-            <div style={{ overflow: 'hidden' }}>
-              <motion.h2 variants={textVariants} className="projects-title-main">Karya <em>Terpilih</em></motion.h2>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Build in Amsterdam Exact 3-Column Staggered Portfolio Grid */}
-        <motion.div 
-          className="bia-portfolio-grid-exact"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-        >
-          {projectsList.map((project, index) => {
-            const staggerClass = `stagger-${(index % 3) + 1}`;
-            return (
-              <motion.div
-                variants={cardVariants}
-                key={project.id}
-                className={`bia-card-item ${project.aspect} ${staggerClass}`}
-                onMouseEnter={() => setCursorVariant && setCursorVariant('project')}
-                onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
-              >
-                <div className="bia-card-img-box">
-                  <img src={project.img} alt={project.title} loading="lazy" />
-                  <div className="bia-card-shadow-overlay" />
-                </div>
-
-                {project.tag && (
-                  <div className="bia-card-pill-tag">
-                    {project.tag}
+    <section className="projects-container light-section full-bleed-cases" id="projects">
+      <div className="bia-cases-4col-grid">
+        {columnsData.map((col, colIndex) => (
+          <React.Fragment key={colIndex}>
+            {colIndex === 2 && (
+              <div className="bia-filter-work-divider">
+                <span>FILTER WORK</span>
+              </div>
+            )}
+            <div className="bia-grid-column">
+              {col.map((item) => (
+                <motion.div
+                  key={item.id}
+                  className="bia-case-card"
+                  style={{ height: item.height }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  onMouseEnter={() => setCursorVariant && setCursorVariant('project')}
+                  onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
+                >
+                  <img src={item.img} alt={item.title} className="case-img" />
+                  <div className="case-shadow-gradient" />
+                  
+                  <div className="case-info-tag">
+                    <p className="case-caption-text">
+                      <span className="case-title">{item.title}</span>
+                      <span className="case-dot"> · </span>
+                      <span className="case-desc">{item.desc}</span>
+                    </p>
                   </div>
-                )}
-
-                <div className="bia-card-text-overlay">
-                  <p className="bia-card-caption">
-                    <strong className="caption-title">{project.title}</strong>
-                    <span className="caption-dot"> • </span>
-                    <span className="caption-desc">{project.desc}</span>
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                </motion.div>
+              ))}
+            </div>
+          </React.Fragment>
+        ))}
       </div>
     </section>
   );
