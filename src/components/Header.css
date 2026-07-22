@@ -286,8 +286,55 @@
   margin: 0;
 }
 
-/* Mobile responsive drawer adjustments */
+/* Desktop & Mobile Responsive Header Rules */
+@media (min-width: 769px) {
+  .mobile-hamburger-btn {
+    display: none;
+  }
+  .desktop-hero-links {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+  }
+}
+
 @media (max-width: 768px) {
+  .header {
+    padding: 1.5rem 1.5rem;
+  }
+  .header--scrolled {
+    padding: 1rem 1.5rem;
+  }
+  .logo-text {
+    display: none;
+  }
+  .custom-logo {
+    height: 28px;
+  }
+  .desktop-hero-links {
+    display: none;
+  }
+  .nav-menu {
+    background: transparent;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .mobile-hamburger-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+  }
   .menu-drawer-overlay {
     padding: 5rem 2rem 5rem 2rem;
   }

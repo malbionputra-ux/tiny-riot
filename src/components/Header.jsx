@@ -60,33 +60,44 @@ const Header = ({ setCursorVariant, isLight, activeSlideIndex, isTransitioning }
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.4 }}
             >
-              <Magnetic>
-                <a
-                  href="#about"
-                  onMouseEnter={() => setCursorVariant && setCursorVariant('navbarHover')}
-                  onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
-                >
-                  Tentang
-                </a>
-              </Magnetic>
-              <Magnetic>
-                <a
-                  href="#services"
-                  onMouseEnter={() => setCursorVariant && setCursorVariant('navbarHover')}
-                  onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
-                >
-                  Layanan
-                </a>
-              </Magnetic>
-              <Magnetic>
-                <a
-                  href="#projects"
-                  onMouseEnter={() => setCursorVariant && setCursorVariant('navbarHover')}
-                  onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
-                >
-                  Work
-                </a>
-              </Magnetic>
+              <div className="desktop-hero-links">
+                <Magnetic>
+                  <a
+                    href="#about"
+                    onMouseEnter={() => setCursorVariant && setCursorVariant('navbarHover')}
+                    onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
+                  >
+                    Tentang
+                  </a>
+                </Magnetic>
+                <Magnetic>
+                  <a
+                    href="#services"
+                    onMouseEnter={() => setCursorVariant && setCursorVariant('navbarHover')}
+                    onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
+                  >
+                    Layanan
+                  </a>
+                </Magnetic>
+                <Magnetic>
+                  <a
+                    href="#projects"
+                    onMouseEnter={() => setCursorVariant && setCursorVariant('navbarHover')}
+                    onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
+                  >
+                    Work
+                  </a>
+                </Magnetic>
+              </div>
+
+              {/* Mobile HP 3-line Hamburger Menu Button */}
+              <button 
+                className="mobile-hamburger-btn"
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label="Open Menu"
+              >
+                <Menu size={22} color={isLight ? '#181717' : '#ffffff'} />
+              </button>
             </motion.nav>
           )}
         </AnimatePresence>
