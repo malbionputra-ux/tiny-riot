@@ -246,7 +246,7 @@ function App() {
         isTransitioning={isTransitioning}
       />
       
-      <main className="slider-main">
+      <main className="slider-main" style={{ perspective: '1200px' }}>
         {/* Slide 0: Hero */}
         <div 
           className={`slide-container ${activeSlideIndex === 0 ? 'active' : ''}`}
@@ -287,35 +287,42 @@ function App() {
         </div>
         
         {/* Slide 3: Packages (Plainthing Studio Progressive 3D Card Stack) */}
-        <motion.div 
-          className={`slide-container ${activeSlideIndex === 3 || (activeSlideIndex === 2 && cardProgress > 0) ? 'active' : ''}`}
-          ref={el => slideRefs.current['packages'] = el}
-          initial={false}
-          animate={{
-            y: `${(1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 100}%`,
-            rotateX: (1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 22,
-            scale: 0.93 + (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress))) * 0.07,
-            borderTopLeftRadius: `${(1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 32}px`,
-            borderTopRightRadius: `${(1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 32}px`
-          }}
-          transition={{
-            type: 'spring',
-            stiffness: 220,
-            damping: 28,
-            mass: 0.5
-          }}
-          style={{
-            zIndex: activeSlideIndex === 3 ? 10 : (activeSlideIndex === 2 && cardProgress > 0 ? 12 : 1),
-            perspective: '1200px',
-            transformOrigin: 'top center',
-            boxShadow: cardProgress > 0 && cardProgress < 1 ? '0 -25px 60px rgba(0, 0, 0, 0.35)' : 'none',
-            overflow: activeSlideIndex === 3 && cardProgress >= 0.95 ? 'auto' : 'hidden'
-          }}
-        >
-          {(activeSlideIndex === 3 || activeSlideIndex === 2 || cardProgress > 0) && (
+        {activeSlideIndex === 2 || activeSlideIndex === 3 ? (
+          <motion.div 
+            className={`slide-container ${activeSlideIndex === 3 || (activeSlideIndex === 2 && cardProgress > 0) ? 'active' : ''}`}
+            ref={el => slideRefs.current['packages'] = el}
+            initial={false}
+            animate={{
+              y: `${(1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 100}%`,
+              rotateX: (1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 22,
+              scale: 0.93 + (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress))) * 0.07,
+              borderTopLeftRadius: `${(1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 32}px`,
+              borderTopRightRadius: `${(1 - (Number.isNaN(cardProgress) ? 0 : Math.max(0, Math.min(1, cardProgress)))) * 32}px`
+            }}
+            transition={{
+              type: 'spring',
+              stiffness: 220,
+              damping: 28,
+              mass: 0.5
+            }}
+            style={{
+              zIndex: activeSlideIndex === 3 ? 10 : (activeSlideIndex === 2 && cardProgress > 0 ? 12 : 1),
+              transformOrigin: 'top center',
+              boxShadow: cardProgress > 0 && cardProgress < 1 ? '0 -25px 60px rgba(0, 0, 0, 0.35)' : 'none',
+              overflow: activeSlideIndex === 3 && cardProgress >= 0.95 ? 'auto' : 'hidden'
+            }}
+          >
             <Packages setCursorVariant={setCursorVariant} />
-          )}
-        </motion.div>
+          </motion.div>
+        ) : (
+          <div 
+            className={`slide-container ${activeSlideIndex === 3 ? 'active' : ''}`}
+            ref={el => slideRefs.current['packages'] = el}
+            style={{ zIndex: activeSlideIndex === 3 ? 10 : 1 }}
+          >
+            {activeSlideIndex === 3 && <Packages setCursorVariant={setCursorVariant} />}
+          </div>
+        )}
         
         {/* Slide 4: Footer */}
         <div 
