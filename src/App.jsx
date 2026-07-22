@@ -251,6 +251,7 @@ function App() {
         <div 
           className={`slide-container ${activeSlideIndex === 0 ? 'active' : ''}`}
           ref={el => slideRefs.current['hero'] = el}
+          style={{ zIndex: activeSlideIndex === 0 ? 10 : 1 }}
         >
           {activeSlideIndex === 0 && (
             <Hero 
@@ -266,16 +267,17 @@ function App() {
         <div 
           className={`slide-container ${activeSlideIndex === 1 ? 'active' : ''}`}
           ref={el => slideRefs.current['projects'] = el}
+          style={{ zIndex: activeSlideIndex === 1 ? 10 : 1 }}
         >
           {activeSlideIndex === 1 && <Projects setCursorVariant={setCursorVariant} />}
         </div>
         
         {/* Slide 2: Services (Background under Packages card) */}
         <div 
-          className={`slide-container ${activeSlideIndex === 2 || activeSlideIndex === 3 || cardProgress > 0 ? 'active' : ''}`}
+          className={`slide-container ${activeSlideIndex === 2 || (cardProgress > 0 && cardProgress < 1) ? 'active' : ''}`}
           ref={el => slideRefs.current['services'] = el}
           style={{
-            zIndex: activeSlideIndex === 2 ? 10 : 5,
+            zIndex: activeSlideIndex === 2 ? 10 : 1,
             backgroundColor: 'var(--color-bg-gray)'
           }}
         >
@@ -286,7 +288,7 @@ function App() {
         
         {/* Slide 3: Packages (Plainthing Studio Progressive 3D Card Stack) */}
         <motion.div 
-          className={`slide-container ${activeSlideIndex === 3 || activeSlideIndex === 2 || cardProgress > 0 ? 'active' : ''}`}
+          className={`slide-container ${activeSlideIndex === 3 || (activeSlideIndex === 2 && cardProgress > 0) ? 'active' : ''}`}
           ref={el => slideRefs.current['packages'] = el}
           initial={false}
           animate={{
@@ -303,7 +305,7 @@ function App() {
             mass: 0.5
           }}
           style={{
-            zIndex: activeSlideIndex === 3 || cardProgress > 0 ? 20 : 5,
+            zIndex: activeSlideIndex === 3 ? 10 : (activeSlideIndex === 2 && cardProgress > 0 ? 12 : 1),
             perspective: '1200px',
             transformOrigin: 'top center',
             boxShadow: cardProgress > 0 && cardProgress < 1 ? '0 -25px 60px rgba(0, 0, 0, 0.35)' : 'none',
@@ -319,6 +321,7 @@ function App() {
         <div 
           className={`slide-container ${activeSlideIndex === 4 ? 'active' : ''}`}
           ref={el => slideRefs.current['footer'] = el}
+          style={{ zIndex: activeSlideIndex === 4 ? 10 : 1 }}
         >
           {activeSlideIndex === 4 && <Footer setCursorVariant={setCursorVariant} />}
         </div>
