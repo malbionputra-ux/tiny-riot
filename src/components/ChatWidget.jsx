@@ -267,5 +267,3 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
 };
 
 export default ChatWidget;
-
-export default ChatWidget;
