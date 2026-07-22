@@ -8,7 +8,6 @@ import Packages from './components/Packages'
 import Footer from './components/Footer'
 import ChatWidget from './components/ChatWidget'
 import LiquidTransition from './components/LiquidTransition'
-import CardStackTransition from './components/CardStackTransition'
 import Preloader from './components/Preloader'
 import './App.css'
 import './slider.css'
@@ -20,11 +19,8 @@ function App() {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [targetSlideIndex, setTargetSlideIndex] = useState(0)
-  const [cardStackState, setCardStackState] = useState(null); // null, 'stackingUp', 'stackingDown'
   const [appLoaded, setAppLoaded] = useState(false)
-
-  const isCardStackTransition = Boolean(cardStackState);
-
+  
   // Refs for tracking scroll bounds
   const slideRefs = useRef({});
 
@@ -32,22 +28,6 @@ function App() {
     if (isTransitioning || newIndex === activeSlideIndex) return;
     setTargetSlideIndex(newIndex);
     setIsTransitioning(true);
-
-    if (activeSlideIndex === 2 && newIndex === 3) {
-      setCardStackState('stackingUp');
-      setTimeout(() => {
-        setActiveSlideIndex(3);
-        setIsTransitioning(false);
-        setCardStackState(null);
-      }, 920);
-    } else if (activeSlideIndex === 3 && newIndex === 2) {
-      setCardStackState('stackingDown');
-      setTimeout(() => {
-        setActiveSlideIndex(2);
-        setIsTransitioning(false);
-        setCardStackState(null);
-      }, 920);
-    }
   };
 
   // Called when the Liquid curtain is fully covering the screen
@@ -179,8 +159,8 @@ function App() {
       <Preloader onComplete={() => setAppLoaded(true)} />
       <CustomCursor variant={cursorVariant} />
       
-      {/* Liquid Wave Overlay (Only for other slide transitions) */}
-      {isTransitioning && !isCardStackTransition && (
+      {/* The Liquid Wave Overlay */}
+      {isTransitioning && (
         <LiquidTransition 
           isTransitioning={isTransitioning} 
           onCoverComplete={onCoverComplete} 
@@ -222,45 +202,19 @@ function App() {
         
         {/* Slide 2: Services */}
         <div 
-          className={`slide-container ${activeSlideIndex === 2 || isCardStackTransition ? 'active' : ''}`}
+          className={`slide-container ${activeSlideIndex === 2 ? 'active' : ''}`}
           ref={el => slideRefs.current['services'] = el}
-          style={{
-            zIndex: activeSlideIndex === 2 ? 10 : 5
-          }}
         >
-          {(activeSlideIndex === 2 || isCardStackTransition) && (
-            <Services setCursorVariant={setCursorVariant} />
-          )}
+          {activeSlideIndex === 2 && <Services setCursorVariant={setCursorVariant} />}
         </div>
         
-        {/* Slide 3: Packages (Plainthing Studio Style Direct 3D Card Stack) */}
-        <motion.div 
-          className={`slide-container ${activeSlideIndex === 3 || isCardStackTransition ? 'active' : ''}`}
+        {/* Slide 3: Packages */}
+        <div 
+          className={`slide-container ${activeSlideIndex === 3 ? 'active' : ''}`}
           ref={el => slideRefs.current['packages'] = el}
-          initial={false}
-          animate={
-            cardStackState === 'stackingUp'
-              ? { y: ['100%', '0%'], rotateX: [22, 0], scale: [0.93, 1], borderTopLeftRadius: ['32px', '0px'], borderTopRightRadius: ['32px', '0px'] }
-              : cardStackState === 'stackingDown'
-                ? { y: ['0%', '100%'], rotateX: [0, 22], scale: [1, 0.93], borderTopLeftRadius: ['0px', '32px'], borderTopRightRadius: ['0px', '32px'] }
-                : { y: '0%', rotateX: 0, scale: 1, borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }
-          }
-          transition={{
-            duration: 0.9,
-            ease: [0.16, 1, 0.3, 1]
-          }}
-          style={{
-            zIndex: cardStackState === 'stackingUp' || activeSlideIndex === 3 ? 20 : 5,
-            perspective: '1200px',
-            transformOrigin: 'top center',
-            boxShadow: isCardStackTransition ? '0 -25px 60px rgba(0, 0, 0, 0.3)' : 'none',
-            overflow: 'hidden'
-          }}
         >
-          {(activeSlideIndex === 3 || isCardStackTransition) && (
-            <Packages setCursorVariant={setCursorVariant} />
-          )}
-        </motion.div>
+          {activeSlideIndex === 3 && <Packages setCursorVariant={setCursorVariant} />}
+        </div>
         
         {/* Slide 4: Footer */}
         <div 
