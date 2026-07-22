@@ -76,6 +76,11 @@ const columnsData = [
 const Projects = ({ setCursorVariant }) => {
   return (
     <section className="projects-container light-section full-bleed-cases" id="projects">
+      {/* Vertically standing SEE MORE label fixed at bottom center right above the red menu circle button */}
+      <div className="bia-see-more-divider">
+        <button type="button">SEE MORE</button>
+      </div>
+
       <div className="bia-cases-4col-grid">
         {columnsData.map((col, colIndex) => (
           <div key={colIndex} className="bia-grid-column">
