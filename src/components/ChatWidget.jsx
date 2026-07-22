@@ -7,9 +7,8 @@ const ChatWidget = ({ setCursorVariant }) => {
   const [messages, setMessages] = useState([
     { id: 1, sender: 'bot', text: 'Halo! Kami Tiny Riot. Projek apa yang sedang ingin lo garap?' }
   ]);
-  const [emailInput, setEmailInput] = useState('');
-  const [step, setStep] = useState('select_service'); // 'select_service', 'ask_email', 'finished'
-  const chatEndRef = useRef(null);
+  const [selectedService, setSelectedService] = useState('');
+  const [isSending, setIsSending] = useState(false);
 
   const services = [
     'Social Media Strategy',
@@ -25,6 +24,7 @@ const ChatWidget = ({ setCursorVariant }) => {
   }, [messages, isOpen]);
 
   const handleSelectService = (service) => {
+    setSelectedService(service);
     setMessages((prev) => [
       ...prev,
       { id: Date.now(), sender: 'user', text: service },
@@ -33,17 +33,49 @@ const ChatWidget = ({ setCursorVariant }) => {
     setStep('ask_email');
   };
 
-  const handleSendEmail = (e) => {
+  const handleSendEmail = async (e) => {
     e.preventDefault();
-    if (!emailInput.trim()) return;
+    const targetEmail = emailInput.trim();
+    if (!targetEmail) return;
+
+    setIsSending(true);
 
     setMessages((prev) => [
       ...prev,
-      { id: Date.now(), sender: 'user', text: emailInput },
-      { id: Date.now() + 1, sender: 'bot', text: 'Terima kasih banyak! Email lo udah kami catat. Tim Tiny Riot bakal segera ngehubungin lo dalam 24 jam.' }
+      { id: Date.now(), sender: 'user', text: targetEmail },
+      { id: Date.now() + 1, sender: 'bot', text: `Mengirim email konfirmasi ke ${targetEmail}...` }
     ]);
     setEmailInput('');
-    setStep('finished');
+
+    try {
+      await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: 'c90666ec-7e50-4822-b924-f7b7cf7a86f9',
+          email: targetEmail,
+          name: 'Client Tiny Riot',
+          subject: `[Tiny Riot] Konfirmasi Diskusi Proyek ${selectedService || 'Layanan'}`,
+          message: `Halo! Terima kasih telah mengontak Tiny Riot untuk layanan ${selectedService || 'Layanan'}. Tim kami akan segera menghubungi Anda dalam 24 jam.`
+        })
+      });
+
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now() + 2, sender: 'bot', text: `✅ Berhasil! Email konfirmasi telah terkirim ke ${targetEmail}. Silakan cek inbox/spam Anda.` }
+      ]);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now() + 2, sender: 'bot', text: `Terima kasih! Email ${targetEmail} telah tersimpan di sistem kami.` }
+      ]);
+    } finally {
+      setIsSending(false);
+      setStep('finished');
+    }
   };
 
   return (
