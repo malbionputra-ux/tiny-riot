@@ -145,13 +145,13 @@ function App() {
 
   const handleOpenChat = () => {
     setIsSpawningTrail(true);
-    setHasInteractedChat(true);
     setTimeout(() => {
+      setHasInteractedChat(true);
       setChatOpen(true);
-    }, 400);
+    }, 480);
     setTimeout(() => {
       setIsSpawningTrail(false);
-    }, 1200);
+    }, 1300);
   };
 
   return (

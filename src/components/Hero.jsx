@@ -8,14 +8,14 @@ import './Hero.css';
 ═══════════════════════════════ */
 const Hero = ({ setCursorVariant, onOpenChat, chatOpen, hasInteractedChat }) => {
   const [timeStr, setTimeStr] = useState('');
-  const [isMorphingToCircle, setIsMorphingToCircle] = useState(false);
+  const [isGliding, setIsGliding] = useState(false);
 
   const handleButtonClick = () => {
-    setIsMorphingToCircle(true);
+    setIsGliding(true);
+    onOpenChat();
     setTimeout(() => {
-      onOpenChat();
-      setIsMorphingToCircle(false);
-    }, 180);
+      setIsGliding(false);
+    }, 600);
   };
 
   useEffect(() => {
@@ -77,17 +77,33 @@ const Hero = ({ setCursorVariant, onOpenChat, chatOpen, hasInteractedChat }) => 
         <div className="hero-talk-btn-slot">
           {!chatOpen && !hasInteractedChat && (
             <motion.button 
-              className="hero-center-talk-btn"
+              className={`hero-center-talk-btn ${isGliding ? 'is-circle-morph' : ''}`}
               onClick={handleButtonClick}
               initial={{ opacity: 0, y: 35, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
+              animate={isGliding ? {
+                x: ['0vw', '38vw'],
+                y: ['0vh', '35vh'],
+                scale: [1, 0.85, 0.6],
+                opacity: [1, 1, 0]
+              } : {
+                x: 0,
+                y: 0,
+                scale: 1,
+                opacity: 1
+              }}
               exit={{ opacity: 0, y: 25, scale: 0.9 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              transition={isGliding ? {
+                duration: 0.55,
+                ease: [0.16, 1, 0.3, 1]
+              } : {
+                duration: 0.6,
+                ease: [0.16, 1, 0.3, 1]
+              }}
               onMouseEnter={() => setCursorVariant('hover')}
               onMouseLeave={() => setCursorVariant('default')}
             >
               <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
-              <span className="toggle-text">LET'S TALK</span>
+              {!isGliding && <span className="toggle-text">LET'S TALK</span>}
             </motion.button>
           )}
         </div>
