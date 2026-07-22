@@ -139,6 +139,14 @@ function App() {
     };
   }, [activeSlideIndex, isTransitioning, appLoaded]);
 
+  const [chatOpen, setChatOpen] = useState(false);
+  const [hasInteractedChat, setHasInteractedChat] = useState(false);
+
+  const handleOpenChat = () => {
+    setHasInteractedChat(true);
+    setChatOpen(true);
+  };
+
   return (
     <div className="app-container">
       <Preloader onComplete={() => setAppLoaded(true)} />
@@ -167,7 +175,14 @@ function App() {
           className={`slide-container ${activeSlideIndex === 0 ? 'active' : ''}`}
           ref={el => slideRefs.current['hero'] = el}
         >
-          {activeSlideIndex === 0 && <Hero setCursorVariant={setCursorVariant} />}
+          {activeSlideIndex === 0 && (
+            <Hero 
+              setCursorVariant={setCursorVariant} 
+              onOpenChat={handleOpenChat}
+              chatOpen={chatOpen}
+              hasInteractedChat={hasInteractedChat}
+            />
+          )}
         </div>
         
         {/* Slide 1: Projects */}
@@ -203,7 +218,14 @@ function App() {
         </div>
       </main>
       
-      <ChatWidget setCursorVariant={setCursorVariant} activeSlideIndex={activeSlideIndex} />
+      <ChatWidget 
+        setCursorVariant={setCursorVariant} 
+        activeSlideIndex={activeSlideIndex} 
+        chatOpen={chatOpen}
+        setChatOpen={setChatOpen}
+        hasInteractedChat={hasInteractedChat}
+        setHasInteractedChat={setHasInteractedChat}
+      />
     </div>
   )
 }

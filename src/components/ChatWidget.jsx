@@ -2,9 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './ChatWidget.css';
 
-const ChatWidget = ({ setCursorVariant, activeSlideIndex }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
+const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen, hasInteractedChat, setHasInteractedChat }) => {
   const [messages, setMessages] = useState([
     { id: 1, sender: 'bot', text: 'Halo! Kami Tiny Riot. Projek apa yang sedang ingin lo garap?' }
   ]);
@@ -15,11 +13,11 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex }) => {
   const chatEndRef = useRef(null);
 
   const isHero = activeSlideIndex === 0;
-  const isCentered = isHero && !isOpen && !hasInteracted;
+  const showCornerBtn = chatOpen || hasInteractedChat || !isHero;
 
   const handleToggle = () => {
-    if (!hasInteracted) setHasInteracted(true);
-    setIsOpen(!isOpen);
+    if (!hasInteractedChat && setHasInteractedChat) setHasInteractedChat(true);
+    if (setChatOpen) setChatOpen(!chatOpen);
   };
 
   const services = [
@@ -33,7 +31,7 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex }) => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages, isOpen]);
+  }, [messages, chatOpen]);
 
   const handleSelectService = (service) => {
     setSelectedService(service);
@@ -91,23 +89,25 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex }) => {
   };
 
   return (
-    <div className={`chat-widget-wrapper ${isCentered ? 'hero-centered-mode' : 'bottom-right-mode'}`}>
+    <div className="chat-widget-wrapper bottom-right-mode">
       {/* Floating Pill Button - Morphing between Hero Center and Bottom Right */}
-      <motion.button 
-        layout
-        className={`chat-toggle-btn ${isOpen ? 'active' : ''} ${isCentered ? 'hero-centered' : 'bottom-right'}`}
-        onClick={handleToggle}
-        onMouseEnter={() => setCursorVariant('hover')}
-        onMouseLeave={() => setCursorVariant('default')}
-        transition={{ type: 'spring', stiffness: 180, damping: 24 }}
-      >
-        <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
-        <span className="toggle-text">{isOpen ? 'CLOSE' : "LET'S TALK"}</span>
-      </motion.button>
+      {showCornerBtn && (
+        <motion.button 
+          layoutId="talk-pill-btn"
+          className={`chat-toggle-btn ${chatOpen ? 'active' : ''}`}
+          onClick={handleToggle}
+          onMouseEnter={() => setCursorVariant('hover')}
+          onMouseLeave={() => setCursorVariant('default')}
+          transition={{ type: 'spring', stiffness: 180, damping: 24 }}
+        >
+          <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
+          <span className="toggle-text">{chatOpen ? 'CLOSE' : "LET'S TALK"}</span>
+        </motion.button>
+      )}
 
       {/* Chat Window Popup */}
       <AnimatePresence>
-        {isOpen && (
+        {chatOpen && (
           <motion.div 
             className="chat-window"
             initial={{ opacity: 0, y: 50, scale: 0.95 }}

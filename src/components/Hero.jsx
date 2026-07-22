@@ -6,7 +6,7 @@ import './Hero.css';
 /* ═══════════════════════════════
    Hero Component
 ═══════════════════════════════ */
-const Hero = ({ setCursorVariant }) => {
+const Hero = ({ setCursorVariant, onOpenChat, chatOpen, hasInteractedChat }) => {
   const [timeStr, setTimeStr] = useState('');
 
   useEffect(() => {
@@ -63,6 +63,24 @@ const Hero = ({ setCursorVariant }) => {
         >
           Kami membantu brand membangun reputasi digital yang berani dan lantang melalui kreativitas tanpa batas, teknologi mutakhir, serta strategi yang tajam.
         </motion.p>
+        
+        {/* LET'S TALK Button directly between subtitle and scroll indicator */}
+        {!chatOpen && !hasInteractedChat && (
+          <motion.button 
+            layoutId="talk-pill-btn"
+            className="hero-center-talk-btn"
+            onClick={onOpenChat}
+            initial={{ opacity: 0, scale: 0.9, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 180, damping: 22 }}
+            onMouseEnter={() => setCursorVariant('hover')}
+            onMouseLeave={() => setCursorVariant('default')}
+          >
+            <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
+            <span className="toggle-text">LET'S TALK</span>
+          </motion.button>
+        )}
         
         <motion.div 
           className="hero-scroll-indicator"
