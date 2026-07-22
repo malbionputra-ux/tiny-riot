@@ -11,7 +11,7 @@
 
 .chat-widget-wrapper.hero-centered-mode {
   position: fixed !important;
-  bottom: 8.5rem !important;
+  bottom: 10rem !important;
   left: 50% !important;
   right: auto !important;
   transform: translateX(-50%) !important;
@@ -283,7 +283,7 @@
 
 @media (max-width: 768px) {
   .chat-widget-wrapper.hero-centered-mode {
-    bottom: 7.5rem !important;
+    bottom: 9rem !important;
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
