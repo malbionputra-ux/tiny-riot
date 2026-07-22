@@ -51,138 +51,143 @@
   text-transform: lowercase;
 }
 
-/* Build in Amsterdam Masonry/Grid Layout */
-.bia-portfolio-grid {
+/* Build in Amsterdam Exact 3-Column Grid Layout */
+.bia-portfolio-grid-exact {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
   align-items: start;
 }
 
-.bia-project-card {
+.bia-card-item {
   position: relative;
-  border-radius: 16px;
+  border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
-  background: #111111;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  background: #0d0d0d;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   transition: box-shadow 0.4s ease;
 }
 
-.bia-project-card.aspect-portrait {
-  height: 520px;
+.bia-card-item.aspect-tall {
+  height: 480px;
 }
 
-.bia-project-card.aspect-square {
-  height: 420px;
+.bia-card-item.aspect-medium {
+  height: 380px;
 }
 
-/* Card Image & Hover Zoom */
-.card-image-wrap {
+/* Card Image Box */
+.bia-card-img-box {
   width: 100%;
   height: 100%;
   position: relative;
   overflow: hidden;
 }
 
-.card-image-wrap img {
+.bia-card-img-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.card-gradient-overlay {
+.bia-card-shadow-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.25) 45%, rgba(0, 0, 0, 0.88) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.2) 55%, rgba(0, 0, 0, 0.88) 100%);
   transition: opacity 0.4s ease;
 }
 
-/* Glassmorphism Tag Badge */
-.card-tag-badge {
+/* Floating Pill Tag (Newly Added, Headless, etc.) */
+.bia-card-pill-tag {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.4rem 1.1rem;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.35rem 0.9rem;
   border-radius: 100px;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 800;
   color: #ffffff;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   z-index: 3;
-  transition: all 0.4s ease;
+  transition: all 0.35s ease;
 }
 
-/* Card Info at Bottom Left */
-.card-info-bottom {
+/* Text Caption on Image Bottom Left */
+.bia-card-text-overlay {
   position: absolute;
-  bottom: 1.8rem;
-  left: 1.8rem;
-  right: 1.8rem;
+  bottom: 1.4rem;
+  left: 1.4rem;
+  right: 1.4rem;
   z-index: 3;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.card-title-line {
-  font-size: 0.95rem;
-  line-height: 1.5;
+.bia-card-caption {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #ffffff;
   margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
+  display: block;
 }
 
-.title-bold {
+.caption-title {
   font-weight: 900;
-  font-size: 1.1rem;
+  font-size: 0.98rem;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #ffffff;
 }
 
-.title-sep {
-  color: rgba(255, 255, 255, 0.4);
+.caption-dot {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 700;
 }
 
-.title-desc {
+.caption-desc {
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.88);
 }
 
 /* Hover Interactions */
-.bia-project-card:hover .card-image-wrap img {
-  transform: scale(1.07);
+.bia-card-item:hover .bia-card-img-box img {
+  transform: scale(1.06);
 }
 
-.bia-project-card:hover .card-info-bottom {
-  transform: translateY(-4px);
+.bia-card-item:hover .bia-card-text-overlay {
+  transform: translateY(-3px);
 }
 
-.bia-project-card:hover .card-tag-badge {
+.bia-card-item:hover .bia-card-pill-tag {
   background: var(--color-accent);
   border-color: var(--color-accent);
   box-shadow: 0 4px 15px rgba(250, 42, 14, 0.4);
 }
 
-.bia-project-card:hover {
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+.bia-card-item:hover {
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.75);
 }
 
 /* Responsive Grid */
-@media (max-width: 900px) {
-  .bia-portfolio-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+@media (max-width: 1100px) {
+  .bia-portfolio-grid-exact {
+    grid-template-columns: repeat(2, 1fr);
   }
-  .bia-project-card.aspect-portrait,
-  .bia-project-card.aspect-square {
+}
+
+@media (max-width: 700px) {
+  .bia-portfolio-grid-exact {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .bia-card-item.aspect-tall,
+  .bia-card-item.aspect-medium {
     height: 380px;
   }
   .projects-grid-wrapper {

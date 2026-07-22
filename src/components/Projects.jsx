@@ -10,7 +10,7 @@ const projectsList = [
     tag: 'Newly Added', 
     desc: 'Indonesia’s premier gaming platform & e-sports hub', 
     img: '/assets/dunia-games.jpg',
-    aspect: 'aspect-portrait'
+    aspect: 'aspect-tall'
   },
   { 
     id: 2, 
@@ -19,7 +19,7 @@ const projectsList = [
     tag: 'Headless Web', 
     desc: 'Rebranding & digital learning flagship platform', 
     img: '/assets/binar.jpg',
-    aspect: 'aspect-square'
+    aspect: 'aspect-medium'
   },
   { 
     id: 3, 
@@ -28,7 +28,7 @@ const projectsList = [
     tag: 'UI/UX Case', 
     desc: 'Streamlining operations for millions of drivers', 
     img: '/assets/gojek.jpg',
-    aspect: 'aspect-portrait'
+    aspect: 'aspect-tall'
   },
   { 
     id: 4, 
@@ -37,7 +37,7 @@ const projectsList = [
     tag: 'Fintech', 
     desc: 'Next-gen wealth management & digital banking', 
     img: '/assets/neo.jpg',
-    aspect: 'aspect-square'
+    aspect: 'aspect-medium'
   },
   { 
     id: 5, 
@@ -46,7 +46,7 @@ const projectsList = [
     tag: 'Web3 Ecosystem', 
     desc: 'Decentralized trading platform with real-time analytics', 
     img: '/assets/vortex.jpg',
-    aspect: 'aspect-portrait'
+    aspect: 'aspect-tall'
   },
   { 
     id: 6, 
@@ -55,7 +55,7 @@ const projectsList = [
     tag: 'Branding & Store', 
     desc: 'Artisanal coffee experience brought to life online', 
     img: '/assets/yellow-truck.jpg',
-    aspect: 'aspect-square'
+    aspect: 'aspect-medium'
   },
 ];
 
@@ -66,7 +66,7 @@ const Projects = ({ setCursorVariant }) => {
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
   };
 
@@ -82,7 +82,7 @@ const Projects = ({ setCursorVariant }) => {
             variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
           >
             <div style={{ overflow: 'hidden', paddingBottom: '5px' }}>
-              <motion.span variants={textVariants} className="meta-eyebrow" style={{ display: 'block' }}>PORTFOLIO</motion.span>
+              <motion.span variants={textVariants} className="meta-eyebrow" style={{ display: 'block' }}>CASES & WORK</motion.span>
             </div>
             <div style={{ overflow: 'hidden' }}>
               <motion.h2 variants={textVariants} className="projects-title-main">Karya <em>Terpilih</em></motion.h2>
@@ -90,39 +90,39 @@ const Projects = ({ setCursorVariant }) => {
           </motion.div>
         </div>
 
-        {/* Build in Amsterdam Style Portfolio Grid */}
+        {/* Build in Amsterdam Exact 3-Column Portfolio Grid */}
         <motion.div 
-          className="bia-portfolio-grid"
+          className="bia-portfolio-grid-exact"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          variants={{ visible: { transition: { staggerChildren: 0.12 } } }}
+          variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
         >
           {projectsList.map((project) => (
             <motion.div
               variants={cardVariants}
               key={project.id}
-              className={`bia-project-card ${project.aspect}`}
+              className={`bia-card-item ${project.aspect}`}
               onMouseEnter={() => setCursorVariant && setCursorVariant('project')}
               onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
             >
-              <div className="card-image-wrap">
+              <div className="bia-card-img-box">
                 <img src={project.img} alt={project.title} loading="lazy" />
-                <div className="card-gradient-overlay" />
+                <div className="bia-card-shadow-overlay" />
               </div>
 
               {project.tag && (
-                <div className="card-tag-badge">
+                <div className="bia-card-pill-tag">
                   {project.tag}
                 </div>
               )}
 
-              <div className="card-info-bottom">
-                <h3 className="card-title-line">
-                  <span className="title-bold">{project.title}</span>
-                  <span className="title-sep">•</span>
-                  <span className="title-desc">{project.desc}</span>
-                </h3>
+              <div className="bia-card-text-overlay">
+                <p className="bia-card-caption">
+                  <strong className="caption-title">{project.title}</strong>
+                  <span className="caption-dot"> • </span>
+                  <span className="caption-desc">{project.desc}</span>
+                </p>
               </div>
             </motion.div>
           ))}
