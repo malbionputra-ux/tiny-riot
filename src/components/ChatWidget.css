@@ -1,30 +1,51 @@
 .chat-widget-wrapper {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  z-index: 999;
+  z-index: 9999;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 1rem;
+  pointer-events: none;
+}
+
+.chat-widget-wrapper.hero-centered-mode {
+  bottom: 8.5rem;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+.chat-widget-wrapper.bottom-right-mode {
+  bottom: 2rem;
+  right: 2rem;
+  left: auto;
+  transform: none;
 }
 
 /* Floating Pill Button */
 .chat-toggle-btn {
+  pointer-events: auto;
   background: rgba(24, 23, 23, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 0.8rem 1.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.85rem 2rem;
   border-radius: 100px;
   color: #ffffff;
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  font-size: 0.75rem;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+  font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.chat-widget-wrapper.hero-centered-mode .chat-toggle-btn {
+  box-shadow: 0 0 35px rgba(250, 42, 14, 0.3), 0 15px 40px rgba(0, 0, 0, 0.6);
+  border-color: rgba(250, 42, 14, 0.4);
 }
 
 .chat-toggle-btn.active {

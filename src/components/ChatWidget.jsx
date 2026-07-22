@@ -2,13 +2,25 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './ChatWidget.css';
 
-const ChatWidget = ({ setCursorVariant }) => {
+const ChatWidget = ({ setCursorVariant, activeSlideIndex }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const [messages, setMessages] = useState([
     { id: 1, sender: 'bot', text: 'Halo! Kami Tiny Riot. Projek apa yang sedang ingin lo garap?' }
   ]);
   const [selectedService, setSelectedService] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [emailInput, setEmailInput] = useState('');
+  const [step, setStep] = useState('select_service'); // 'select_service', 'ask_email', 'finished'
+  const chatEndRef = useRef(null);
+
+  const isHero = activeSlideIndex === 0;
+  const isCentered = isHero && !isOpen && !hasInteracted;
+
+  const handleToggle = () => {
+    if (!hasInteracted) setHasInteracted(true);
+    setIsOpen(!isOpen);
+  };
 
   const services = [
     'Social Media Strategy',
@@ -79,14 +91,15 @@ const ChatWidget = ({ setCursorVariant }) => {
   };
 
   return (
-    <div className="chat-widget-wrapper">
-      {/* Floating Pill Button */}
+    <div className={`chat-widget-wrapper ${isCentered ? 'hero-centered-mode' : 'bottom-right-mode'}`}>
+      {/* Floating Pill Button - Morphing between Hero Center and Bottom Right */}
       <motion.button 
-        className={`chat-toggle-btn ${isOpen ? 'active' : ''}`}
-        onClick={() => setIsOpen(!isOpen)}
+        layout
+        className={`chat-toggle-btn ${isOpen ? 'active' : ''} ${isCentered ? 'hero-centered' : 'bottom-right'}`}
+        onClick={handleToggle}
         onMouseEnter={() => setCursorVariant('hover')}
         onMouseLeave={() => setCursorVariant('default')}
-        layout
+        transition={{ type: 'spring', stiffness: 180, damping: 24 }}
       >
         <img src="/assets/new-logo-transparent.png" alt="Logo" className="custom-toggle-logo" />
         <span className="toggle-text">{isOpen ? 'CLOSE' : "LET'S TALK"}</span>

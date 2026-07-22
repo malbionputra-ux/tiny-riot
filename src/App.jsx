@@ -203,7 +203,7 @@ function App() {
         </div>
       </main>
       
-      <ChatWidget setCursorVariant={setCursorVariant} />
+      <ChatWidget setCursorVariant={setCursorVariant} activeSlideIndex={activeSlideIndex} />
     </div>
   )
 }
