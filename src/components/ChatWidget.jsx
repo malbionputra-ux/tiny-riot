@@ -77,9 +77,14 @@ const ChatWidget = ({ setCursorVariant, activeSlideIndex, chatOpen, setChatOpen,
 
   const handleToggle = () => {
     if (chatOpen) {
-      setChatOpen(false);
+      // 1. Close chat window first (slides down)
+      if (setChatOpen) setChatOpen(false);
+
+      // 2. Wait for chat window exit animation (320ms), THEN glide button back to Hero center!
       if (isHero && setHasInteractedChat) {
-        setHasInteractedChat(false);
+        setTimeout(() => {
+          setHasInteractedChat(false);
+        }, 320);
       }
     } else {
       if (!hasInteractedChat && setHasInteractedChat) setHasInteractedChat(true);
