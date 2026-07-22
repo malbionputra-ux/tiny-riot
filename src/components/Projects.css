@@ -80,20 +80,23 @@
   background: #111111;
   cursor: pointer;
   border-radius: 2px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .case-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
 }
 
 .case-shadow-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.8) 100%);
-  transition: opacity 0.4s ease;
+  background: linear-gradient(180deg, transparent 35%, rgba(0, 0, 0, 0.88) 100%);
+  opacity: 0.8;
+  transition: opacity 0.5s ease;
 }
 
 .case-info-tag {
@@ -102,7 +105,7 @@
   left: 1rem;
   right: 1rem;
   z-index: 2;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .case-caption-text {
@@ -120,11 +123,13 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: #ffffff;
+  transition: color 0.3s ease;
 }
 
 .case-dot {
   color: rgba(255, 255, 255, 0.6);
   font-weight: 700;
+  transition: color 0.3s ease;
 }
 
 .case-desc {
@@ -133,12 +138,27 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
+/* Rich Hover State Interactions */
+.bia-case-card:hover {
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+  transform: translateY(-4px);
+}
+
 .bia-case-card:hover .case-img {
-  transform: scale(1.05);
+  transform: scale(1.08);
+  filter: brightness(1.08) contrast(1.04);
+}
+
+.bia-case-card:hover .case-shadow-gradient {
+  opacity: 1;
 }
 
 .bia-case-card:hover .case-info-tag {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
+}
+
+.bia-case-card:hover .case-dot {
+  color: var(--color-accent);
 }
 
 /* Mobile responsive layout */
