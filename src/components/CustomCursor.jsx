@@ -81,7 +81,7 @@ const CustomCursor = ({ variant }) => {
         top: 0,
         left: 0,
         pointerEvents: 'none',
-        zIndex: 9999,
+        zIndex: 999999,
         borderRadius: '50%',
       }}
     >
