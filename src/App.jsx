@@ -8,7 +8,6 @@ import Packages from './components/Packages'
 import Footer from './components/Footer'
 import ChatWidget from './components/ChatWidget'
 import LiquidTransition from './components/LiquidTransition'
-import CardStackTransition from './components/CardStackTransition'
 import Preloader from './components/Preloader'
 import './App.css'
 import './slider.css'
@@ -20,27 +19,13 @@ function App() {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [targetSlideIndex, setTargetSlideIndex] = useState(0)
-  const [cardProgress, setCardProgress] = useState(0); // 0 to 1 progressive scroll fold
   const [appLoaded, setAppLoaded] = useState(false)
-
+  
   // Refs for tracking scroll bounds
   const slideRefs = useRef({});
 
   const triggerTransition = (newIndex) => {
     if (isTransitioning || newIndex === activeSlideIndex) return;
-
-    // Direct transition for Page 3 <-> Page 4 via cardProgress
-    if (activeSlideIndex === 2 && newIndex === 3) {
-      setCardProgress(1);
-      setActiveSlideIndex(3);
-      return;
-    }
-    if (activeSlideIndex === 3 && newIndex === 2) {
-      setCardProgress(0);
-      setActiveSlideIndex(2);
-      return;
-    }
-
     setTargetSlideIndex(newIndex);
     setIsTransitioning(true);
   };
@@ -61,64 +46,12 @@ function App() {
     const handleWheel = (e) => {
       if (isTransitioning || !appLoaded) return;
       
+      const now = Date.now();
+      // Debounce wheel events slightly to prevent multiple rapid triggers
+      if (now - lastWheelTime < 800) return;
+      
       const activeId = SLIDES[activeSlideIndex];
       const container = slideRefs.current[activeId];
-
-      // Progressive 3D card fold between Page 3 (Services) and Page 4 (Packages)
-      if (activeSlideIndex === 2) {
-        if (container) {
-          const isAtBottom = Math.ceil(container.scrollHeight - container.scrollTop) <= container.clientHeight + 5;
-          if (isAtBottom && e.deltaY > 0) {
-            // Scroll down at bottom of Page 3 -> Open Page 4 card pelan-pelan
-            const step = Math.min(Math.max(e.deltaY * 0.0015, 0.03), 0.2);
-            setCardProgress(prev => {
-              const next = Math.min(1, prev + step);
-              if (next >= 0.95) {
-                setActiveSlideIndex(3);
-                return 1;
-              }
-              return next;
-            });
-            return;
-          } else if (cardProgress > 0 && e.deltaY < 0) {
-            // Scroll up while card is partially open -> Close card pelan-pelan
-            const step = Math.min(Math.max(Math.abs(e.deltaY) * 0.0015, 0.03), 0.2);
-            setCardProgress(prev => {
-              const next = Math.max(0, prev - step);
-              return next;
-            });
-            return;
-          }
-        }
-      } else if (activeSlideIndex === 3) {
-        if (container) {
-          const isAtTop = container.scrollTop <= 5;
-          if (isAtTop && e.deltaY < 0) {
-            // Scroll up at top of Page 4 -> Close Page 4 card pelan-pelan
-            const step = Math.min(Math.max(Math.abs(e.deltaY) * 0.0015, 0.03), 0.2);
-            setCardProgress(prev => {
-              const next = Math.max(0, prev - step);
-              if (next <= 0.05) {
-                setActiveSlideIndex(2);
-                return 0;
-              }
-              return next;
-            });
-            return;
-          } else if (cardProgress < 1 && e.deltaY > 0) {
-            // Scroll down while card is partially closed -> Open card pelan-pelan
-            const step = Math.min(Math.max(e.deltaY * 0.0015, 0.03), 0.2);
-            setCardProgress(prev => {
-              const next = Math.min(1, prev + step);
-              return next;
-            });
-            return;
-          }
-        }
-      }
-      
-      const now = Date.now();
-      if (now - lastWheelTime < 800) return;
       
       if (e.deltaY > 0) {
         // Scrolling DOWN
@@ -147,7 +80,7 @@ function App() {
 
     window.addEventListener('wheel', handleWheel, { passive: true });
     return () => window.removeEventListener('wheel', handleWheel);
-  }, [activeSlideIndex, isTransitioning, appLoaded, cardProgress]);
+  }, [activeSlideIndex, isTransitioning, appLoaded]);
   
   // Basic touch support
   useEffect(() => {
@@ -226,7 +159,7 @@ function App() {
       <Preloader onComplete={() => setAppLoaded(true)} />
       <CustomCursor variant={cursorVariant} />
       
-      {/* Liquid Wave Overlay (Only for non-card transitions) */}
+      {/* The Liquid Wave Overlay */}
       {isTransitioning && (
         <LiquidTransition 
           isTransitioning={isTransitioning} 
@@ -267,49 +200,21 @@ function App() {
           {activeSlideIndex === 1 && <Projects setCursorVariant={setCursorVariant} />}
         </div>
         
-        {/* Slide 2: Services (Background under Packages card) */}
+        {/* Slide 2: Services */}
         <div 
-          className={`slide-container ${activeSlideIndex === 2 || activeSlideIndex === 3 || cardProgress > 0 ? 'active' : ''}`}
+          className={`slide-container ${activeSlideIndex === 2 ? 'active' : ''}`}
           ref={el => slideRefs.current['services'] = el}
-          style={{
-            zIndex: activeSlideIndex === 2 ? 10 : 5
-          }}
         >
-          {(activeSlideIndex === 2 || activeSlideIndex === 3 || cardProgress > 0) && (
-            <Services setCursorVariant={setCursorVariant} />
-          )}
+          {activeSlideIndex === 2 && <Services setCursorVariant={setCursorVariant} />}
         </div>
         
-        {/* Slide 3: Packages (Plainthing Studio Progressive 3D Card Stack) */}
-        <motion.div 
-          className={`slide-container ${activeSlideIndex === 3 || cardProgress > 0 ? 'active' : ''}`}
+        {/* Slide 3: Packages */}
+        <div 
+          className={`slide-container ${activeSlideIndex === 3 ? 'active' : ''}`}
           ref={el => slideRefs.current['packages'] = el}
-          initial={false}
-          animate={{
-            y: `${(1 - cardProgress) * 100}%`,
-            rotateX: (1 - cardProgress) * 22,
-            scale: 0.93 + cardProgress * 0.07,
-            borderTopLeftRadius: `${(1 - cardProgress) * 32}px`,
-            borderTopRightRadius: `${(1 - cardProgress) * 32}px`
-          }}
-          transition={{
-            type: 'spring',
-            stiffness: 220,
-            damping: 28,
-            mass: 0.5
-          }}
-          style={{
-            zIndex: activeSlideIndex === 3 || cardProgress > 0 ? 20 : 5,
-            perspective: '1200px',
-            transformOrigin: 'top center',
-            boxShadow: cardProgress > 0 && cardProgress < 1 ? '0 -25px 60px rgba(0, 0, 0, 0.35)' : 'none',
-            overflow: activeSlideIndex === 3 && cardProgress >= 0.95 ? 'auto' : 'hidden'
-          }}
         >
-          {(activeSlideIndex === 3 || activeSlideIndex === 2 || cardProgress > 0) && (
-            <Packages setCursorVariant={setCursorVariant} />
-          )}
-        </motion.div>
+          {activeSlideIndex === 3 && <Packages setCursorVariant={setCursorVariant} />}
+        </div>
         
         {/* Slide 4: Footer */}
         <div 

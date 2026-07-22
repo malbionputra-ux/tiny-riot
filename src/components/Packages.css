@@ -1,7 +1,4 @@
 .packages {
-  position: relative;
-  min-height: 100vh;
-  box-sizing: border-box;
   padding: 10rem 4rem;
   background-color: var(--color-bg-gray);
   border-top: 1px solid rgba(24, 23, 23, 0.08);
