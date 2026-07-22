@@ -36,29 +36,46 @@ const Projects = ({ setCursorVariant }) => {
         <div className="bia-cases-half">
           {leftColumns.map((col, cIdx) => (
             <div key={cIdx} className="bia-grid-column">
-              {col.map((item) => (
-                <motion.div
-                  key={item.id}
-                  className="bia-case-card"
-                  style={{ height: item.height }}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  onMouseEnter={() => setCursorVariant && setCursorVariant('project')}
-                  onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
-                >
-                  <img src={item.img} alt={item.title} className="case-img" />
-                  <div className="case-shadow-gradient" />
-                  <div className="case-info-tag">
-                    <p className="case-caption-text">
-                      <span className="case-title">{item.title}</span>
-                      <span className="case-dot"> · </span>
-                      <span className="case-desc">{item.desc}</span>
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+              {col.map((item, itemIdx) => {
+                const globalIndex = cIdx * 2 + itemIdx;
+                return (
+                  <motion.div
+                    key={item.id}
+                    className="bia-case-card"
+                    style={{ height: item.height }}
+                    initial={{ opacity: 0, y: 40, scale: 0.97 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true, amount: 0.08 }}
+                    transition={{ duration: 0.8, delay: globalIndex * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    onMouseEnter={() => setCursorVariant && setCursorVariant('project')}
+                    onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
+                  >
+                    <motion.img 
+                      src={item.img} 
+                      alt={item.title} 
+                      className="case-img"
+                      initial={{ scale: 1.25, opacity: 0.4 }}
+                      whileInView={{ scale: 1.0, opacity: 1 }}
+                      viewport={{ once: true, amount: 0.08 }}
+                      transition={{ duration: 1.1, delay: globalIndex * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    />
+                    <div className="case-shadow-gradient" />
+                    <motion.div 
+                      className="case-info-tag"
+                      initial={{ y: 20, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: globalIndex * 0.1 + 0.15, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <p className="case-caption-text">
+                        <span className="case-title">{item.title}</span>
+                        <span className="case-dot"> · </span>
+                        <span className="case-desc">{item.desc}</span>
+                      </p>
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
             </div>
           ))}
         </div>
@@ -74,29 +91,46 @@ const Projects = ({ setCursorVariant }) => {
         <div className="bia-cases-half">
           {rightColumns.map((col, cIdx) => (
             <div key={cIdx} className="bia-grid-column">
-              {col.map((item) => (
-                <motion.div
-                  key={item.id}
-                  className="bia-case-card"
-                  style={{ height: item.height }}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  onMouseEnter={() => setCursorVariant && setCursorVariant('project')}
-                  onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
-                >
-                  <img src={item.img} alt={item.title} className="case-img" />
-                  <div className="case-shadow-gradient" />
-                  <div className="case-info-tag">
-                    <p className="case-caption-text">
-                      <span className="case-title">{item.title}</span>
-                      <span className="case-dot"> · </span>
-                      <span className="case-desc">{item.desc}</span>
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+              {col.map((item, itemIdx) => {
+                const globalIndex = (cIdx + 2) * 2 + itemIdx;
+                return (
+                  <motion.div
+                    key={item.id}
+                    className="bia-case-card"
+                    style={{ height: item.height }}
+                    initial={{ opacity: 0, y: 40, scale: 0.97 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true, amount: 0.08 }}
+                    transition={{ duration: 0.8, delay: globalIndex * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    onMouseEnter={() => setCursorVariant && setCursorVariant('project')}
+                    onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
+                  >
+                    <motion.img 
+                      src={item.img} 
+                      alt={item.title} 
+                      className="case-img"
+                      initial={{ scale: 1.25, opacity: 0.4 }}
+                      whileInView={{ scale: 1.0, opacity: 1 }}
+                      viewport={{ once: true, amount: 0.08 }}
+                      transition={{ duration: 1.1, delay: globalIndex * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    />
+                    <div className="case-shadow-gradient" />
+                    <motion.div 
+                      className="case-info-tag"
+                      initial={{ y: 20, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: globalIndex * 0.1 + 0.15, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <p className="case-caption-text">
+                        <span className="case-title">{item.title}</span>
+                        <span className="case-dot"> · </span>
+                        <span className="case-desc">{item.desc}</span>
+                      </p>
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
             </div>
           ))}
         </div>
