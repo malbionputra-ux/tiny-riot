@@ -158,6 +158,7 @@ function App() {
         setCursorVariant={setCursorVariant} 
         isLight={activeSlideIndex === 2 || activeSlideIndex === 3} 
         activeSlideIndex={activeSlideIndex}
+        isTransitioning={isTransitioning}
       />
       
       <main className="slider-main">

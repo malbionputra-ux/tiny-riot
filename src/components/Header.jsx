@@ -4,13 +4,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './Header.css';
 import Magnetic from './Magnetic';
 
-const Header = ({ setCursorVariant, isLight, activeSlideIndex }) => {
+const Header = ({ setCursorVariant, isLight, activeSlideIndex, isTransitioning }) => {
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [atTop, setAtTop] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const isHero = activeSlideIndex === 0;
+
+  useEffect(() => {
+    if (isTransitioning) {
+      setMenuOpen(false);
+    }
+  }, [isTransitioning]);
 
   useEffect(() => {
     const handleScroll = () => {
