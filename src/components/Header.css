@@ -56,6 +56,35 @@
   color: #181717;
 }
 
+/* Top inline nav menu (Hero Section only) */
+.nav-menu {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.8rem 2.5rem;
+  border-radius: 100px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.nav-menu a {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.7);
+  position: relative;
+  transition: color 0.3s ease;
+  padding: 0.5rem 0;
+}
+
+.nav-menu a:hover {
+  color: var(--color-text-dark);
+}
+
 /* ═══════════════════════════════════════════════════════
    Bottom Center Floating Empty Circle with Curved Menu Text
 ═══════════════════════════════════════════════════════ */

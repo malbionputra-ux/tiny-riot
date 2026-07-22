@@ -4,11 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './Header.css';
 import Magnetic from './Magnetic';
 
-const Header = ({ setCursorVariant, isLight }) => {
+const Header = ({ setCursorVariant, isLight, activeSlideIndex }) => {
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [atTop, setAtTop] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const isHero = activeSlideIndex === 0;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +31,7 @@ const Header = ({ setCursorVariant, isLight }) => {
 
   return (
     <>
-      {/* Top Header - Logo only */}
+      {/* Top Header */}
       <header className={`header ${visible ? 'header--visible' : 'header--hidden'} ${atTop ? 'header--top' : 'header--scrolled'} ${isLight ? 'header--light' : ''}`}>
         <Magnetic>
           <div
@@ -41,37 +43,88 @@ const Header = ({ setCursorVariant, isLight }) => {
             <span className="logo-text">Tiny Riot</span>
           </div>
         </Magnetic>
+
+        {/* Top inline Navbar links - visible ONLY on Hero section */}
+        <AnimatePresence>
+          {isHero && (
+            <motion.nav 
+              className="nav-menu"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Magnetic>
+                <a
+                  href="#about"
+                  onMouseEnter={() => setCursorVariant && setCursorVariant('navbarHover')}
+                  onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
+                >
+                  Tentang
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a
+                  href="#services"
+                  onMouseEnter={() => setCursorVariant && setCursorVariant('navbarHover')}
+                  onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
+                >
+                  Layanan
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a
+                  href="#projects"
+                  onMouseEnter={() => setCursorVariant && setCursorVariant('navbarHover')}
+                  onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
+                >
+                  Work
+                </a>
+              </Magnetic>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </header>
 
-      {/* Bottom Center Floating Curved Text Menu Trigger */}
-      <div className="bottom-menu-wrapper">
-        <Magnetic>
-          <button
-            className={`curved-menu-btn ${menuOpen ? 'open' : ''} ${isLight && !menuOpen ? 'light' : ''}`}
-            onClick={() => setMenuOpen(!menuOpen)}
-            onMouseEnter={() => setCursorVariant && setCursorVariant('hover')}
-            onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
-            aria-label="Toggle Menu"
+      {/* Bottom Center Floating Curved Text Menu Trigger - visible ONLY on page 2 onwards */}
+      <AnimatePresence>
+        {!isHero && (
+          <motion.div 
+            className="bottom-menu-wrapper"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 30 }}
+            transition={{ duration: 0.4 }}
           >
-            {/* Empty Center Circle */}
-            <div className="empty-center-circle" />
+            <Magnetic>
+              <button
+                className={`curved-menu-btn ${menuOpen ? 'open' : ''} ${isLight && !menuOpen ? 'light' : ''}`}
+                onClick={() => setMenuOpen(!menuOpen)}
+                onMouseEnter={() => setCursorVariant && setCursorVariant('hover')}
+                onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
+                aria-label="Toggle Menu"
+              >
+                {/* Empty Center Circle */}
+                <div className="empty-center-circle" />
 
-            {/* Curved SVG Text on the Right Arc */}
-            <svg className="side-curved-svg" viewBox="0 0 130 130">
-              <path
-                id="rightArcPath"
-                d="M 65,14 A 51,51 0 0,1 65,116"
-                fill="none"
-              />
-              <text className="side-curved-text">
-                <textPath href="#rightArcPath" startOffset="38%">
-                  {menuOpen ? 'Close' : 'Menu'}
-                </textPath>
-              </text>
-            </svg>
-          </button>
-        </Magnetic>
-      </div>
+                {/* Curved SVG Text on the Right Arc */}
+                <svg className="side-curved-svg" viewBox="0 0 130 130">
+                  <path
+                    id="rightArcPath"
+                    d="M 65,14 A 51,51 0 0,1 65,116"
+                    fill="none"
+                  />
+                  <text className="side-curved-text">
+                    <textPath href="#rightArcPath" startOffset="38%">
+                      {menuOpen ? 'Close' : 'Menu'}
+                    </textPath>
+                  </text>
+                </svg>
+              </button>
+            </Magnetic>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Slide Up Menu Drawer */}
       <AnimatePresence>

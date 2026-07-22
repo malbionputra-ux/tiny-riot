@@ -157,6 +157,7 @@ function App() {
       <Header 
         setCursorVariant={setCursorVariant} 
         isLight={activeSlideIndex === 2 || activeSlideIndex === 3} 
+        activeSlideIndex={activeSlideIndex}
       />
       
       <main className="slider-main">
