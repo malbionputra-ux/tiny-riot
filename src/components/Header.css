@@ -57,109 +57,121 @@
 }
 
 /* ═══════════════════════════════════════════════════════
-   Bottom Center Floating Menu Trigger (Build in Amsterdam style)
+   Bottom Center Floating Curved Text Menu Trigger
 ═══════════════════════════════════════════════════════ */
 .bottom-menu-wrapper {
   position: fixed;
-  bottom: 2.2rem;
+  bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10002;
 }
 
-.bottom-menu-trigger {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 6px 22px 6px 6px;
-  border-radius: 100px;
-  background: rgba(18, 18, 18, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-  cursor: pointer;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+.circular-menu-btn {
   position: relative;
-  overflow: hidden;
-}
-
-.trigger-icon-circle {
-  width: 44px;
-  height: 44px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
+  background: transparent;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Inner Icon Circle */
+.inner-icon-circle {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: rgba(18, 18, 18, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.trigger-text {
+/* SVG Curved Text */
+.curved-text-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  animation: spinCurvedText 14s linear infinite;
+  z-index: 1;
+}
+
+.curved-text-content {
   font-family: 'Outfit', sans-serif;
-  font-size: 0.75rem;
+  font-size: 8.5px;
   font-weight: 800;
-  letter-spacing: 2.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.9);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  fill: rgba(255, 255, 255, 0.85);
+  transition: fill 0.4s ease;
 }
 
-/* Hover Animations */
-.bottom-menu-trigger:hover {
-  transform: scale(1.05);
-  border-color: var(--color-accent);
-  box-shadow: 0 0 30px rgba(250, 42, 14, 0.35), 0 15px 35px rgba(0, 0, 0, 0.5);
+/* Keyframes for Rotating Curved Text */
+@keyframes spinCurvedText {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.bottom-menu-trigger:hover .trigger-icon-circle {
+/* Hover State Animations */
+.circular-menu-btn:hover .curved-text-svg {
+  animation-duration: 5s; /* Rotates faster on hover */
+}
+
+.circular-menu-btn:hover .inner-icon-circle {
+  transform: scale(1.12);
   background: var(--color-accent);
+  border-color: var(--color-accent);
   color: #ffffff;
-  transform: rotate(180deg) scale(1.05);
+  box-shadow: 0 0 30px rgba(250, 42, 14, 0.5), 0 15px 35px rgba(0, 0, 0, 0.5);
 }
 
-.bottom-menu-trigger:hover .trigger-text {
-  color: #ffffff;
-  letter-spacing: 4px;
-  transform: translateX(2px);
+.circular-menu-btn:hover .curved-text-content {
+  fill: #ffffff;
 }
 
 /* Open State */
-.bottom-menu-trigger.open {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 25px rgba(250, 42, 14, 0.3);
-}
-
-.bottom-menu-trigger.open .trigger-icon-circle {
+.circular-menu-btn.open .inner-icon-circle {
   background: var(--color-accent);
+  border-color: var(--color-accent);
   color: #ffffff;
+  box-shadow: 0 0 25px rgba(250, 42, 14, 0.4);
 }
 
 /* Light Mode Variation */
-.bottom-menu-trigger.light:not(.open) {
+.circular-menu-btn.light:not(.open) .inner-icon-circle {
   background: rgba(255, 255, 255, 0.88);
-  border-color: rgba(0, 0, 0, 0.12);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-}
-
-.bottom-menu-trigger.light:not(.open) .trigger-icon-circle {
-  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.15);
   color: #181717;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-.bottom-menu-trigger.light:not(.open) .trigger-text {
-  color: #181717;
+.circular-menu-btn.light:not(.open) .curved-text-content {
+  fill: rgba(0, 0, 0, 0.85);
 }
 
-.bottom-menu-trigger.light:not(.open):hover .trigger-icon-circle {
+.circular-menu-btn.light:not(.open):hover .inner-icon-circle {
   background: var(--color-accent);
+  border-color: var(--color-accent);
   color: #ffffff;
-}
-
-.bottom-menu-trigger.light:not(.open):hover .trigger-text {
-  color: #181717;
 }
 
 /* ═══════════════════════════════════════════════════════

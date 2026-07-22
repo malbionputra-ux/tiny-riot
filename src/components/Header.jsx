@@ -43,22 +43,34 @@ const Header = ({ setCursorVariant, isLight }) => {
         </Magnetic>
       </header>
 
-      {/* Bottom Center Floating Menu Trigger */}
+      {/* Bottom Center Floating Curved Text Menu Trigger */}
       <div className="bottom-menu-wrapper">
         <Magnetic>
           <button
-            className={`bottom-menu-trigger ${menuOpen ? 'open' : ''} ${isLight && !menuOpen ? 'light' : ''}`}
+            className={`circular-menu-btn ${menuOpen ? 'open' : ''} ${isLight && !menuOpen ? 'light' : ''}`}
             onClick={() => setMenuOpen(!menuOpen)}
             onMouseEnter={() => setCursorVariant && setCursorVariant('hover')}
             onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
             aria-label="Toggle Menu"
           >
-            <div className="trigger-icon-circle">
-              {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            {/* Curved SVG Text around the circle */}
+            <svg className="curved-text-svg" viewBox="0 0 140 140">
+              <path
+                id="circlePath"
+                d="M 70,70 m -50,0 a 50,50 0 1,1 100,0 a 50,50 0 1,1 -100,0"
+                fill="none"
+              />
+              <text className="curved-text-content">
+                <textPath href="#circlePath" startOffset="0%">
+                  {menuOpen ? 'CLOSE • CLOSE • CLOSE • CLOSE • ' : 'MENU • TINY RIOT • MENU • TINY RIOT • '}
+                </textPath>
+              </text>
+            </svg>
+
+            {/* Inner Icon Button */}
+            <div className="inner-icon-circle">
+              {menuOpen ? <X size={22} /> : <Menu size={22} />}
             </div>
-            <span className="trigger-text">
-              {menuOpen ? 'CLOSE' : 'MENU'}
-            </span>
           </button>
         </Magnetic>
       </div>
