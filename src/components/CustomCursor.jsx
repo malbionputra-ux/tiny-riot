@@ -7,11 +7,9 @@ const CustomCursor = ({ variant = 'default' }) => {
   const requestRef = useRef(null);
   const targetPos = useRef({ x: -100, y: -100 });
   const outerPos = useRef({ x: -100, y: -100 });
-  const ghostPos = useRef({ x: -100, y: -100 });
   const dotPos = useRef({ x: -100, y: -100 });
 
   const outerCircleRef = useRef(null);
-  const ghostCircleRef = useRef(null);
   const dotRef = useRef(null);
   const viewTextRef = useRef(null);
 
@@ -61,13 +59,7 @@ const CustomCursor = ({ variant = 'default' }) => {
       outerPos.current.x += dx * 0.13;
       outerPos.current.y += dy * 0.13;
 
-      // 3. Ghost lerp trailing slightly behind outer ring for Motion Blur tail (0.28)
-      const ghostDx = outerPos.current.x - ghostPos.current.x;
-      const ghostDy = outerPos.current.y - ghostPos.current.y;
-      ghostPos.current.x += ghostDx * 0.28;
-      ghostPos.current.y += ghostDy * 0.28;
-
-      // Speed & Angle calculation for dynamic stretch & motion blur
+      // Speed & Angle calculation for dynamic stretch
       const speed = Math.sqrt(dx * dx + dy * dy);
 
       if (speed > 0.1) {
@@ -80,16 +72,13 @@ const CustomCursor = ({ variant = 'default' }) => {
         currentAngle += angleDiff * 0.14;
       }
 
-      // Elegant, area-preserving stretch physics (ONLY in default mode during fast movement)
-      const targetStretch = (!isHovered && speed > 2.5) ? Math.min((speed - 2.5) * 0.008, 0.18) : 0;
+      // Subtle, area-preserving stretch physics (ONLY in default mode during fast movement, max 12% stretch)
+      const targetStretch = (!isHovered && speed > 3.0) ? Math.min((speed - 3.0) * 0.005, 0.12) : 0;
       const targetScaleX = 1 + targetStretch;
-      const targetScaleY = 1 / targetScaleX; // Preserves circle area perfectly (liquid physics)
+      const targetScaleY = 1 / targetScaleX; // Preserves circle area perfectly
 
       currentScaleX += (targetScaleX - currentScaleX) * 0.14;
       currentScaleY += (targetScaleY - currentScaleY) * 0.14;
-
-      // Motion Blur calculation: ONLY active during fast movements (speed > 3.0), NEVER when stationary or on hover
-      const motionBlurPx = (!isHovered && speed > 3.0) ? Math.min((speed - 3.0) * 0.12, 4.2) : 0;
 
       if (outerCircleRef.current) {
         const pressScale = isPressed ? 0.82 : 1;
@@ -100,32 +89,9 @@ const CustomCursor = ({ variant = 'default' }) => {
           `translate3d(${outerPos.current.x}px, ${outerPos.current.y}px, 0) ` +
           `rotate(${currentAngle}deg) ` +
           `scale(${finalScaleX}, ${finalScaleY})`;
-
-        // Apply Motion Blur ONLY during fast movement
-        if (motionBlurPx > 0.3) {
-          const filterStr = `blur(${motionBlurPx.toFixed(1)}px)`;
-          outerCircleRef.current.style.filter = filterStr;
-          outerCircleRef.current.style.webkitFilter = filterStr;
-        } else {
-          outerCircleRef.current.style.filter = 'none';
-          outerCircleRef.current.style.webkitFilter = 'none';
-        }
       }
 
-      // Update Motion Blur Ghost Tail (Active ONLY during fast movement in default mode)
-      if (ghostCircleRef.current) {
-        const ghostOpacity = (!isHovered && speed > 5.0) ? Math.min((speed - 5.0) * 0.03, 0.35) : 0;
-        const ghostBlur = Math.min(2 + speed * 0.1, 6);
-        ghostCircleRef.current.style.transform = 
-          `translate3d(${ghostPos.current.x}px, ${ghostPos.current.y}px, 0) ` +
-          `rotate(${currentAngle}deg) ` +
-          `scale(${currentScaleX * 0.95}, ${currentScaleY * 0.95})`;
-        ghostCircleRef.current.style.opacity = ghostOpacity.toString();
-        ghostCircleRef.current.style.filter = `blur(${ghostBlur.toFixed(1)}px)`;
-        ghostCircleRef.current.style.webkitFilter = `blur(${ghostBlur.toFixed(1)}px)`;
-      }
-
-      // 4. Counter-rotate VIEW text so it stays 100% horizontal and upright
+      // 3. Counter-rotate VIEW text so it stays 100% horizontal and upright
       if (viewTextRef.current) {
         viewTextRef.current.style.transform = `rotate(${-currentAngle}deg)`;
       }
@@ -149,26 +115,7 @@ const CustomCursor = ({ variant = 'default' }) => {
 
   return (
     <>
-      {/* 1. Motion Blur Ghost Trail (Appears dynamically during fast movements) */}
-      <div
-        ref={ghostCircleRef}
-        style={{
-          position: 'fixed',
-          top: -halfSize,
-          left: -halfSize,
-          width: size,
-          height: size,
-          borderRadius: '50%',
-          backgroundColor: '#fa2a0e',
-          opacity: 0,
-          pointerEvents: 'none',
-          zIndex: 9999997,
-          boxSizing: 'border-box',
-          willChange: 'transform, opacity, filter',
-        }}
-      />
-
-      {/* 2. Dynamic Main Outer Ring (Solid Red default, Glass Translucent Red on Hover, Velocity Blur) */}
+      {/* 1. Dynamic Outer Ring (Solid Red default, Glass Translucent Red on Hover) */}
       <div
         ref={outerCircleRef}
         style={{
@@ -188,7 +135,7 @@ const CustomCursor = ({ variant = 'default' }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          willChange: 'transform, filter',
+          willChange: 'transform',
         }}
       >
         {isProject && (
@@ -210,7 +157,7 @@ const CustomCursor = ({ variant = 'default' }) => {
         )}
       </div>
 
-      {/* 3. Inner Precise Center Dot (Visible during hover for instant targeting) */}
+      {/* 2. Inner Precise Center Dot (Visible during hover for instant targeting) */}
       {isHovered && (
         <div
           ref={dotRef}
@@ -233,5 +180,6 @@ const CustomCursor = ({ variant = 'default' }) => {
 };
 
 export default CustomCursor;
+
 
 
