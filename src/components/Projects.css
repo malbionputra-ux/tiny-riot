@@ -164,46 +164,46 @@
   background-color: #ffffff;
 }
 
-/* Double Doors (Split Door Animation) */
+/* Double Doors (White Split Door Animation from Center Seam) */
 .door-panel {
   position: fixed;
   top: 0;
   width: 50vw;
   height: 100vh;
-  background-color: #121212;
+  background-color: #ffffff;
   z-index: 99999;
   pointer-events: none;
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
 }
 
 .door-panel-left {
   left: 0;
-  border-right: 1px solid rgba(250, 42, 14, 0.4);
+  border-right: 1.5px solid rgba(24, 23, 23, 0.15);
 }
 
 .door-panel-right {
   right: 0;
-  border-left: 1px solid rgba(250, 42, 14, 0.4);
+  border-left: 1.5px solid rgba(24, 23, 23, 0.15);
 }
 
 .door-seam-glow-left {
   position: absolute;
   top: 0;
-  right: 0;
+  right: -1px;
   width: 2px;
   height: 100%;
   background: linear-gradient(180deg, transparent, #fa2a0e, transparent);
-  box-shadow: 0 0 15px #fa2a0e;
+  box-shadow: 0 0 12px rgba(250, 42, 14, 0.6);
 }
 
 .door-seam-glow-right {
   position: absolute;
   top: 0;
-  left: 0;
+  left: -1px;
   width: 2px;
   height: 100%;
   background: linear-gradient(180deg, transparent, #fa2a0e, transparent);
-  box-shadow: 0 0 15px #fa2a0e;
+  box-shadow: 0 0 12px rgba(250, 42, 14, 0.6);
 }
 
 /* Expanded Gallery Container */
