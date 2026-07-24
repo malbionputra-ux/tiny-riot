@@ -135,7 +135,10 @@ const Hero = ({ setCursorVariant, onOpenChat, chatOpen, hasInteractedChat }) => 
         </div>
         <div className="meta-col">
           <span className="meta-label">AGENCY STATUS</span>
-          <span className="meta-value highlight-status">OPEN FOR PROJECTS</span>
+          <span className="meta-value highlight-status">
+            <span className="live-status-dot" />
+            OPEN FOR PROJECTS
+          </span>
         </div>
       </div>
     </section>
