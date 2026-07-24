@@ -126,8 +126,8 @@ const CustomCursor = ({ variant = 'default' }) => {
           alignItems: 'center',
           justifyContent: 'center',
           willChange: 'transform',
-          backdropFilter: isNormalHover ? 'blur(2.5px)' : 'none',
-          WebkitBackdropFilter: isNormalHover ? 'blur(2.5px)' : 'none',
+          backdropFilter: isNormalHover ? 'blur(2px)' : 'none',
+          WebkitBackdropFilter: isNormalHover ? 'blur(2px)' : 'none',
           boxShadow: isProject ? '0 10px 30px rgba(250, 42, 14, 0.4)' : 'none',
         }}
       >
