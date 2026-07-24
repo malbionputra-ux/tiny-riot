@@ -64,28 +64,31 @@ const Header = ({ setCursorVariant, isLight, activeSlideIndex, isTransitioning }
                 <Magnetic>
                   <a
                     href="#about"
+                    className="cuberto-nav-item"
                     onMouseEnter={() => setCursorVariant && setCursorVariant('navbarHover')}
                     onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
                   >
-                    Tentang
+                    <span>Tentang</span>
                   </a>
                 </Magnetic>
                 <Magnetic>
                   <a
                     href="#services"
+                    className="cuberto-nav-item"
                     onMouseEnter={() => setCursorVariant && setCursorVariant('navbarHover')}
                     onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
                   >
-                    Layanan
+                    <span>Layanan</span>
                   </a>
                 </Magnetic>
                 <Magnetic>
                   <a
                     href="#projects"
+                    className="cuberto-nav-item"
                     onMouseEnter={() => setCursorVariant && setCursorVariant('navbarHover')}
                     onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
                   >
-                    Work
+                    <span>Work</span>
                   </a>
                 </Magnetic>
               </div>
