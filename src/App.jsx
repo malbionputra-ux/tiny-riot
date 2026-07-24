@@ -57,6 +57,9 @@ function App() {
     const handleWheel = (e) => {
       if (isTransitioning || !appLoaded) return;
       
+      // If expanded gallery or any modal overlay is active, ignore slide transitions
+      if (document.querySelector('.expanded-gallery-overlay')) return;
+      
       const now = Date.now();
       // Debounce wheel events slightly to prevent multiple rapid triggers
       if (now - lastWheelTime < 800) return;
@@ -104,6 +107,10 @@ function App() {
     
     const handleTouchMove = (e) => {
       if (isTransitioning || !appLoaded) return;
+
+      // If expanded gallery or any modal overlay is active, ignore slide transitions
+      if (document.querySelector('.expanded-gallery-overlay')) return;
+
       const touchEndY = e.touches[0].clientY;
       const deltaY = touchStartY - touchEndY;
       

@@ -190,7 +190,11 @@ const Projects = ({ setCursorVariant }) => {
       {/* ── Split-Door Opening & Expanded Gallery Modal ── */}
       <AnimatePresence>
         {isExpanded && (
-          <div className="expanded-gallery-overlay">
+          <div 
+            className="expanded-gallery-overlay"
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+          >
             {/* 1. Left Door Panel (Carries Left Images & slides to the LEFT) */}
             <motion.div 
               className="door-panel door-panel-left"
@@ -258,6 +262,8 @@ const Projects = ({ setCursorVariant }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
             >
               {/* Header Bar */}
               <div className="expanded-gallery-header">
