@@ -16,6 +16,8 @@ const CustomCursor = ({ variant = 'default' }) => {
   // Variant flags
   const isHovered = variant === 'hover' || variant === 'project' || variant === 'navbarHover';
   const isProject = variant === 'project';
+  const isNormalHover = variant === 'hover' || variant === 'navbarHover';
+
   const size = isHovered ? (isProject ? 88 : 66) : 22;
   const halfSize = size / 2;
 
@@ -103,7 +105,7 @@ const CustomCursor = ({ variant = 'default' }) => {
 
   return (
     <>
-      {/* 1. Dynamic Outer Ring (Solid Red default, Glass Translucent Red on Hover) */}
+      {/* 1. Dynamic Outer Ring (Solid Red default & project hover, Gaussian Blur Glass ring on button hover) */}
       <div
         ref={outerCircleRef}
         style={{
@@ -113,9 +115,9 @@ const CustomCursor = ({ variant = 'default' }) => {
           width: size,
           height: size,
           borderRadius: '50%',
-          border: isHovered ? '1.5px solid #fa2a0e' : 'none',
-          backgroundColor: isHovered ? 'rgba(250, 42, 14, 0.14)' : '#fa2a0e',
-          opacity: 0.95,
+          border: isNormalHover ? '1.5px solid #fa2a0e' : 'none',
+          backgroundColor: isProject ? '#fa2a0e' : (isNormalHover ? 'rgba(250, 42, 14, 0.15)' : '#fa2a0e'),
+          opacity: 0.96,
           transition: 'width 0.35s cubic-bezier(0.16, 1, 0.3, 1), height 0.35s cubic-bezier(0.16, 1, 0.3, 1), top 0.35s cubic-bezier(0.16, 1, 0.3, 1), left 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease',
           pointerEvents: 'none',
           zIndex: 9999998,
@@ -124,16 +126,19 @@ const CustomCursor = ({ variant = 'default' }) => {
           alignItems: 'center',
           justifyContent: 'center',
           willChange: 'transform',
+          backdropFilter: isNormalHover ? 'blur(8px)' : 'none',
+          WebkitBackdropFilter: isNormalHover ? 'blur(8px)' : 'none',
+          boxShadow: isProject ? '0 10px 30px rgba(250, 42, 14, 0.4)' : 'none',
         }}
       >
         {isProject && (
           <span
             ref={viewTextRef}
             style={{
-              color: '#fa2a0e',
-              fontSize: '10px',
+              color: '#ffffff',
+              fontSize: '11px',
               fontWeight: 900,
-              letterSpacing: '1.5px',
+              letterSpacing: '2px',
               pointerEvents: 'none',
               display: 'inline-block',
               willChange: 'transform',
@@ -145,8 +150,8 @@ const CustomCursor = ({ variant = 'default' }) => {
         )}
       </div>
 
-      {/* 2. Inner Precise Center Dot (Visible during hover for instant targeting) */}
-      {isHovered && (
+      {/* 2. Inner Precise Center Dot (Visible during button hover for instant targeting) */}
+      {isNormalHover && (
         <div
           ref={dotRef}
           style={{
