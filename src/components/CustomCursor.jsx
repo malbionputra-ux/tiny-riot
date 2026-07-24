@@ -59,26 +59,27 @@ const CustomCursor = ({ variant = 'default' }) => {
       outerPos.current.x += dx * 0.13;
       outerPos.current.y += dy * 0.13;
 
-      // Speed & Angle calculation for dynamic stretch
+      // Speed & Angle calculation for Odama.io exact capsule stretch
       const speed = Math.sqrt(dx * dx + dy * dy);
 
-      if (speed > 0.1) {
+      if (speed > 0.3) {
         const targetAngle = Math.atan2(dy, dx) * (180 / Math.PI);
         
-        // Handle 360 angle wrap-around smoothly
+        // Handle 360 angle wrap-around smoothly with snappy directional alignment
         let angleDiff = targetAngle - currentAngle;
         while (angleDiff < -180) angleDiff += 360;
         while (angleDiff > 180) angleDiff -= 360;
-        currentAngle += angleDiff * 0.14;
+        currentAngle += angleDiff * 0.28;
       }
 
-      // Subtle, area-preserving stretch physics (ONLY in default mode during fast movement, max 12% stretch)
-      const targetStretch = (!isHovered && speed > 3.0) ? Math.min((speed - 3.0) * 0.005, 0.12) : 0;
+      // Odama.io Exact Capsule Stretch (Pill shape along motion vector)
+      // When moving fast: scaleX elongates along movement angle, scaleY squishes thin!
+      const targetStretch = (!isHovered && speed > 0.5) ? Math.min(speed * 0.04, 1.35) : 0;
       const targetScaleX = 1 + targetStretch;
-      const targetScaleY = 1 / targetScaleX; // Preserves circle area perfectly
+      const targetScaleY = Math.max(0.35, 1 - targetStretch * 0.45);
 
-      currentScaleX += (targetScaleX - currentScaleX) * 0.14;
-      currentScaleY += (targetScaleY - currentScaleY) * 0.14;
+      currentScaleX += (targetScaleX - currentScaleX) * 0.22;
+      currentScaleY += (targetScaleY - currentScaleY) * 0.22;
 
       if (outerCircleRef.current) {
         const pressScale = isPressed ? 0.82 : 1;
