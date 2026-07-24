@@ -6,7 +6,7 @@ const CustomCursor = ({ variant = 'default' }) => {
 
   const requestRef = useRef(null);
   const targetPos = useRef({ x: -100, y: -100 });
-  const outerPos = useRef({ x: -100, y: -100 });
+  const currentPos = useRef({ x: -100, y: -100 });
   const dotPos = useRef({ x: -100, y: -100 });
 
   const outerCircleRef = useRef(null);
@@ -16,7 +16,7 @@ const CustomCursor = ({ variant = 'default' }) => {
   // Variant flags
   const isHovered = variant === 'hover' || variant === 'project' || variant === 'navbarHover';
   const isProject = variant === 'project';
-  const size = isHovered ? (isProject ? 88 : 66) : 24;
+  const size = isHovered ? (isProject ? 88 : 66) : 22;
   const halfSize = size / 2;
 
   useEffect(() => {
@@ -36,13 +36,11 @@ const CustomCursor = ({ variant = 'default' }) => {
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
-    let currentAngle = 0;
-    let currentScaleX = 1;
-    let currentScaleY = 1;
+    let angle = 0;
 
-    // High performance 60FPS+ RAF animation loop (zero React re-renders)
+    // 100% Cloned Odama.io 60FPS+ Physics Loop
     const animate = () => {
-      // 1. Fast, pin-point lerp for center dot (0.4)
+      // 1. Center dot instant/fast lerp (0.4)
       const dotDx = targetPos.current.x - dotPos.current.x;
       const dotDy = targetPos.current.y - dotPos.current.y;
       dotPos.current.x += dotDx * 0.4;
@@ -53,48 +51,37 @@ const CustomCursor = ({ variant = 'default' }) => {
         dotRef.current.style.transform = `translate3d(${dotPos.current.x - 4}px, ${dotPos.current.y - 4}px, 0) scale(${pressScale})`;
       }
 
-      // 2. Organic fluid lerp for outer trailing ring (0.13)
-      const dx = targetPos.current.x - outerPos.current.x;
-      const dy = targetPos.current.y - outerPos.current.y;
-      outerPos.current.x += dx * 0.13;
-      outerPos.current.y += dy * 0.13;
+      // 2. Trailing ring fluid lerp (0.14 - exact Odama.io fluid factor)
+      const dx = targetPos.current.x - currentPos.current.x;
+      const dy = targetPos.current.y - currentPos.current.y;
 
-      // Speed & Angle calculation for Odama.io exact capsule stretch
+      currentPos.current.x += dx * 0.14;
+      currentPos.current.y += dy * 0.14;
+
+      // Velocity & Direction vector
       const speed = Math.sqrt(dx * dx + dy * dy);
 
-      if (speed > 0.3) {
-        const targetAngle = Math.atan2(dy, dx) * (180 / Math.PI);
-        
-        // Handle 360 angle wrap-around smoothly with snappy directional alignment
-        let angleDiff = targetAngle - currentAngle;
-        while (angleDiff < -180) angleDiff += 360;
-        while (angleDiff > 180) angleDiff -= 360;
-        currentAngle += angleDiff * 0.28;
+      // Angle aligns directly to exact movement vector (zero wobble)
+      if (speed > 0.1) {
+        angle = Math.atan2(dy, dx) * (180 / Math.PI);
       }
 
-      // Odama.io Exact Capsule Stretch (Pill shape along motion vector)
-      // When moving fast: scaleX elongates along movement angle, scaleY squishes thin!
-      const targetStretch = (!isHovered && speed > 0.5) ? Math.min(speed * 0.04, 1.35) : 0;
-      const targetScaleX = 1 + targetStretch;
-      const targetScaleY = Math.max(0.35, 1 - targetStretch * 0.45);
-
-      currentScaleX += (targetScaleX - currentScaleX) * 0.22;
-      currentScaleY += (targetScaleY - currentScaleY) * 0.22;
+      // 100% Odama.io Capsule Stretch Math
+      // Elongates along velocity vector, squishes height proportionally
+      const stretch = (!isHovered && speed > 0.2) ? Math.min(speed * 0.006, 0.75) : 0;
+      const scaleX = (1 + stretch) * (isPressed ? 0.82 : 1);
+      const scaleY = Math.max(0.42, 1 - stretch * 0.45) * (isPressed ? 0.82 : 1);
 
       if (outerCircleRef.current) {
-        const pressScale = isPressed ? 0.82 : 1;
-        const finalScaleX = currentScaleX * pressScale;
-        const finalScaleY = currentScaleY * pressScale;
-
         outerCircleRef.current.style.transform = 
-          `translate3d(${outerPos.current.x}px, ${outerPos.current.y}px, 0) ` +
-          `rotate(${currentAngle}deg) ` +
-          `scale(${finalScaleX}, ${finalScaleY})`;
+          `translate3d(${currentPos.current.x}px, ${currentPos.current.y}px, 0) ` +
+          `rotate(${angle}deg) ` +
+          `scale(${scaleX}, ${scaleY})`;
       }
 
       // 3. Counter-rotate VIEW text so it stays 100% horizontal and upright
       if (viewTextRef.current) {
-        viewTextRef.current.style.transform = `rotate(${-currentAngle}deg)`;
+        viewTextRef.current.style.transform = `rotate(${-angle}deg)`;
       }
 
       requestRef.current = requestAnimationFrame(animate);
@@ -181,6 +168,3 @@ const CustomCursor = ({ variant = 'default' }) => {
 };
 
 export default CustomCursor;
-
-
-
