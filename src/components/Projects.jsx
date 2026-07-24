@@ -276,22 +276,34 @@ const Projects = ({ setCursorVariant }) => {
                 </button>
               </div>
 
-              {/* 4-Column Grid with Bottom-To-Top Staggered Entrance Animations */}
+              {/* 4-Column Grid with Ultra-Modern 3D Blur-Up Staggered Entrance Animations */}
               <div className="expanded-grid-wrapper">
                 {expandedColumns.map((col, colIdx) => (
                   <div key={colIdx} className="bia-grid-column">
                     {col.map((item, itemIdx) => {
-                      const itemGlobalIdx = colIdx * 4 + itemIdx;
+                      const itemDelay = 0.38 + colIdx * 0.1 + itemIdx * 0.08;
                       return (
                         <motion.div
                           key={item.id}
-                          className="bia-case-card"
+                          className="bia-case-card expanded-case-card"
                           style={{ height: item.height }}
-                          initial={{ opacity: 0, y: 80, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          initial={{ 
+                            opacity: 0, 
+                            y: 150, 
+                            scale: 0.86, 
+                            rotateX: 12,
+                            filter: 'blur(10px)' 
+                          }}
+                          animate={{ 
+                            opacity: 1, 
+                            y: 0, 
+                            scale: 1, 
+                            rotateX: 0,
+                            filter: 'blur(0px)' 
+                          }}
                           transition={{ 
-                            duration: 0.85, 
-                            delay: 0.35 + itemGlobalIdx * 0.05, 
+                            duration: 1.15, 
+                            delay: itemDelay, 
                             ease: [0.16, 1, 0.3, 1] 
                           }}
                           onMouseEnter={() => setCursorVariant && setCursorVariant('project')}
@@ -301,22 +313,31 @@ const Projects = ({ setCursorVariant }) => {
                             src={item.img} 
                             alt={item.title} 
                             className="case-img"
-                            initial={{ scale: 1.2, opacity: 0.5 }}
+                            initial={{ scale: 1.35, opacity: 0.2 }}
                             animate={{ scale: 1.0, opacity: 1 }}
                             transition={{ 
-                              duration: 1.0, 
-                              delay: 0.35 + itemGlobalIdx * 0.05, 
+                              duration: 1.35, 
+                              delay: itemDelay, 
                               ease: [0.16, 1, 0.3, 1] 
                             }}
                           />
                           <div className="case-shadow-gradient" />
-                          <div className="case-info-tag">
+                          <motion.div 
+                            className="case-info-tag"
+                            initial={{ y: 25, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ 
+                              duration: 0.7, 
+                              delay: itemDelay + 0.15, 
+                              ease: [0.16, 1, 0.3, 1] 
+                            }}
+                          >
                             <p className="case-caption-text">
                               <span className="case-title">{item.title}</span>
                               <span className="case-dot"> · </span>
                               <span className="case-desc">{item.desc}</span>
                             </p>
-                          </div>
+                          </motion.div>
                         </motion.div>
                       );
                     })}

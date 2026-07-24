@@ -296,6 +296,12 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.2rem;
+  perspective: 1200px;
+}
+
+.expanded-case-card {
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
 }
 
 /* Mobile & Tablet responsive layout */
