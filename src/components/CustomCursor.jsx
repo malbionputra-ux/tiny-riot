@@ -7,9 +7,11 @@ const CustomCursor = ({ variant = 'default' }) => {
   const requestRef = useRef(null);
   const targetPos = useRef({ x: -100, y: -100 });
   const outerPos = useRef({ x: -100, y: -100 });
+  const ghostPos = useRef({ x: -100, y: -100 });
   const dotPos = useRef({ x: -100, y: -100 });
 
   const outerCircleRef = useRef(null);
+  const ghostCircleRef = useRef(null);
   const dotRef = useRef(null);
   const viewTextRef = useRef(null);
 
@@ -59,7 +61,13 @@ const CustomCursor = ({ variant = 'default' }) => {
       outerPos.current.x += dx * 0.13;
       outerPos.current.y += dy * 0.13;
 
-      // Speed & Angle calculation for dynamic stretch
+      // 3. Ghost lerp trailing slightly behind outer ring for Motion Blur tail (0.28)
+      const ghostDx = outerPos.current.x - ghostPos.current.x;
+      const ghostDy = outerPos.current.y - ghostPos.current.y;
+      ghostPos.current.x += ghostDx * 0.28;
+      ghostPos.current.y += ghostDy * 0.28;
+
+      // Speed & Angle calculation for dynamic stretch & motion blur
       const speed = Math.sqrt(dx * dx + dy * dy);
 
       if (speed > 0.1) {
@@ -80,6 +88,9 @@ const CustomCursor = ({ variant = 'default' }) => {
       currentScaleX += (targetScaleX - currentScaleX) * 0.16;
       currentScaleY += (targetScaleY - currentScaleY) * 0.16;
 
+      // Real-time Motion Blur calculation based on movement velocity
+      const motionBlurPx = Math.min(speed * 0.12, 5.5);
+
       if (outerCircleRef.current) {
         const pressScale = isPressed ? 0.82 : 1;
         const finalScaleX = currentScaleX * pressScale;
@@ -89,9 +100,34 @@ const CustomCursor = ({ variant = 'default' }) => {
           `translate3d(${outerPos.current.x}px, ${outerPos.current.y}px, 0) ` +
           `rotate(${currentAngle}deg) ` +
           `scale(${finalScaleX}, ${finalScaleY})`;
+
+        // Apply speed-dependent directional Motion Blur filter
+        const baseBlur = isHovered ? 2.5 : 0;
+        const totalBlur = baseBlur + motionBlurPx;
+        if (totalBlur > 0.2) {
+          const filterStr = `blur(${totalBlur.toFixed(1)}px)`;
+          outerCircleRef.current.style.filter = filterStr;
+          outerCircleRef.current.style.webkitFilter = filterStr;
+        } else {
+          outerCircleRef.current.style.filter = 'none';
+          outerCircleRef.current.style.webkitFilter = 'none';
+        }
       }
 
-      // 3. Counter-rotate VIEW text so it stays 100% horizontal and upright
+      // Update Motion Blur Ghost Tail
+      if (ghostCircleRef.current) {
+        const ghostOpacity = Math.min(speed * 0.025, 0.45);
+        const ghostBlur = Math.min(3 + speed * 0.12, 8);
+        ghostCircleRef.current.style.transform = 
+          `translate3d(${ghostPos.current.x}px, ${ghostPos.current.y}px, 0) ` +
+          `rotate(${currentAngle}deg) ` +
+          `scale(${currentScaleX * 0.95}, ${currentScaleY * 0.95})`;
+        ghostCircleRef.current.style.opacity = ghostOpacity.toString();
+        ghostCircleRef.current.style.filter = `blur(${ghostBlur.toFixed(1)}px)`;
+        ghostCircleRef.current.style.webkitFilter = `blur(${ghostBlur.toFixed(1)}px)`;
+      }
+
+      // 4. Counter-rotate VIEW text so it stays 100% horizontal and upright
       if (viewTextRef.current) {
         viewTextRef.current.style.transform = `rotate(${-currentAngle}deg)`;
       }
@@ -109,13 +145,32 @@ const CustomCursor = ({ variant = 'default' }) => {
       document.removeEventListener('mouseenter', handleMouseEnter);
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, [isVisible, isPressed]);
+  }, [isVisible, isPressed, isHovered]);
 
   if (!isVisible) return null;
 
   return (
     <>
-      {/* 1. Dynamic Outer Ring (Solid Red default, Glass Translucent Red on Hover) */}
+      {/* 1. Motion Blur Ghost Trail (Appears dynamically during fast movements) */}
+      <div
+        ref={ghostCircleRef}
+        style={{
+          position: 'fixed',
+          top: -halfSize,
+          left: -halfSize,
+          width: size,
+          height: size,
+          borderRadius: '50%',
+          backgroundColor: '#fa2a0e',
+          opacity: 0,
+          pointerEvents: 'none',
+          zIndex: 9999997,
+          boxSizing: 'border-box',
+          willChange: 'transform, opacity, filter',
+        }}
+      />
+
+      {/* 2. Dynamic Main Outer Ring (Solid Red default, Glass Translucent Red on Hover, Velocity Blur) */}
       <div
         ref={outerCircleRef}
         style={{
@@ -135,9 +190,7 @@ const CustomCursor = ({ variant = 'default' }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          willChange: 'transform',
-          backdropFilter: isHovered ? 'blur(3px)' : 'none',
-          WebkitBackdropFilter: isHovered ? 'blur(3px)' : 'none',
+          willChange: 'transform, filter',
         }}
       >
         {isProject && (
@@ -159,7 +212,7 @@ const CustomCursor = ({ variant = 'default' }) => {
         )}
       </div>
 
-      {/* 2. Inner Precise Center Dot (Visible during hover for instant targeting) */}
+      {/* 3. Inner Precise Center Dot (Visible during hover for instant targeting) */}
       {isHovered && (
         <div
           ref={dotRef}
@@ -182,4 +235,5 @@ const CustomCursor = ({ variant = 'default' }) => {
 };
 
 export default CustomCursor;
+
 
