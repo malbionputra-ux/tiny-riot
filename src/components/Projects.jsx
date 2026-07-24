@@ -191,7 +191,7 @@ const Projects = ({ setCursorVariant }) => {
       <AnimatePresence>
         {isExpanded && (
           <div className="expanded-gallery-overlay">
-            {/* 1. Left Door Panel (Opens sliding to the LEFT) */}
+            {/* 1. Left Door Panel (Carries Left Images & slides to the LEFT) */}
             <motion.div 
               className="door-panel door-panel-left"
               initial={{ x: '0%' }}
@@ -199,10 +199,29 @@ const Projects = ({ setCursorVariant }) => {
               exit={{ x: '0%' }}
               transition={{ duration: 0.85, ease: [0.76, 0, 0.24, 1] }}
             >
+              <div className="door-cases-content">
+                {mainLeftColumns.map((col, cIdx) => (
+                  <div key={cIdx} className="bia-grid-column">
+                    {col.map((item) => (
+                      <div key={item.id} className="bia-case-card" style={{ height: item.height }}>
+                        <img src={item.img} alt={item.title} className="case-img" />
+                        <div className="case-shadow-gradient" />
+                        <div className="case-info-tag">
+                          <p className="case-caption-text">
+                            <span className="case-title">{item.title}</span>
+                            <span className="case-dot"> · </span>
+                            <span className="case-desc">{item.desc}</span>
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
               <div className="door-seam-glow-left" />
             </motion.div>
 
-            {/* 2. Right Door Panel (Opens sliding to the RIGHT) */}
+            {/* 2. Right Door Panel (Carries Right Images & slides to the RIGHT) */}
             <motion.div 
               className="door-panel door-panel-right"
               initial={{ x: '0%' }}
@@ -210,6 +229,25 @@ const Projects = ({ setCursorVariant }) => {
               exit={{ x: '0%' }}
               transition={{ duration: 0.85, ease: [0.76, 0, 0.24, 1] }}
             >
+              <div className="door-cases-content">
+                {mainRightColumns.map((col, cIdx) => (
+                  <div key={cIdx} className="bia-grid-column">
+                    {col.map((item) => (
+                      <div key={item.id} className="bia-case-card" style={{ height: item.height }}>
+                        <img src={item.img} alt={item.title} className="case-img" />
+                        <div className="case-shadow-gradient" />
+                        <div className="case-info-tag">
+                          <p className="case-caption-text">
+                            <span className="case-title">{item.title}</span>
+                            <span className="case-dot"> · </span>
+                            <span className="case-desc">{item.desc}</span>
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
               <div className="door-seam-glow-right" />
             </motion.div>
 
