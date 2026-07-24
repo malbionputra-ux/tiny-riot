@@ -66,11 +66,12 @@
   border: none;
   cursor: pointer;
   padding: 1rem 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
 .see-more-vertical-btn:hover {
-  opacity: 0.6;
+  color: var(--color-accent);
+  transform: rotate(180deg) scale(1.1);
 }
 
 .bia-case-card {
@@ -152,7 +153,152 @@
   color: var(--color-accent);
 }
 
+/* ═══════════════════════════════════════════════════════
+   Split-Door Opening & Expanded Portfolio Gallery Overlay
+═══════════════════════════════════════════════════════ */
+.expanded-gallery-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99990;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+/* Double Doors (Split Door Animation) */
+.door-panel {
+  position: fixed;
+  top: 0;
+  width: 50vw;
+  height: 100vh;
+  background-color: #121212;
+  z-index: 99999;
+  pointer-events: none;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+}
+
+.door-panel-left {
+  left: 0;
+  border-right: 1px solid rgba(250, 42, 14, 0.4);
+}
+
+.door-panel-right {
+  right: 0;
+  border-left: 1px solid rgba(250, 42, 14, 0.4);
+}
+
+.door-seam-glow-left {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #fa2a0e, transparent);
+  box-shadow: 0 0 15px #fa2a0e;
+}
+
+.door-seam-glow-right {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #fa2a0e, transparent);
+  box-shadow: 0 0 15px #fa2a0e;
+}
+
+/* Expanded Gallery Container */
+.expanded-gallery-container {
+  position: absolute;
+  inset: 0;
+  z-index: 99991;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 3rem 4rem 6rem 4rem;
+  background: #ffffff;
+  color: #181717;
+  /* Hide scrollbar */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.expanded-gallery-container::-webkit-scrollbar {
+  display: none;
+}
+
+.expanded-gallery-header {
+  max-width: 1400px;
+  margin: 0 auto 3rem auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid rgba(24, 23, 23, 0.1);
+  padding-bottom: 2rem;
+}
+
+.gallery-meta-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  color: var(--color-accent);
+  display: block;
+  margin-bottom: 0.6rem;
+}
+
+.gallery-header-title {
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -1.5px;
+  margin: 0;
+  color: var(--color-text-light);
+}
+
+.gallery-close-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #181717;
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 999px;
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+}
+
+.gallery-close-btn:hover {
+  transform: scale(1.05);
+  background-color: var(--color-accent);
+}
+
+.close-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.expanded-grid-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+}
+
 /* Mobile & Tablet responsive layout */
+@media (max-width: 1100px) {
+  .expanded-grid-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .expanded-gallery-container {
+    padding: 2rem 2rem 5rem 2rem;
+  }
+}
+
 @media (max-width: 900px) {
   .bia-cases-wrapper {
     flex-direction: column;
@@ -176,6 +322,12 @@
   }
 }
 
+@media (max-width: 600px) {
+  .expanded-grid-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 550px) {
   .bia-cases-half {
     grid-template-columns: 1fr;
@@ -185,3 +337,4 @@
     height: 320px !important;
   }
 }
+
