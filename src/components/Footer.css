@@ -1,4 +1,9 @@
 .footer {
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: var(--color-bg-dark);
   padding: 10rem 4rem 4rem 4rem;
   color: var(--color-text-dark);
@@ -10,8 +15,11 @@
 .footer-content {
   max-width: 1400px;
   margin: 0 auto;
+  width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .footer-cta {
