@@ -77,19 +77,19 @@ const CustomCursor = ({ variant = 'default' }) => {
         let angleDiff = targetAngle - currentAngle;
         while (angleDiff < -180) angleDiff += 360;
         while (angleDiff > 180) angleDiff -= 360;
-        currentAngle += angleDiff * 0.16;
+        currentAngle += angleDiff * 0.14;
       }
 
-      // Dynamic stretch calculation based on velocity
-      const targetStretch = Math.min(speed * 0.02, 0.45);
+      // Elegant, area-preserving stretch physics (ONLY in default mode during fast movement)
+      const targetStretch = (!isHovered && speed > 2.5) ? Math.min((speed - 2.5) * 0.008, 0.18) : 0;
       const targetScaleX = 1 + targetStretch;
-      const targetScaleY = 1 - targetStretch * 0.35;
+      const targetScaleY = 1 / targetScaleX; // Preserves circle area perfectly (liquid physics)
 
-      currentScaleX += (targetScaleX - currentScaleX) * 0.16;
-      currentScaleY += (targetScaleY - currentScaleY) * 0.16;
+      currentScaleX += (targetScaleX - currentScaleX) * 0.14;
+      currentScaleY += (targetScaleY - currentScaleY) * 0.14;
 
-      // Real-time Motion Blur calculation based on movement velocity
-      const motionBlurPx = Math.min(speed * 0.12, 5.5);
+      // Motion Blur calculation: ONLY active during fast movements (speed > 3.0), NEVER when stationary or on hover
+      const motionBlurPx = (!isHovered && speed > 3.0) ? Math.min((speed - 3.0) * 0.12, 4.2) : 0;
 
       if (outerCircleRef.current) {
         const pressScale = isPressed ? 0.82 : 1;
@@ -101,11 +101,9 @@ const CustomCursor = ({ variant = 'default' }) => {
           `rotate(${currentAngle}deg) ` +
           `scale(${finalScaleX}, ${finalScaleY})`;
 
-        // Apply speed-dependent directional Motion Blur filter
-        const baseBlur = isHovered ? 2.5 : 0;
-        const totalBlur = baseBlur + motionBlurPx;
-        if (totalBlur > 0.2) {
-          const filterStr = `blur(${totalBlur.toFixed(1)}px)`;
+        // Apply Motion Blur ONLY during fast movement
+        if (motionBlurPx > 0.3) {
+          const filterStr = `blur(${motionBlurPx.toFixed(1)}px)`;
           outerCircleRef.current.style.filter = filterStr;
           outerCircleRef.current.style.webkitFilter = filterStr;
         } else {
@@ -114,10 +112,10 @@ const CustomCursor = ({ variant = 'default' }) => {
         }
       }
 
-      // Update Motion Blur Ghost Tail
+      // Update Motion Blur Ghost Tail (Active ONLY during fast movement in default mode)
       if (ghostCircleRef.current) {
-        const ghostOpacity = Math.min(speed * 0.025, 0.45);
-        const ghostBlur = Math.min(3 + speed * 0.12, 8);
+        const ghostOpacity = (!isHovered && speed > 5.0) ? Math.min((speed - 5.0) * 0.03, 0.35) : 0;
+        const ghostBlur = Math.min(2 + speed * 0.1, 6);
         ghostCircleRef.current.style.transform = 
           `translate3d(${ghostPos.current.x}px, ${ghostPos.current.y}px, 0) ` +
           `rotate(${currentAngle}deg) ` +
