@@ -277,8 +277,8 @@ const Projects = ({ setCursorVariant }) => {
                   onMouseEnter={() => setCursorVariant && setCursorVariant('hover')}
                   onMouseLeave={() => setCursorVariant && setCursorVariant('default')}
                 >
-                  <span className="close-text">CLOSE</span>
-                  <span className="close-icon">✕</span>
+                  <span className="close-icon">←</span>
+                  <span className="close-text">BACK</span>
                 </button>
               </div>
 
