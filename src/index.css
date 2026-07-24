@@ -31,8 +31,8 @@ body {
 
 /* Hide default cursor ONLY on desktop devices where cursor is available */
 @media (pointer: fine) {
-  body, a, button, select, input, textarea {
-    cursor: none; 
+  *, body, a, button, select, input, textarea, div, span, img {
+    cursor: none !important; 
   }
 }
 

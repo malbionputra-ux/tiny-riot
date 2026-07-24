@@ -1,20 +1,27 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 const CustomCursor = ({ variant = 'default' }) => {
-  const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
-  const [isPressed, setIsPressed] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
 
   const requestRef = useRef(null);
   const targetPos = useRef({ x: -100, y: -100 });
-  const currentPos = useRef({ x: -100, y: -100 });
+  const outerPos = useRef({ x: -100, y: -100 });
+  const dotPos = useRef({ x: -100, y: -100 });
+
   const outerCircleRef = useRef(null);
+  const dotRef = useRef(null);
   const viewTextRef = useRef(null);
+
+  // Variant flags
+  const isHovered = variant === 'hover' || variant === 'project' || variant === 'navbarHover';
+  const isProject = variant === 'project';
+  const size = isHovered ? (isProject ? 88 : 66) : 24;
+  const halfSize = size / 2;
 
   useEffect(() => {
     const handleMouseMove = (e) => {
       targetPos.current = { x: e.clientX, y: e.clientY };
-      setMousePosition({ x: e.clientX, y: e.clientY });
       if (!isVisible) setIsVisible(true);
     };
 
@@ -23,9 +30,9 @@ const CustomCursor = ({ variant = 'default' }) => {
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mousedown', handleMouseDown, { passive: true });
+    window.addEventListener('mouseup', handleMouseUp, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
@@ -33,48 +40,58 @@ const CustomCursor = ({ variant = 'default' }) => {
     let currentScaleX = 1;
     let currentScaleY = 1;
 
-    // High performance 60FPS animation loop (Odama.io exact physics)
+    // High performance 60FPS+ RAF animation loop (zero React re-renders)
     const animate = () => {
-      const dx = targetPos.current.x - currentPos.current.x;
-      const dy = targetPos.current.y - currentPos.current.y;
+      // 1. Fast, pin-point lerp for center dot (0.4)
+      const dotDx = targetPos.current.x - dotPos.current.x;
+      const dotDy = targetPos.current.y - dotPos.current.y;
+      dotPos.current.x += dotDx * 0.4;
+      dotPos.current.y += dotDy * 0.4;
 
-      // Organic Lerp factor (0.12 gives that classic fluid Odama feel)
-      currentPos.current.x += dx * 0.12;
-      currentPos.current.y += dy * 0.12;
+      if (dotRef.current) {
+        const pressScale = isPressed ? 0.6 : 1;
+        dotRef.current.style.transform = `translate3d(${dotPos.current.x - 4}px, ${dotPos.current.y - 4}px, 0) scale(${pressScale})`;
+      }
 
-      // Speed & Angle calculation
+      // 2. Organic fluid lerp for outer trailing ring (0.13)
+      const dx = targetPos.current.x - outerPos.current.x;
+      const dy = targetPos.current.y - outerPos.current.y;
+      outerPos.current.x += dx * 0.13;
+      outerPos.current.y += dy * 0.13;
+
+      // Speed & Angle calculation for dynamic stretch
       const speed = Math.sqrt(dx * dx + dy * dy);
 
       if (speed > 0.1) {
         const targetAngle = Math.atan2(dy, dx) * (180 / Math.PI);
         
-        // Handle angle wrap-around for smooth 360 rotation
+        // Handle 360 angle wrap-around smoothly
         let angleDiff = targetAngle - currentAngle;
         while (angleDiff < -180) angleDiff += 360;
         while (angleDiff > 180) angleDiff -= 360;
-        currentAngle += angleDiff * 0.15;
+        currentAngle += angleDiff * 0.16;
       }
 
-      // Dynamic stretch calculation based on speed
-      const targetStretch = Math.min(speed * 0.02, 0.5);
+      // Dynamic stretch calculation based on velocity
+      const targetStretch = Math.min(speed * 0.02, 0.45);
       const targetScaleX = 1 + targetStretch;
-      const targetScaleY = 1 - targetStretch * 0.4;
+      const targetScaleY = 1 - targetStretch * 0.35;
 
-      currentScaleX += (targetScaleX - currentScaleX) * 0.15;
-      currentScaleY += (targetScaleY - currentScaleY) * 0.15;
+      currentScaleX += (targetScaleX - currentScaleX) * 0.16;
+      currentScaleY += (targetScaleY - currentScaleY) * 0.16;
 
       if (outerCircleRef.current) {
-        const pressScale = isPressed ? 0.8 : 1;
+        const pressScale = isPressed ? 0.82 : 1;
         const finalScaleX = currentScaleX * pressScale;
         const finalScaleY = currentScaleY * pressScale;
 
         outerCircleRef.current.style.transform = 
-          `translate3d(${currentPos.current.x}px, ${currentPos.current.y}px, 0) ` +
+          `translate3d(${outerPos.current.x}px, ${outerPos.current.y}px, 0) ` +
           `rotate(${currentAngle}deg) ` +
           `scale(${finalScaleX}, ${finalScaleY})`;
       }
 
-      // Counter-rotate text so VIEW text always stays perfectly horizontal and upright!
+      // 3. Counter-rotate VIEW text so it stays 100% horizontal and upright
       if (viewTextRef.current) {
         viewTextRef.current.style.transform = `rotate(${-currentAngle}deg)`;
       }
@@ -96,14 +113,9 @@ const CustomCursor = ({ variant = 'default' }) => {
 
   if (!isVisible) return null;
 
-  const isHovered = variant === 'hover' || variant === 'project' || variant === 'navbarHover';
-  const isProject = variant === 'project';
-  const size = isHovered ? (isProject ? 88 : 66) : 24;
-  const halfSize = size / 2;
-
   return (
     <>
-      {/* 1. Dynamic Trailing Circle: Solid Red default, Glass Translucent Red on Hover */}
+      {/* 1. Dynamic Outer Ring (Solid Red default, Glass Translucent Red on Hover) */}
       <div
         ref={outerCircleRef}
         style={{
@@ -114,17 +126,18 @@ const CustomCursor = ({ variant = 'default' }) => {
           height: size,
           borderRadius: '50%',
           border: isHovered ? '1.5px solid #fa2a0e' : 'none',
-          backgroundColor: isHovered ? 'rgba(250, 42, 14, 0.15)' : '#fa2a0e',
-          opacity: 0.92,
+          backgroundColor: isHovered ? 'rgba(250, 42, 14, 0.14)' : '#fa2a0e',
+          opacity: 0.95,
           transition: 'width 0.35s cubic-bezier(0.16, 1, 0.3, 1), height 0.35s cubic-bezier(0.16, 1, 0.3, 1), top 0.35s cubic-bezier(0.16, 1, 0.3, 1), left 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease',
           pointerEvents: 'none',
-          zIndex: 999998,
+          zIndex: 9999998,
           boxSizing: 'border-box',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           willChange: 'transform',
-          backdropFilter: isHovered ? 'blur(2px)' : 'none',
+          backdropFilter: isHovered ? 'blur(3px)' : 'none',
+          WebkitBackdropFilter: isHovered ? 'blur(3px)' : 'none',
         }}
       >
         {isProject && (
@@ -138,6 +151,7 @@ const CustomCursor = ({ variant = 'default' }) => {
               pointerEvents: 'none',
               display: 'inline-block',
               willChange: 'transform',
+              userSelect: 'none',
             }}
           >
             VIEW
@@ -145,9 +159,10 @@ const CustomCursor = ({ variant = 'default' }) => {
         )}
       </div>
 
-      {/* 2. Inner Precise Center Dot (visible during hover for precise targeting) */}
+      {/* 2. Inner Precise Center Dot (Visible during hover for instant targeting) */}
       {isHovered && (
         <div
+          ref={dotRef}
           style={{
             position: 'fixed',
             top: 0,
@@ -156,10 +171,8 @@ const CustomCursor = ({ variant = 'default' }) => {
             height: 8,
             borderRadius: '50%',
             backgroundColor: '#fa2a0e',
-            transform: `translate3d(${mousePosition.x - 4}px, ${mousePosition.y - 4}px, 0) scale(${isPressed ? 0.6 : 1})`,
-            transition: 'width 0.25s ease, height 0.25s ease, transform 0.05s ease-out',
             pointerEvents: 'none',
-            zIndex: 999999,
+            zIndex: 9999999,
             willChange: 'transform',
           }}
         />
@@ -169,3 +182,4 @@ const CustomCursor = ({ variant = 'default' }) => {
 };
 
 export default CustomCursor;
+
