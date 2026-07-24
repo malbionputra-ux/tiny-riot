@@ -132,7 +132,7 @@ const CustomCursor = ({ variant = 'default' }) => {
           willChange: 'transform',
           backdropFilter: isButtonHover ? 'blur(2px)' : 'none',
           WebkitBackdropFilter: isButtonHover ? 'blur(2px)' : 'none',
-          boxShadow: isProject ? '0 10px 30px rgba(250, 42, 14, 0.4)' : (isNavbarHover ? '0 0 20px rgba(255, 255, 255, 0.5)' : 'none'),
+          boxShadow: isProject ? '0 10px 30px rgba(250, 42, 14, 0.4)' : 'none',
         }}
       >
         {isProject && (
